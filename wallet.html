@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="CARD4ME secure wallet"
+    >
+
+    <meta
+        name="robots"
+        content="noindex,nofollow"
+    >
+
+    <title>Wallet — CARD4ME</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="nav">
+
+        <a
+            class="logo"
+            href="index.html"
+            aria-label="CARD4ME Home"
+        >
+
+            <span class="logo-mark">
+                C4
+            </span>
+
+            CARD<span>4</span>ME
+
+        </a>
+
+
+        <button
+            class="menu"
+            type="button"
+            onclick="toggleMenu()"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+        >
+            ☰
+        </button>
+
+
+        <nav
+            id="nav"
+            aria-label="Main navigation"
+        >
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="services.html">
+                Services
+            </a>
+
+            <!-- Correct filename -->
+
+            <a href="transaction.html">
+                Transactions
+            </a>
+
+            <button
+                type="button"
+                onclick="logoutUser()"
+            >
+                Logout
+            </button>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- =========================================
+         MAIN WALLET
+    ========================================== -->
+
+    <main class="page narrow wallet-page">
+
+
+        <!-- PAGE HEADING -->
+
+        <div class="wallet-heading">
+
+            <small>
+                WALLET
+            </small>
+
+            <h1>
+                Fund your wallet
+            </h1>
+
+            <p>
+                Securely manage your CARD4ME wallet.
+            </p>
+
+        </div>
+
+
+
+        <!-- =========================================
+             WALLET BALANCE
+        ========================================== -->
+
+        <section
+            class="wallet-box wallet-balance-box"
+            aria-label="Wallet balance"
+        >
+
+            <span>
+                Current balance
+            </span>
+
+
+            <strong
+                id="walletBalance"
+                aria-live="polite"
+            >
+                Checking balance...
+            </strong>
+
+        </section>
+
+
+
+        <!-- =========================================
+             FUND WALLET
+        ========================================== -->
+
+        <section class="wallet-section">
+
+            <div class="wallet-section-heading">
+
+                <small>
+                    ADD MONEY
+                </small>
+
+                <h2>
+                    Fund your wallet
+                </h2>
+
+                <p>
+                    Enter the amount you want to add
+                    to your CARD4ME wallet.
+                </p>
+
+            </div>
+
+
+            <form
+                id="fundWalletForm"
+                onsubmit="fundWallet(event)"
+                autocomplete="off"
+            >
+
+                <div class="form-group">
+
+                    <label for="fundAmount">
+                        Amount (₦)
+                    </label>
+
+                    <input
+                        id="fundAmount"
+                        name="amount"
+                        type="number"
+                        min="500"
+                        max="1000000"
+                        step="1"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        placeholder="5000"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    class="btn"
+                    type="submit"
+                >
+                    Add Funds
+                </button>
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =========================================
+             VIRTUAL ACCOUNT
+        ========================================== -->
+
+        <section
+            id="virtualAccountDetails"
+            class="wallet-box virtual-account-box"
+            style="display: none;"
+            aria-live="polite"
+        >
+
+            <div class="wallet-section-heading">
+
+                <small>
+                    FUNDING ACCOUNT
+                </small>
+
+                <h2>
+                    Funding Account
+                </h2>
+
+            </div>
+
+
+            <div
+                id="virtualAccountContent"
+            >
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             SECURITY NOTICE
+        ========================================== -->
+
+        <section
+            class="wallet-box wallet-security-box"
+        >
+
+            <strong>
+                🔒 Secure wallet
+            </strong>
+
+            <p class="note">
+                Never share your password, login token,
+                PIN, or payment credentials with anyone.
+            </p>
+
+        </section>
+
+
+        <!-- FUNDING NOTE -->
+
+        <p class="note wallet-note">
+            Minimum wallet funding amount is ₦500.
+            Follow the instructions shown after creating
+            a funding request.
+        </p>
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <strong>
+                CARD<span>4</span>ME
+            </strong>
+
+            <p>
+                Secure wallet
+            </p>
+
+        </div>
+
+
+        <p class="footer-copy">
+            © 2026 CARD4ME. All rights reserved.
+        </p>
+
+    </footer>
+
+
+
+    <!-- =========================================
+         APP JAVASCRIPT
+    ========================================== -->
+
+    <script src="app.js"></script>
+
+
+
+    <!-- =========================================
+         WALLET SECURITY CONTROLS
+    ========================================== -->
+
+    <script>
+
+        (function () {
+
+            "use strict";
+
+
+            const form =
+                document.getElementById(
+                    "fundWalletForm"
+                );
+
+
+            const amountInput =
+                document.getElementById(
+                    "fundAmount"
+                );
+
+
+            if (
+                !form ||
+                !amountInput
+            ) {
+
+                return;
+
+            }
+
+
+            /* =====================================
+               PREVENT INVALID INPUT
+            ===================================== */
+
+            amountInput.addEventListener(
+                "input",
+                function () {
+
+                    let value =
+                        this.value.replace(
+                            /[^0-9]/g,
+                            ""
+                        );
+
+
+                    if (value) {
+
+                        value =
+                            String(
+                                Math.max(
+                                    0,
+                                    Number(value)
+                                )
+                            );
+
+                    }
+
+
+                    this.value = value;
+
+                }
+            );
+
+
+
+            /* =====================================
+               PREVENT DOUBLE SUBMISSION
+            ===================================== */
+
+            let submitting = false;
+
+
+            form.addEventListener(
+                "submit",
+                function (event) {
+
+                    if (submitting) {
+
+                        event.preventDefault();
+
+                        return;
+
+                    }
+
+
+                    const amount =
+                        Number(
+                            amountInput.value
+                        );
+
+
+                    if (
+                        !Number.isFinite(amount) ||
+                        amount < 500
+                    ) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Minimum wallet funding amount is ₦500."
+                        );
+
+                        amountInput.focus();
+
+                        return;
+
+                    }
+
+
+                    if (
+                        amount > 1000000
+                    ) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "For security, the maximum funding amount is ₦1,000,000."
+                        );
+
+                        amountInput.focus();
+
+                        return;
+
+                    }
+
+
+                    submitting = true;
+
+
+                    const button =
+                        form.querySelector(
+                            'button[type="submit"]'
+                        );
+
+
+                    if (button) {
+
+                        button.disabled = true;
+
+                        button.setAttribute(
+                            "aria-busy",
+                            "true"
+                        );
+
+                        button.textContent =
+                            "Processing...";
+
+                    }
+
+
+                    /*
+                     * Browser-side timeout only.
+                     *
+                     * This does not authorize,
+                     * verify, or credit a payment.
+                     */
+
+                    setTimeout(
+                        function () {
+
+                            submitting = false;
+
+
+                            if (button) {
+
+                                button.disabled =
+                                    false;
+
+                                button.removeAttribute(
+                                    "aria-busy"
+                                );
+
+                                button.textContent =
+                                    "Add Funds";
+
+                            }
+
+                        },
+                        60000
+                    );
+
+                },
+                true
+            );
+
+
+
+            /* =====================================
+               PREVENT INVALID PASTE
+            ===================================== */
+
+            amountInput.addEventListener(
+                "paste",
+                function (event) {
+
+                    const pasted =
+                        (
+                            event.clipboardData ||
+                            window.clipboardData
+                        ).getData("text");
+
+
+                    if (
+                        !/^\d+$/.test(
+                            pasted.trim()
+                        )
+                    ) {
+
+                        event.preventDefault();
+
+                    }
+
+                }
+            );
+
+        })();
+
+    </script>
+
+
+
+    <!-- =========================================
+         AUTHENTICATION + WALLET INITIALIZATION
+    ========================================== -->
+
+    <script>
+
+        (function () {
+
+            "use strict";
+
+
+            /* =====================================
+               AUTHENTICATION CHECK
+            ===================================== */
+
+            function protectWalletPage() {
+
+                if (
+                    typeof isLoggedIn !==
+                        "function" ||
+                    !isLoggedIn()
+                ) {
+
+                    window.location.replace(
+                        "login.html"
+                    );
+
+                    return false;
+
+                }
+
+                return true;
+
+            }
+
+
+
+            /* =====================================
+               DISABLE FUNDING
+            ===================================== */
+
+            function lockFundingForm() {
+
+                const form =
+                    document.getElementById(
+                        "fundWalletForm"
+                    );
+
+
+                const button =
+                    form?.querySelector(
+                        'button[type="submit"]'
+                    );
+
+
+                if (button) {
+
+                    button.disabled =
+                        true;
+
+                }
+
+            }
+
+
+
+            /* =====================================
+               ENABLE FUNDING
+            ===================================== */
+
+            function unlockFundingForm() {
+
+                const form =
+                    document.getElementById(
+                        "fundWalletForm"
+                    );
+
+
+                const button =
+                    form?.querySelector(
+                        'button[type="submit"]'
+                    );
+
+
+                if (button) {
+
+                    button.disabled =
+                        false;
+
+                }
+
+            }
+
+
+
+            /* =====================================
+               SECURE WALLET STARTUP
+            ===================================== */
+
+            async function startSecureWallet() {
+
+                lockFundingForm();
+
+
+                if (
+                    !protectWalletPage()
+                ) {
+
+                    return;
+
+                }
+
+
+                /*
+                 * Load the real wallet balance
+                 * from the authenticated backend.
+                 */
+
+                if (
+                    typeof loadWallet ===
+                    "function"
+                ) {
+
+                    try {
+
+                        await loadWallet();
+
+                    } catch (error) {
+
+                        console.warn(
+                            "Wallet loading failed.",
+                            error
+                        );
+
+                    }
+
+                } else {
+
+                    const balanceElement =
+                        document.getElementById(
+                            "walletBalance"
+                        );
+
+
+                    if (balanceElement) {
+
+                        balanceElement.textContent =
+                            "Unable to load balance.";
+
+                    }
+
+                    return;
+
+                }
+
+
+                /* Unlock funding */
+
+                unlockFundingForm();
+
+
+                /*
+                 * Restore previously displayed
+                 * virtual account if available.
+                 */
+
+                if (
+                    typeof loadSavedVirtualAccount ===
+                    "function"
+                ) {
+
+                    loadSavedVirtualAccount();
+
+                }
+
+            }
+
+
+
+            /* =====================================
+               START WHEN PAGE IS READY
+            ===================================== */
+
+            if (
+                document.readyState ===
+                "loading"
+            ) {
+
+                document.addEventListener(
+                    "DOMContentLoaded",
+                    startSecureWallet,
+                    {
+                        once: true
+                    }
+                );
+
+            } else {
+
+                startSecureWallet();
+
+            }
+
+        })();
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Secure login to CARD4ME"
+    >
+
+    <meta
+        name="robots"
+        content="noindex,nofollow"
+    >
+
+    <title>Login — CARD4ME</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="nav">
+
+    <a
+        class="logo"
+        href="index.html"
+        aria-label="CARD4ME Home"
+    >
+        CARD<span>4</span>ME
+    </a>
+
+</header>
+
+
+<main class="page narrow">
+
+    <small>WELCOME BACK</small>
+
+    <h1>
+        Login to CARD4ME
+    </h1>
+
+    <p>
+        Access your wallet and digital services securely.
+    </p>
+
+
+    <section class="wallet-box">
+
+        <form
+            id="loginForm"
+            onsubmit="loginUser(event)"
+            autocomplete="on"
+        >
+
+            <label for="email">
+                Email address
+            </label>
+
+            <input
+                id="email"
+                name="email"
+                type="email"
+                inputmode="email"
+                autocomplete="username"
+                maxlength="254"
+                placeholder="you@example.com"
+                required
+            >
+
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                minlength="6"
+                maxlength="128"
+                placeholder="Enter your password"
+                required
+            >
+
+
+            <button
+                id="loginButton"
+                class="btn"
+                type="submit"
+            >
+                Login
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <p class="note">
+        Don't have an account?
+        <a href="register.html">
+            Create an account
+        </a>
+    </p>
+
+
+    <section
+        class="wallet-box"
+        style="margin-top:20px;"
+    >
+
+        <strong>
+            🔒 Security
+        </strong>
+
+        <p class="note">
+            Never share your CARD4ME password,
+            verification codes, or login information
+            with anyone.
+        </p>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <b>
+        CARD<span>4</span>ME
+    </b>
+
+    <span>
+        Secure digital services
+    </span>
+
+</footer>
+
+
+<script src="app.js"></script>
+
+
+<!-- =====================================================
+     PART 3A — LOGIN SECURITY
+===================================================== -->
+
+<script>
+
+(function () {
+
+    "use strict";
+
+
+    const form =
+        document.getElementById(
+            "loginForm"
+        );
+
+    const button =
+        document.getElementById(
+            "loginButton"
+        );
+
+
+    if (!form || !button) {
+        return;
+    }
+
+
+    let submitting = false;
+
+
+    form.addEventListener(
+        "submit",
+        function (event) {
+
+            if (submitting) {
+
+                event.preventDefault();
+
+                return;
+            }
+
+
+            const email =
+                document
+                    .getElementById("email")
+                    ?.value
+                    .trim();
+
+            const password =
+                document
+                    .getElementById("password")
+                    ?.value;
+
+
+            if (!email || !password) {
+
+                event.preventDefault();
+
+                return;
+            }
+
+
+            submitting = true;
+
+            button.disabled = true;
+
+            button.setAttribute(
+                "aria-busy",
+                "true"
+            );
+
+            button.textContent =
+                "Signing in...";
+
+
+            /*
+             * Safety unlock.
+             *
+             * This only restores the button if
+             * something unexpectedly prevents the
+             * login function from completing.
+             */
+
+            setTimeout(
+                function () {
+
+                    submitting = false;
+
+                    button.disabled = false;
+
+                    button.removeAttribute(
+                        "aria-busy"
+                    );
+
+                    button.textContent =
+                        "Login";
+
+                },
+                30000
+            );
+
+        },
+        true
+    );
+
+
+    /*
+     * If a user is already authenticated,
+     * don't unnecessarily show the login page.
+     */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            if (
+                typeof isLoggedIn ===
+                "function" &&
+                isLoggedIn()
+            ) {
+
+                window.location.replace(
+                    "dashboard.html"
+                );
+
+            }
+
+        },
+        {
+            once: true
+        }
+    );
+
+})();
+
+</script>
+
+
+</body>
+</html>

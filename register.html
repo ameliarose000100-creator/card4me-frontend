@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex,nofollow"
+    >
+
+    <title>Create Account - CARD4ME</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body>
+
+    <!-- ================================
+         HEADER
+    ================================= -->
+
+    <header class="site-header">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+
+            <span class="logo-mark">
+                C4
+            </span>
+
+            CARD<span>4</span>ME
+
+        </a>
+
+    </header>
+
+
+    <!-- ================================
+         REGISTER SECTION
+    ================================= -->
+
+    <main class="auth-page">
+
+        <section class="auth-card">
+
+            <h1>
+                Create Account
+            </h1>
+
+            <p class="auth-subtitle">
+                Create your CARD4ME account to get started.
+            </p>
+
+
+            <!-- ================================
+                 REGISTER FORM
+            ================================= -->
+
+            <form
+                id="registerForm"
+                onsubmit="registerUser(event)"
+                autocomplete="on"
+            >
+
+                <!-- Full Name -->
+
+                <div class="form-group">
+
+                    <label for="fullName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        maxlength="100"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        maxlength="150"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Phone -->
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="08012345678"
+                        autocomplete="tel"
+                        maxlength="20"
+                        inputmode="tel"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        maxlength="100"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Confirm Password -->
+
+                <div class="form-group">
+
+                    <label for="confirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm your password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        maxlength="100"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Password message -->
+
+                <p
+                    id="passwordMessage"
+                    class="form-message"
+                    aria-live="polite"
+                ></p>
+
+
+                <!-- Register button -->
+
+                <button
+                    type="submit"
+                    id="registerButton"
+                >
+                    Create Account
+                </button>
+
+            </form>
+
+
+            <!-- ================================
+                 LOGIN LINK
+            ================================= -->
+
+            <p class="auth-footer">
+
+                Already have an account?
+
+                <a href="login.html">
+                    Login
+                </a>
+
+            </p>
+
+
+            <!-- ================================
+                 SECURITY NOTICE
+            ================================= -->
+
+            <div class="security-notice">
+
+                <strong>
+                    🔒 Security
+                </strong>
+
+                <p>
+                    Your password is protected by the CARD4ME
+                    backend. Never share your password with anyone.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================================
+         APP JAVASCRIPT
+    ================================= -->
+
+    <script src="app.js"></script>
+
+
+    <!-- ================================
+         REGISTER SECURITY SCRIPT
+    ================================= -->
+
+    <script>
+
+        (function () {
+
+            "use strict";
+
+
+            const form =
+                document.getElementById(
+                    "registerForm"
+                );
+
+            const button =
+                document.getElementById(
+                    "registerButton"
+                );
+
+            const password =
+                document.getElementById(
+                    "password"
+                );
+
+            const confirmPassword =
+                document.getElementById(
+                    "confirmPassword"
+                );
+
+            const passwordMessage =
+                document.getElementById(
+                    "passwordMessage"
+                );
+
+
+            let submitting = false;
+
+
+            /* ================================
+               PASSWORD MATCH CHECK
+            ================================= */
+
+            function checkPasswords() {
+
+                if (
+                    !password ||
+                    !confirmPassword
+                ) {
+
+                    return true;
+
+                }
+
+
+                if (
+                    confirmPassword.value &&
+                    password.value !==
+                    confirmPassword.value
+                ) {
+
+                    if (passwordMessage) {
+
+                        passwordMessage.textContent =
+                            "Passwords do not match.";
+
+                    }
+
+                    return false;
+
+                }
+
+
+                if (passwordMessage) {
+
+                    passwordMessage.textContent =
+                        "";
+
+                }
+
+                return true;
+
+            }
+
+
+            password?.addEventListener(
+                "input",
+                checkPasswords
+            );
+
+
+            confirmPassword?.addEventListener(
+                "input",
+                checkPasswords
+            );
+
+
+            /* ================================
+               FORM SUBMISSION PROTECTION
+            ================================= */
+
+            form?.addEventListener(
+                "submit",
+                function (event) {
+
+                    if (submitting) {
+
+                        event.preventDefault();
+
+                        return;
+
+                    }
+
+
+                    const fullName =
+                        document
+                            .getElementById(
+                                "fullName"
+                            )
+                            ?.value
+                            .trim();
+
+
+                    const email =
+                        document
+                            .getElementById(
+                                "email"
+                            )
+                            ?.value
+                            .trim();
+
+
+                    const phone =
+                        document
+                            .getElementById(
+                                "phone"
+                            )
+                            ?.value
+                            .trim();
+
+
+                    const pass =
+                        password?.value ||
+                        "";
+
+
+                    const confirm =
+                        confirmPassword?.value ||
+                        "";
+
+
+                    /* ================================
+                       BASIC VALIDATION
+                    ================================= */
+
+                    if (!fullName) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Please enter your full name."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!email) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Please enter your email address."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!phone) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Please enter your phone number."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (pass.length < 6) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Password must be at least 6 characters."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (pass !== confirm) {
+
+                        event.preventDefault();
+
+                        if (passwordMessage) {
+
+                            passwordMessage.textContent =
+                                "Passwords do not match.";
+
+                        }
+
+                        alert(
+                            "Passwords do not match."
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* ================================
+                       PREVENT DOUBLE SUBMISSION
+                    ================================= */
+
+                    submitting = true;
+
+
+                    if (button) {
+
+                        button.disabled = true;
+
+                        button.textContent =
+                            "Creating Account...";
+
+                    }
+
+
+                    /* ================================
+                       SAFETY UNLOCK
+                    ================================= */
+
+                    setTimeout(
+                        function () {
+
+                            submitting = false;
+
+
+                            if (button) {
+
+                                button.disabled =
+                                    false;
+
+                                button.textContent =
+                                    "Create Account";
+
+                            }
+
+                        },
+                        30000
+                    );
+
+                }
+            );
+
+
+            /* ================================
+               PHONE INPUT CLEANUP
+            ================================= */
+
+            document
+                .getElementById("phone")
+                ?.addEventListener(
+                    "input",
+                    function () {
+
+                        this.value =
+                            this.value.replace(
+                                /[^0-9+]/g,
+                                ""
+                            );
+
+                    }
+                );
+
+
+            /* ================================
+               IF ALREADY LOGGED IN
+            ================================= */
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                function () {
+
+                    try {
+
+                        if (
+                            typeof isLoggedIn ===
+                                "function" &&
+                            isLoggedIn()
+                        ) {
+
+                            window.location.href =
+                                "dashboard.html";
+
+                        }
+
+                    } catch (error) {
+
+                        console.warn(
+                            "Authentication check unavailable."
+                        );
+
+                    }
+
+                }
+            );
+
+        })();
+
+    </script>
+
+</body>
+
+</html>

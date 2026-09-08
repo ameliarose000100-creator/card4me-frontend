@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CARD4ME | Digital Services</title>
+
+    <meta
+        name="description"
+        content="CARD4ME — simple, secure and convenient digital services."
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header>
+
+        <nav class="nav">
+
+
+            <!-- CARD4ME LOGO -->
+
+            <a
+                href="index.html"
+                class="logo"
+                aria-label="CARD4ME Home"
+            >
+
+                <span class="logo-mark">
+                    C4
+                </span>
+
+                CARD<span>4</span>ME
+
+            </a>
+
+
+            <!-- MOBILE MENU -->
+
+            <button
+                class="menu"
+                type="button"
+                aria-label="Open navigation menu"
+            >
+                ☰
+            </button>
+
+
+            <!-- NAVIGATION -->
+
+            <div
+                class="nav-links"
+                id="nav"
+            >
+
+                <a
+                    href="index.html"
+                    class="active"
+                >
+                    Home
+                </a>
+
+                <a href="#services">
+                    Services
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a href="login.html">
+                    Login
+                </a>
+
+                <a
+                    href="register.html"
+                    class="nav-register"
+                >
+                    Register
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- =========================================
+         HERO
+    ========================================== -->
+
+    <main>
+
+
+        <section class="hero">
+
+
+            <div class="hero-content">
+
+
+                <small>
+                    WELCOME TO CARD4ME
+                </small>
+
+
+                <h1>
+                    Your digital services,
+                    <span>made simple.</span>
+                </h1>
+
+
+                <p>
+                    Access airtime, data, wallet services
+                    and your transaction activity from
+                    one simple platform.
+                </p>
+
+
+                <div class="hero-buttons">
+
+
+                    <!-- GET STARTED -->
+
+                    <a
+                        href="register.html"
+                        class="btn"
+                    >
+                        Get Started
+                    </a>
+
+
+                    <!-- EXPLORE -->
+
+                    <a
+                        href="#services"
+                        class="btn secondary-btn"
+                    >
+                        Explore Services
+                    </a>
+
+
+                    <!-- LOGIN -->
+
+                    <a
+                        href="login.html"
+                        class="btn login-btn"
+                    >
+                        Login
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =========================================
+             SERVICES
+        ========================================== -->
+
+        <section
+            class="page"
+            id="services"
+        >
+
+
+            <div class="page-heading">
+
+                <small>
+                    OUR SERVICES
+                </small>
+
+                <h2>
+                    Everything you need,
+                    in one place.
+                </h2>
+
+                <p>
+                    Choose a service below to get started.
+                    Some services require you to log in
+                    to your CARD4ME account.
+                </p>
+
+            </div>
+
+
+
+            <div class="cards">
+
+
+                <!-- AIRTIME -->
+
+                <article class="service-card">
+
+                    <div class="service-icon">
+                        📱
+                    </div>
+
+                    <h3>
+                        Buy Airtime
+                    </h3>
+
+                    <p>
+                        Recharge supported Nigerian
+                        mobile numbers quickly and easily.
+                    </p>
+
+                    <a
+                        href="airtime.html"
+                        class="btn"
+                        onclick="return requireLogin();"
+                    >
+                        Buy Airtime
+                    </a>
+
+                </article>
+
+
+
+                <!-- DATA -->
+
+                <article class="service-card">
+
+                    <div class="service-icon">
+                        📡
+                    </div>
+
+                    <h3>
+                        Buy Data
+                    </h3>
+
+                    <p>
+                        Access supported mobile data
+                        services from your CARD4ME account.
+                    </p>
+
+                    <a
+                        href="data.html"
+                        class="btn"
+                        onclick="return requireLogin();"
+                    >
+                        Buy Data
+                    </a>
+
+                </article>
+
+
+
+                <!-- WALLET -->
+
+                <article class="service-card">
+
+                    <div class="service-icon">
+                        💳
+                    </div>
+
+                    <h3>
+                        My Wallet
+                    </h3>
+
+                    <p>
+                        View your available balance and
+                        manage your CARD4ME wallet.
+                    </p>
+
+                    <a
+                        href="wallet.html"
+                        class="btn"
+                        onclick="return requireLogin();"
+                    >
+                        Open Wallet
+                    </a>
+
+                </article>
+
+
+
+                <!-- TRANSACTIONS -->
+
+                <article class="service-card">
+
+                    <div class="service-icon">
+                        🧾
+                    </div>
+
+                    <h3>
+                        Transactions
+                    </h3>
+
+                    <p>
+                        Keep track of your CARD4ME
+                        transactions and account activity.
+                    </p>
+
+                    <a
+                        href="transaction.html"
+                        class="btn"
+                        onclick="return requireLogin();"
+                    >
+                        View Transactions
+                    </a>
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =========================================
+             WHY CARD4ME
+        ========================================== -->
+
+        <section class="page">
+
+
+            <div class="page-heading">
+
+                <small>
+                    WHY CARD4ME
+                </small>
+
+                <h2>
+                    Simple. Convenient.
+                    Built for you.
+                </h2>
+
+                <p>
+                    CARD4ME brings everyday digital services
+                    together in a clean and easy-to-use
+                    experience.
+                </p>
+
+            </div>
+
+
+
+            <div class="dashboard-grid">
+
+
+                <div class="dashboard-card">
+
+                    <div class="service-icon">
+                        🔒
+                    </div>
+
+                    <h3>
+                        Account Protection
+                    </h3>
+
+                    <p>
+                        Your account services are protected
+                        behind your CARD4ME login.
+                    </p>
+
+                </div>
+
+
+
+                <div class="dashboard-card">
+
+                    <div class="service-icon">
+                        ⚡
+                    </div>
+
+                    <h3>
+                        Simple Experience
+                    </h3>
+
+                    <p>
+                        Designed to keep everyday digital
+                        services straightforward and convenient.
+                    </p>
+
+                </div>
+
+
+
+                <div class="dashboard-card">
+
+                    <div class="service-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Track Activity
+                    </h3>
+
+                    <p>
+                        Keep your wallet and transaction
+                        activity organized in one place.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+
+        <div class="footer-content">
+
+            <strong>
+                CARD4ME
+            </strong>
+
+            <p>
+                Simple digital services made easier.
+            </p>
+
+        </div>
+
+
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="#services">
+                Services
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            <a href="login.html">
+                Login
+            </a>
+
+            <a href="register.html">
+                Register
+            </a>
+
+        </div>
+
+
+
+        <p class="footer-copy">
+
+            © 2026 CARD4ME.
+            All rights reserved.
+
+        </p>
+
+
+    </footer>
+
+
+
+    <!-- =========================================
+         SCRIPTS
+    ========================================== -->
+
+    <script src="app.js"></script>
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>

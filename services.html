@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Explore CARD4ME digital services."
+    >
+
+    <meta
+        name="robots"
+        content="index,follow"
+    >
+
+    <title>Services | CARD4ME</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body>
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header>
+
+        <nav class="nav">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <span class="logo-mark">
+                    C4
+                </span>
+
+                CARD<span>4</span>ME
+
+            </a>
+
+
+            <button
+                class="menu"
+                type="button"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+
+            <div
+                class="nav-links"
+                id="nav"
+            >
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="index.html#services">
+                    Services
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a href="login.html">
+                    Login
+                </a>
+
+                <a
+                    href="register.html"
+                    class="nav-button"
+                >
+                    Register
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main>
+
+        <!-- SERVICES -->
+
+        <section class="page services-page">
+
+            <div class="page-heading">
+
+                <small>
+                    OUR SERVICES
+                </small>
+
+                <h1>
+                    Everything you need in one place.
+                </h1>
+
+                <p>
+                    CARD4ME provides simple and convenient
+                    digital services designed to make everyday
+                    mobile transactions easier.
+                </p>
+
+            </div>
+
+
+            <!-- SERVICE CARDS -->
+
+            <div class="cards">
+
+
+                <!-- AIRTIME -->
+
+                <article class="card">
+
+                    <div class="card-icon">
+                        📱
+                    </div>
+
+                    <h3>
+                        Airtime
+                    </h3>
+
+                    <p>
+                        Buy airtime for supported Nigerian
+                        mobile networks quickly and conveniently.
+                    </p>
+
+                    <a
+                        href="airtime.html"
+                        class="btn"
+                        onclick="return requireLogin();"
+                    >
+                        Buy Airtime
+                    </a>
+
+                </article>
+
+
+                <!-- DATA -->
+
+                <article class="card">
+
+                    <div class="card-icon">
+                        📶
+                    </div>
+
+                    <h3>
+                        Data
+                    </h3>
+
+                    <p>
+                        Choose a data plan for your preferred
+                        Nigerian mobile network.
+                    </p>
+
+                    <a
+                        href="data.html"
+                        class="btn"
+                        onclick="return requireLogin();"
+                    >
+                        Buy Data
+                    </a>
+
+                </article>
+
+
+                <!-- WALLET -->
+
+                <article class="card">
+
+                    <div class="card-icon">
+                        💰
+                    </div>
+
+                    <h3>
+                        Wallet
+                    </h3>
+
+                    <p>
+                        Fund and manage your CARD4ME wallet
+                        securely from your account.
+                    </p>
+
+                    <a
+                        href="wallet.html"
+                        class="btn"
+                        onclick="return requireLogin();"
+                    >
+                        Open Wallet
+                    </a>
+
+                </article>
+
+
+                <!-- TRANSACTIONS -->
+
+                <article class="card">
+
+                    <div class="card-icon">
+                        🧾
+                    </div>
+
+                    <h3>
+                        Transaction History
+                    </h3>
+
+                    <p>
+                        View your CARD4ME wallet activity
+                        and transaction history.
+                    </p>
+
+                    <a
+                        href="transaction.html"
+                        class="btn"
+                        onclick="return requireLogin();"
+                    >
+                        View Transactions
+                    </a>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             CALL TO ACTION
+        ========================================== -->
+
+        <section class="cta">
+
+            <h2>
+                Ready to get started?
+            </h2>
+
+            <p>
+                Create your CARD4ME account to access
+                our digital services.
+            </p>
+
+
+            <div class="cta-actions">
+
+                <a
+                    href="register.html"
+                    class="btn"
+                >
+                    Create Account
+                </a>
+
+                <a
+                    href="login.html"
+                    class="btn btn-outline"
+                >
+                    Login
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <strong>
+                CARD4ME
+            </strong>
+
+            <p>
+                Simple digital services made easier.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="index.html#services">
+                Services
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            <a href="login.html">
+                Login
+            </a>
+
+            <a href="register.html">
+                Register
+            </a>
+
+        </div>
+
+
+        <p class="footer-copy">
+            © 2026 CARD4ME. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script src="app.js"></script>
+
+    <script src="script.js"></script>
+
+
+    <!-- =========================================
+         MOBILE MENU
+    ========================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const menu =
+                    document.querySelector(".menu");
+
+                const nav =
+                    document.getElementById("nav");
+
+
+                if (!menu || !nav) {
+                    return;
+                }
+
+
+                menu.addEventListener(
+                    "click",
+                    function () {
+
+                        const isOpen =
+                            nav.classList.toggle(
+                                "active"
+                            );
+
+                        menu.setAttribute(
+                            "aria-expanded",
+                            String(isOpen)
+                        );
+
+                    }
+                );
+
+
+                nav.querySelectorAll("a").forEach(
+                    function (link) {
+
+                        link.addEventListener(
+                            "click",
+                            function () {
+
+                                nav.classList.remove(
+                                    "active"
+                                );
+
+                                menu.setAttribute(
+                                    "aria-expanded",
+                                    "false"
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

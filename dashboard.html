@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex,nofollow"
+    >
+
+    <title>Dashboard - CARD4ME</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================
+         HEADER
+    ================================== -->
+
+    <header class="site-header">
+
+        <div class="logo">
+            CARD4ME
+        </div>
+
+
+        <button
+            type="button"
+            class="menu-btn"
+            onclick="toggleMenu()"
+            aria-label="Open menu"
+        >
+            ☰
+        </button>
+
+
+        <nav id="mainNav">
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="wallet.html">
+                Wallet
+            </a>
+
+            <a href="services.html">
+                Services
+            </a>
+
+            <a href="transaction.html">
+                Transactions
+            </a>
+
+            <button
+                type="button"
+                onclick="logoutUser()"
+            >
+                Logout
+            </button>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- =================================
+         MAIN DASHBOARD
+    ================================== -->
+
+    <main class="dashboard-page">
+
+
+        <!-- =================================
+             DASHBOARD INTRO
+        ================================== -->
+
+        <section class="dashboard-header">
+
+            <h1>
+                Welcome to CARD4ME
+            </h1>
+
+            <p>
+                Manage your wallet and digital services.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================
+             WALLET BALANCE
+        ================================== -->
+
+        <section class="balance-card">
+
+            <p>
+                Wallet Balance
+            </p>
+
+
+            <h2 id="dashBalance">
+                Checking balance...
+            </h2>
+
+
+            <a href="wallet.html">
+                Fund Wallet
+            </a>
+
+        </section>
+
+
+
+        <!-- =================================
+             QUICK SERVICES
+        ================================== -->
+
+        <section class="quick-services">
+
+            <h2>
+                Quick Services
+            </h2>
+
+
+            <div class="service-grid">
+
+
+                <!-- AIRTIME -->
+
+                <a
+                    href="services.html"
+                    class="service-card"
+                >
+
+                    <span>
+                        📱
+                    </span>
+
+                    <h3>
+                        Airtime
+                    </h3>
+
+                    <p>
+                        Buy airtime
+                    </p>
+
+                </a>
+
+
+
+                <!-- DATA -->
+
+                <a
+                    href="services.html"
+                    class="service-card"
+                >
+
+                    <span>
+                        🌐
+                    </span>
+
+                    <h3>
+                        Data
+                    </h3>
+
+                    <p>
+                        Buy data bundles
+                    </p>
+
+                </a>
+
+
+
+                <!-- WALLET -->
+
+                <a
+                    href="wallet.html"
+                    class="service-card"
+                >
+
+                    <span>
+                        💳
+                    </span>
+
+                    <h3>
+                        Wallet
+                    </h3>
+
+                    <p>
+                        Manage your balance
+                    </p>
+
+                </a>
+
+
+
+                <!-- TRANSACTIONS -->
+
+                <a
+                    href="transaction.html"
+                    class="service-card"
+                >
+
+                    <span>
+                        📋
+                    </span>
+
+                    <h3>
+                        Transactions
+                    </h3>
+
+                    <p>
+                        View your transaction
+                    </p>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================
+             RECENT TRANSACTIONS
+        ================================== -->
+
+        <section class="recent-transaction">
+
+
+            <div class="section-heading">
+
+                <h2>
+                    Recent Transactions
+                </h2>
+
+
+                <a href="transaction.html">
+                    View All
+                </a>
+
+            </div>
+
+
+            <div
+                id="transactionList"
+                class="transaction-list"
+            >
+            </div>
+
+
+            <p
+                id="emptyTransactions"
+                class="empty-message"
+                style="display:none;"
+            >
+                No transaction yet.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================
+             SECURITY NOTICE
+        ================================== -->
+
+        <section class="security-notice">
+
+            <strong>
+                🔒 CARD4ME Security
+            </strong>
+
+            <p>
+                Your wallet balance and transactions are
+                verified through the CARD4ME backend.
+                Never share your login details or payment
+                information with anyone.
+            </p>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =================================
+         FOOTER
+    ================================== -->
+
+    <footer>
+
+        <p>
+            © 2026 CARD4ME. All rights reserved.
+        </p>
+
+    </footer>
+
+
+
+    <!-- =================================
+         APP JAVASCRIPT
+    ================================== -->
+
+    <script src="app.js"></script>
+
+
+
+    <!-- =================================
+         PART 4B
+         SECURITY + INITIALIZATION
+    ================================== -->
+
+    <script>
+
+    (function () {
+
+        "use strict";
+
+
+        let dashboardStarted = false;
+
+
+        function startDashboardSecurely() {
+
+
+            /* ================================
+               PREVENT DOUBLE INITIALIZATION
+            ================================= */
+
+            if (dashboardStarted) {
+
+                return;
+
+            }
+
+            dashboardStarted = true;
+
+
+
+            /* ================================
+               AUTHENTICATION CHECK
+            ================================= */
+
+            if (
+                typeof isLoggedIn !== "function" ||
+                !isLoggedIn()
+            ) {
+
+                window.location.replace(
+                    "login.html"
+                );
+
+                return;
+
+            }
+
+
+
+            /* ================================
+               LOAD REAL WALLET BALANCE
+            ================================= */
+
+            if (
+                typeof loadWallet === "function"
+            ) {
+
+                loadWallet().catch(
+                    function () {
+
+                        const balance =
+                            document.getElementById(
+                                "dashBalance"
+                            );
+
+
+                        if (balance) {
+
+                            balance.textContent =
+                                "Unable to load balance";
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+
+            /* ================================
+               LOAD TRANSACTIONS
+            ================================= */
+
+            if (
+                typeof loadTransactions === "function"
+            ) {
+
+                loadTransactions().catch(
+                    function () {
+
+                        console.warn(
+                            "Unable to load transactions."
+                        );
+
+                    }
+                );
+
+            }
+
+        }
+
+
+
+        /* ================================
+           START AFTER PAGE LOAD
+        ================================= */
+
+        if (
+            document.readyState === "loading"
+        ) {
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                startDashboardSecurely,
+                {
+                    once: true
+                }
+            );
+
+        } else {
+
+            startDashboardSecurely();
+
+        }
+
+
+    })();
+
+    </script>
+
+
+</body>
+
+</html>

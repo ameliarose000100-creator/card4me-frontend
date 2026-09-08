@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex,nofollow"
+    >
+
+    <meta
+        name="description"
+        content="View your CARD4ME wallet transaction history."
+    >
+
+    <title>Transactions - CARD4ME</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================
+         HEADER
+    ================================== -->
+
+    <header class="site-header">
+
+        <a
+            href="dashboard.html"
+            class="logo"
+        >
+
+            <span class="logo-mark">
+                C4
+            </span>
+
+            CARD<span>4</span>ME
+
+        </a>
+
+
+        <button
+            type="button"
+            class="menu-btn"
+            onclick="toggleMenu()"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+        >
+            ☰
+        </button>
+
+
+        <nav id="mainNav">
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="wallet.html">
+                Wallet
+            </a>
+
+            <a href="services.html">
+                Services
+            </a>
+
+            <!-- Correct filename -->
+
+            <a href="transaction.html">
+                Transactions
+            </a>
+
+            <button
+                type="button"
+                onclick="logoutUser()"
+            >
+                Logout
+            </button>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- =================================
+         MAIN
+    ================================== -->
+
+    <main class="transactions-page">
+
+
+        <!-- =================================
+             PAGE HEADER
+        ================================== -->
+
+        <section class="dashboard-header">
+
+            <p class="page-kicker">
+                WALLET ACTIVITY
+            </p>
+
+            <h1>
+                Transactions
+            </h1>
+
+            <p>
+                View your CARD4ME wallet activity
+                and transaction history.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================
+             CURRENT BALANCE
+        ================================== -->
+
+        <section class="balance-card">
+
+            <div>
+
+                <p>
+                    Current Wallet Balance
+                </p>
+
+                <h2 id="dashBalance">
+                    Checking balance...
+                </h2>
+
+            </div>
+
+
+            <a
+                href="wallet.html"
+                class="btn"
+            >
+                Fund Wallet
+            </a>
+
+        </section>
+
+
+
+        <!-- =================================
+             TRANSACTION HISTORY
+        ================================== -->
+
+        <section class="recent-transactions">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-kicker">
+                        WALLET
+                    </p>
+
+                    <h2>
+                        Transaction History
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- Loading -->
+
+            <p
+                id="transactionsLoading"
+                class="empty-message"
+            >
+                Loading transactions...
+            </p>
+
+
+            <!-- Transactions -->
+
+            <div
+                id="transactionsList"
+                class="transactions-list"
+                aria-live="polite"
+            >
+            </div>
+
+
+            <!-- Empty state -->
+
+            <p
+                id="emptyTransactions"
+                class="empty-message"
+                style="display: none;"
+            >
+                No transactions yet.
+            </p>
+
+
+            <!-- Error -->
+
+            <p
+                id="transactionsError"
+                class="empty-message"
+                style="display: none;"
+            >
+                Unable to load transactions.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================
+             SECURITY NOTICE
+        ================================== -->
+
+        <section class="security-notice">
+
+            <strong>
+                🔒 Secure Transaction History
+            </strong>
+
+            <p>
+                Your transaction history is retrieved
+                from the CARD4ME backend using your
+                authenticated account.
+            </p>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =================================
+         FOOTER
+    ================================== -->
+
+    <footer>
+
+        <p>
+            © 2026 CARD4ME. All rights reserved.
+        </p>
+
+    </footer>
+
+
+
+    <!-- =================================
+         APP JAVASCRIPT
+    ================================== -->
+
+    <script src="app.js"></script>
+
+
+
+    <!-- =================================
+         TRANSACTION PAGE SECURITY
+    ================================== -->
+
+    <script>
+
+        (function () {
+
+            "use strict";
+
+
+            let pageStarted = false;
+
+
+            /* =================================
+               SHOW ERROR
+            ================================= */
+
+            function showError() {
+
+                const loading =
+                    document.getElementById(
+                        "transactionsLoading"
+                    );
+
+                const error =
+                    document.getElementById(
+                        "transactionsError"
+                    );
+
+
+                if (loading) {
+
+                    loading.style.display =
+                        "none";
+
+                }
+
+
+                if (error) {
+
+                    error.style.display =
+                        "block";
+
+                }
+
+            }
+
+
+
+            /* =================================
+               START TRANSACTIONS PAGE
+            ================================= */
+
+            function startTransactionsPage() {
+
+                /* Prevent duplicate initialization */
+
+                if (pageStarted) {
+
+                    return;
+
+                }
+
+                pageStarted = true;
+
+
+                /* =================================
+                   LOGIN PROTECTION
+                ================================= */
+
+                if (
+                    typeof isLoggedIn !== "function" ||
+                    !isLoggedIn()
+                ) {
+
+                    window.location.replace(
+                        "login.html"
+                    );
+
+                    return;
+
+                }
+
+
+
+                /* =================================
+                   LOAD CURRENT BALANCE
+                ================================= */
+
+                if (
+                    typeof loadWallet === "function"
+                ) {
+
+                    Promise
+                        .resolve(
+                            loadWallet()
+                        )
+                        .catch(
+                            function () {
+
+                                const balance =
+                                    document.getElementById(
+                                        "dashBalance"
+                                    );
+
+
+                                if (balance) {
+
+                                    balance.textContent =
+                                        "Unable to load balance";
+
+                                }
+
+                            }
+                        );
+
+                }
+
+
+
+                /* =================================
+                   LOAD TRANSACTIONS
+                ================================= */
+
+                if (
+                    typeof loadTransactions !==
+                    "function"
+                ) {
+
+                    showError();
+
+                    return;
+
+                }
+
+
+                Promise
+                    .resolve(
+                        loadTransactions()
+                    )
+                    .then(
+                        function () {
+
+                            const loading =
+                                document.getElementById(
+                                    "transactionsLoading"
+                                );
+
+
+                            if (loading) {
+
+                                loading.style.display =
+                                    "none";
+
+                            }
+
+                        }
+                    )
+                    .catch(
+                        function (error) {
+
+                            console.warn(
+                                "Transaction loading failed.",
+                                error
+                            );
+
+                            showError();
+
+                        }
+                    );
+
+            }
+
+
+
+            /* =================================
+               START AFTER DOM READY
+            ================================= */
+
+            if (
+                document.readyState ===
+                "loading"
+            ) {
+
+                document.addEventListener(
+                    "DOMContentLoaded",
+                    startTransactionsPage,
+                    {
+                        once: true
+                    }
+                );
+
+            } else {
+
+                startTransactionsPage();
+
+            }
+
+        })();
+
+    </script>
+
+
+</body>
+
+</html>

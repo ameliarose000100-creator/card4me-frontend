@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Confirm your CARD4ME wallet payment."
+    >
+
+    <title>Payment — CARD4ME</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body>
+
+<header class="nav">
+
+    <a
+        href="index.html"
+        class="logo"
+    >
+        CARD<span>4</span>ME
+    </a>
+
+    <button
+        class="menu"
+        type="button"
+        onclick="toggleMenu()"
+        aria-label="Open navigation menu"
+    >
+        ☰
+    </button>
+
+    <nav id="nav">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="services.html">
+            Services
+        </a>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="wallet.html">
+            Wallet
+        </a>
+
+        <a href="transaction.html">
+            Transactions
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+<section class="payment-page">
+
+    <small>
+        PAYMENT
+    </small>
+
+    <h1 id="paymentTitle">
+        Checking payment...
+    </h1>
+
+    <p id="paymentMessage">
+        Please wait while we confirm your payment.
+    </p>
+
+
+    <div
+        id="paymentStatus"
+        class="payment-status"
+    >
+
+        <span>
+            Payment status
+        </span>
+
+        <strong id="paymentAmount">
+            Checking...
+        </strong>
+
+    </div>
+
+
+    <div
+        id="paymentBalance"
+        class="payment-status"
+        style="display: none;"
+    >
+
+        <span>
+            New wallet balance
+        </span>
+
+        <strong id="newBalance">
+            ₦0.00
+        </strong>
+
+    </div>
+
+
+    <div class="payment-actions">
+
+        <a
+            href="dashboard.html"
+            class="btn"
+        >
+            Back to Dashboard
+        </a>
+
+        <a
+            href="wallet.html"
+            class="btn secondary-btn"
+        >
+            Go to Wallet
+        </a>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+    <div>
+
+        <b>
+            CARD<span>4</span>ME
+        </b>
+
+        <p>
+            Simple digital services,
+            designed for convenience.
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="services.html">
+            Services
+        </a>
+
+        <a href="contact.html">
+            Contact
+        </a>
+
+    </div>
+
+</footer>
+
+
+<script src="app.js"></script>
+
+
+<script>
+
+async function verifyPayment() {
+
+    const title =
+        document.getElementById("paymentTitle");
+
+    const message =
+        document.getElementById("paymentMessage");
+
+    const amount =
+        document.getElementById("paymentAmount");
+
+    const balanceBox =
+        document.getElementById("paymentBalance");
+
+    const newBalance =
+        document.getElementById("newBalance");
+
+
+    const savedPayment =
+        sessionStorage.getItem(
+            "card4me_payment"
+        );
+
+
+    if (!savedPayment) {
+
+        title.textContent =
+            "Payment information not found";
+
+        message.textContent =
+            "Please return to your wallet and try again.";
+
+        amount.textContent =
+            "Not available";
+
+        return;
+    }
+
+
+    let payment;
+
+
+    try {
+
+        payment =
+            JSON.parse(savedPayment);
+
+    } catch (error) {
+
+        console.error(
+            "Payment data error:",
+            error
+        );
+
+        title.textContent =
+            "Invalid payment information";
+
+        message.textContent =
+            "The payment information could not be read.";
+
+        amount.textContent =
+            "Not available";
+
+        return;
+    }
+
+
+    if (
+        !payment.transactionId ||
+        !payment.userId
+    ) {
+
+        title.textContent =
+            "Payment information is incomplete";
+
+        message.textContent =
+            "Please return to your wallet and try again.";
+
+        amount.textContent =
+            "Not available";
+
+        return;
+    }
+
+
+    if (payment.amount) {
+
+        amount.textContent =
+            "₦" +
+            Number(payment.amount).toLocaleString(
+                "en-NG",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            );
+
+    } else {
+
+        amount.textContent =
+            "Checking...";
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                API_BASE +
+                "/api/flutterwave/verify/" +
+                encodeURIComponent(
+                    payment.transactionId
+                )
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            data.success &&
+            data.verified
+        ) {
+
+            title.textContent =
+                "Payment successful!";
+
+            message.textContent =
+                "Your CARD4ME wallet has been updated.";
+
+
+            if (
+                data.balance !== undefined &&
+                data.balance !== null
+            ) {
+
+                newBalance.textContent =
+                    "₦" +
+                    Number(
+                        data.balance
+                    ).toLocaleString(
+                        "en-NG",
+                        {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }
+                    );
+
+                balanceBox.style.display =
+                    "block";
+            }
+
+
+            amount.textContent =
+                "Payment confirmed";
+
+
+            sessionStorage.removeItem(
+                "card4me_payment"
+            );
+
+
+        } else {
+
+            title.textContent =
+                "Payment not completed";
+
+            message.textContent =
+                data.message ||
+                "We could not confirm this payment.";
+
+            amount.textContent =
+                "Not confirmed";
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Payment verification error:",
+            error
+        );
+
+        title.textContent =
+            "Unable to verify payment";
+
+        message.textContent =
+            "Unable to connect to the CARD4ME payment server.";
+
+        amount.textContent =
+            "Verification unavailable";
+    }
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        verifyPayment();
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

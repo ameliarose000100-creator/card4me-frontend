@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Account | CARD4ME</title>
+
+    <meta
+        name="description"
+        content="View your CARD4ME account information."
+    >
+
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+
+<body>
+
+    <header>
+        <nav class="nav">
+
+            <a href="index.html" class="logo">
+                CARD4ME
+            </a>
+
+            <button
+                class="menu"
+                type="button"
+                aria-label="Open navigation menu"
+            >
+                ☰
+            </button>
+
+            <div class="nav-links" id="nav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="index.html#services">
+                    Services
+                </a>
+
+                <a href="dashboard.html">
+                    Dashboard
+                </a>
+
+                <a href="wallet.html">
+                    Wallet
+                </a>
+
+                <a href="transaction.html">
+                    Transactions
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a
+                    href="#"
+                    onclick="logout(); return false;"
+                >
+                    Logout
+                </a>
+
+            </div>
+        </nav>
+    </header>
+
+
+    <main class="account-page">
+
+        <section class="account-heading">
+
+            <small>
+                MY ACCOUNT
+            </small>
+
+            <h1>
+                Account Information
+            </h1>
+
+            <p>
+                View the information connected to
+                your CARD4ME account.
+            </p>
+
+        </section>
+
+
+        <section class="account-card">
+
+            <h2>
+                Personal Information
+            </h2>
+
+            <div class="account-details">
+
+                <div class="account-detail">
+
+                    <strong>
+                        Full Name
+                    </strong>
+
+                    <span id="accountName">
+                        Loading...
+                    </span>
+
+                </div>
+
+
+                <div class="account-detail">
+
+                    <strong>
+                        Email Address
+                    </strong>
+
+                    <span id="accountEmail">
+                        Loading...
+                    </span>
+
+                </div>
+
+
+                <div class="account-detail">
+
+                    <strong>
+                        Phone Number
+                    </strong>
+
+                    <span id="accountPhone">
+                        Loading...
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="account-card">
+
+            <h2>
+                Wallet
+            </h2>
+
+            <div class="account-detail">
+
+                <strong>
+                    Current Balance
+                </strong>
+
+                <span id="accountBalance">
+                    ₦0.00
+                </span>
+
+            </div>
+
+            <div class="account-actions">
+
+                <a
+                    href="wallet.html"
+                    class="btn"
+                >
+                    Open Wallet
+                </a>
+
+                <a
+                    href="transaction.html"
+                    class="btn btn-outline"
+                >
+                    Transactions
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <section class="account-card">
+
+            <h2>
+                Account Actions
+            </h2>
+
+            <div class="account-actions">
+
+                <a
+                    href="dashboard.html"
+                    class="btn"
+                >
+                    Back to Dashboard
+                </a>
+
+                <a
+                    href="#"
+                    class="btn btn-outline"
+                    onclick="logout(); return false;"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <div class="footer-content">
+
+            <strong>
+                CARD4ME
+            </strong>
+
+            <p>
+                Simple digital services made easier.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="index.html#services">
+                Services
+            </a>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="wallet.html">
+                Wallet
+            </a>
+
+            <a href="transaction.html">
+                Transactions
+            </a>
+
+        </div>
+
+
+        <p class="footer-copy">
+            © 2026 CARD4ME. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <script src="app.js"></script>
+    <script src="account.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

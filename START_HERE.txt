@@ -1,0 +1,18 @@
+CARD4ME - START HERE
+
+1. The backend URL is already live:
+   https://card4me-backend.onrender.com
+
+2. This ZIP contains the corrected frontend and backend.
+
+3. To publish the website, deploy the project as a Render Static Site (frontend).
+   Render will give the frontend its own URL, such as:
+   https://card4me-frontend.onrender.com
+
+4. After the frontend URL is created, set this backend environment variable:
+   FRONTEND_URL = your exact frontend URL
+
+5. Do not share secret values (JWT_SECRET, Flutterwave keys, MELE token, webhook secret).
+
+6. Use Flutterwave sandbox/test mode until registration, login, wallet, virtual account,
+   webhook and transactions have been tested successfully.

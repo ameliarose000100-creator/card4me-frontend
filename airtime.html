@@ -1,0 +1,416 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">  
+  
+<meta  
+    name="viewport"  
+    content="width=device-width, initial-scale=1.0"  
+>  
+  
+<title>Buy Airtime | CARD4ME</title>  
+  
+<link rel="stylesheet" href="style.css">  
+  
+</head><body class="auth-checking"><!-- HEADER -->  
+  
+<header>  
+  
+    <nav class="nav">  
+  
+        <a  
+            href="dashboard.html"  
+            class="logo"  
+            aria-label="CARD4ME Dashboard"  
+        >  
+  
+            <span class="logo-mark">  
+                C4  
+            </span>  
+  
+            CARD<span>4</span>ME  
+  
+        </a>  
+  
+  
+        <button  
+            class="menu"  
+            type="button"  
+            aria-label="Open navigation menu"  
+        >  
+            ☰  
+        </button>  
+  
+  
+        <div  
+            class="nav-links"  
+            id="nav"  
+        >  
+  
+            <a href="dashboard.html">  
+                Dashboard  
+            </a>  
+  
+            <a  
+                href="airtime.html"  
+                class="active"  
+            >  
+                Airtime  
+            </a>  
+  
+            <a href="data.html">  
+                Data  
+            </a>  
+  
+            <a href="wallet.html">  
+                Wallet  
+            </a>  
+  
+            <a href="transaction.html">  
+                Transactions  
+            </a>  
+  
+            <a href="contact.html">  
+                Contact  
+            </a>  
+  
+            <a  
+                href="#"  
+                onclick="logout(); return false;"  
+            >  
+                Logout  
+            </a>  
+  
+        </div>  
+  
+    </nav>  
+  
+</header>  
+  
+  
+  
+<!-- AIRTIME -->  
+  
+<main class="page">  
+  
+  
+    <section class="page-heading">  
+  
+        <small>  
+            AIRTIME  
+        </small>  
+  
+        <h1>  
+            Buy Airtime  
+        </h1>  
+  
+        <p>  
+            Recharge a supported Nigerian phone  
+            number quickly and easily.  
+        </p>  
+  
+    </section>  
+  
+  
+  
+    <section class="form-section">  
+  
+        <div class="form-card">  
+  
+            <div class="service-icon">  
+                📱  
+            </div>  
+  
+            <h2>  
+                Airtime Recharge  
+            </h2>  
+  
+            <p>  
+                Enter the phone number, select  
+                the network and choose an amount.  
+            </p>  
+  
+  
+            <form  
+                class="form-card-inner"  
+                onsubmit="return false;"  
+            >  
+  
+  
+                <!-- PHONE -->  
+  
+                <div class="form-group">  
+  
+                    <label for="airtimePhone">  
+                        Phone Number  
+                    </label>  
+  
+                    <input  
+                        type="tel"  
+                        id="airtimePhone"  
+                        name="phone"  
+                        placeholder="08012345678"  
+                        maxlength="11"  
+                        inputmode="numeric"  
+                        autocomplete="tel"  
+                        required  
+                    >  
+  
+                </div>  
+  
+  
+  
+                <!-- NETWORK -->  
+  
+                <div class="form-group">  
+  
+                    <label for="network">  
+                        Network  
+                    </label>  
+  
+                    <select  
+                        id="network"  
+                        name="network"  
+                        required  
+                    >  
+  
+                        <option value="">  
+                            Select network  
+                        </option>  
+  
+                        <option value="MTN">  
+                            MTN  
+                        </option>  
+  
+                        <option value="Airtel">  
+                            Airtel  
+                        </option>  
+  
+                        <option value="Glo">  
+                            Glo  
+                        </option>  
+  
+                        <option value="9mobile">  
+                            9mobile  
+                        </option>  
+  
+                    </select>  
+  
+                </div>  
+  
+  
+  
+                <!-- AMOUNT -->  
+  
+                <div class="form-group">  
+  
+                    <label for="airtimeAmount">  
+                        Amount  
+                    </label>  
+  
+                    <input  
+                        type="number"  
+                        id="airtimeAmount"  
+                        name="amount"  
+                        placeholder="Enter amount"  
+                        min="50"  
+                        step="1"  
+                        inputmode="numeric"  
+                        required  
+                    >  
+  
+                    <small>  
+                        Minimum amount: ₦50  
+                    </small>  
+  
+                </div>  
+  
+  
+  
+                <!-- SUBMIT -->  
+  
+                <button  
+                    type="submit"  
+                    class="btn"  
+                >  
+                    Continue  
+                </button>  
+  
+  
+            </form>  
+  
+        </div>  
+  
+    </section>  
+  
+  
+  
+    <!-- INFORMATION -->  
+  
+    <section  
+        class="dashboard-grid"  
+        style="margin-top:30px;"  
+    >  
+  
+  
+        <div class="dashboard-card">  
+  
+            <div class="service-icon">  
+                ⚡  
+            </div>  
+  
+            <h3>  
+                Fast  
+            </h3>  
+  
+            <p>  
+                Get your airtime recharge  
+                processed quickly.  
+            </p>  
+  
+        </div>  
+  
+  
+  
+        <div class="dashboard-card">  
+  
+            <div class="service-icon">  
+                🔒  
+            </div>  
+  
+            <h3>  
+                Secure  
+            </h3>  
+  
+            <p>  
+                Your CARD4ME account information  
+                stays protected.  
+            </p>  
+  
+        </div>  
+  
+  
+  
+        <div class="dashboard-card">  
+  
+            <div class="service-icon">  
+                ✓  
+            </div>  
+  
+            <h3>  
+                Simple  
+            </h3>  
+  
+            <p>  
+                Enter your details and continue  
+                through the recharge process.  
+            </p>  
+  
+        </div>  
+  
+  
+    </section>  
+  
+  
+</main>  
+  
+  
+  
+<!-- FOOTER -->  
+  
+<footer>  
+  
+    <div class="footer-content">  
+  
+        <strong>  
+            CARD4ME  
+        </strong>  
+  
+        <p>  
+            Simple digital services made easier.  
+        </p>  
+  
+    </div>  
+  
+  
+    <div class="footer-links">  
+  
+        <a href="dashboard.html">  
+            Dashboard  
+        </a>  
+  
+        <a href="wallet.html">  
+            Wallet  
+        </a>  
+  
+        <a href="transaction.html">  
+            Transactions  
+        </a>  
+  
+        <a href="contact.html">  
+            Contact  
+        </a>  
+  
+        <a  
+            href="#"  
+            onclick="logout(); return false;"  
+        >  
+            Logout  
+        </a>  
+  
+    </div>  
+  
+  
+    <p class="footer-copy">  
+        © 2026 CARD4ME. All rights reserved.  
+    </p>  
+  
+</footer>  
+  
+  
+  
+<!-- SCRIPTS -->  
+  
+<script src="app.js"></script>  
+  
+<script src="airtime.js"></script>  
+  
+<script src="script.js"></script>  
+  
+  
+<!-- AUTHENTICATION PROTECTION -->  
+  
+<script>  
+  
+    document.addEventListener(  
+        "DOMContentLoaded",  
+        function () {  
+  
+            if (typeof requireLogin === "function") {  
+  
+                requireLogin();  
+  
+            } else {  
+  
+                const token =  
+                    localStorage.getItem(  
+                        "card4me_token"  
+                    );  
+  
+                if (!token) {  
+  
+                    window.location.replace(  
+                        "login.html"  
+                    );  
+  
+                }  
+  
+            }  
+  
+            document.body.classList.remove(  
+                "auth-checking"  
+            );  
+  
+        }  
+    );  
+  
+</script>  
+  
+</body></html>

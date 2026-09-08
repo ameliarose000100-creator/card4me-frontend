@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Buy Data | CARD4ME</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <nav class="nav">
+
+        <a
+            href="index.html"
+            class="logo"
+            aria-label="CARD4ME Dashboard"
+        >
+
+            <span class="logo-mark">
+                C4
+            </span>
+
+            CARD<span>4</span>ME
+
+        </a>
+
+
+        <button
+            class="menu"
+            type="button"
+            aria-label="Open navigation menu"
+            onclick="toggleMenu()"
+        >
+            ☰
+        </button>
+
+
+        <div
+            class="nav-links"
+            id="nav"
+        >
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="airtime.html">
+                Airtime
+            </a>
+
+            <a
+                href="data.html"
+                class="active"
+            >
+                Data
+            </a>
+
+            <a href="wallet.html">
+                Wallet
+            </a>
+
+            <a href="transaction.html">
+                Transactions
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            <a
+                href="#"
+                onclick="logout(); return false;"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<main class="page">
+
+    <section class="page-heading">
+
+        <small>
+            MOBILE DATA
+        </small>
+
+        <h1>
+            Buy Data
+        </h1>
+
+        <p>
+            Choose your network and data bundle
+            for a simple recharge experience.
+        </p>
+
+    </section>
+
+
+    <section class="form-section">
+
+        <div class="form-card">
+
+            <div class="service-icon">
+                📡
+            </div>
+
+            <h2>
+                Data Recharge
+            </h2>
+
+            <p>
+                Enter the phone number and select
+                your network and bundle.
+            </p>
+
+
+            <div
+                id="dataMessage"
+                style="margin-bottom:15px;"
+            >
+                
+            </div>
+
+
+            <form
+                id="dataForm"
+                onsubmit="dataPurchase(event)"
+            >
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="dphone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="dphone"
+                        name="phone"
+                        placeholder="08012345678"
+                        maxlength="11"
+                        inputmode="numeric"
+                        autocomplete="tel"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- NETWORK -->
+
+                <div class="form-group">
+
+                    <label for="dnetwork">
+                        Network
+                    </label>
+
+                    <select
+                        id="dnetwork"
+                        name="network"
+                        required
+                        onchange="filterDataPlans()"
+                    >
+
+                        <option value="">
+                            
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PLAN -->
+
+                <div class="form-group">
+
+                    <label for="bundle">
+                        
+                    </label>
+
+                    <select
+                        id="bundle"
+                        name="plan"
+                        required
+                        disabled
+                    >
+
+                        <option value="">
+                            
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- AMOUNT -->
+
+                <div class="form-group">
+
+                    <label for="dataAmount">
+                        Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        id="dataAmount"
+                        name="amount"
+                        placeholder="Plan price"
+                        readonly
+                        required
+                    >
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="btn"
+                    id="dataButton"
+                    disabled
+                >
+                    Buy Data
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <section
+        class="dashboard-grid"
+        style="margin-top:30px;"
+    >
+
+        <div class="dashboard-card">
+
+            <div class="service-icon">
+                📶
+            </div>
+
+            <h3>
+                Multiple Networks
+            </h3>
+
+            <p>
+                Choose from supported Nigerian
+                mobile networks.
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="service-icon">
+                ⚡
+            </div>
+
+            <h3>
+                Simple Process
+            </h3>
+
+            <p>
+                Select your bundle and continue
+                with your purchase.
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="service-icon">
+                🔒
+            </div>
+
+            <h3>
+                Secure Account
+            </h3>
+
+            <p>
+                Your service activity is connected
+                to your CARD4ME account.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <div class="footer-content">
+
+        <strong>
+            CARD4ME
+        </strong>
+
+        <p>
+            Simple digital services made easier.
+        </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="index.html">
+            Dashboard
+        </a>
+
+        <a href="wallet.html">
+            Wallet
+        </a>
+
+        <a href="transaction.html">
+            Transactions
+        </a>
+
+        <a href="contact.html">
+            Contact
+        </a>
+
+        <a
+            href="#"
+            onclick="logout(); return false;"
+        >
+            Logout
+        </a>
+
+    </div>
+
+
+    <p class="footer-copy">
+        © 2026 CARD4ME. All rights reserved.
+    </p>
+
+</footer>
+
+
+<script src="app.js?v=15"></script>
+
+<script src="script.js"></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        if (
+            typeof requireLogin === "function"
+        ) {
+
+            if (!requireLogin()) {
+                return;
+            }
+
+        } else {
+
+            const token =
+                localStorage.getItem(
+                    "card4me_token"
+                );
+
+            if (!token) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+
+            }
+
+        }
+
+        if (
+            typeof loadDataPlans === "function"
+        ) {
+
+            loadDataPlans();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>
