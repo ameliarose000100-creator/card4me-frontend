@@ -3227,3 +3227,226 @@ document.addEventListener(
  *
  * Never trust localStorage for financial authority.
  */
+
+
+/* =====================================================
+   DATA PLANS
+===================================================== */
+
+let card4meDataPlans = [];
+
+async function loadDataPlans() {
+
+    const networkSelect = document.getElementById("dnetwork");
+    const planSelect = document.getElementById("bundle");
+
+    if (!networkSelect || !planSelect) {
+        return;
+    }
+
+    try {
+
+        const result = await apiRequest(
+            "/api/data/plans",
+            {
+                method: "GET"
+            }
+        );
+
+        if (!result || !result.success) {
+            throw new Error(
+                result?.message || "Unable to load data plans."
+            );
+        }
+
+        card4meDataPlans = Array.isArray(result.plans)
+            ? result.plans
+            : [];
+
+        const networks = [
+            ...new Set(
+                card4meDataPlans
+                    .map(plan => String(plan.network || "").toUpperCase())
+                    .filter(Boolean)
+            )
+        ];
+
+        networkSelect.innerHTML =
+            '<option value="">Select network</option>';
+
+        networks.forEach(network => {
+
+            const option =
+                document.createElement("option");
+
+            option.value = network;
+            option.textContent = network;
+
+            networkSelect.appendChild(option);
+
+        });
+
+        planSelect.innerHTML =
+            '<option value="">Select data plan</option>';
+
+        planSelect.disabled = true;
+
+    } catch (error) {
+
+        console.error(
+            "CARD4ME: Unable to load data plans:",
+            error
+        );
+
+    }
+
+}
+
+
+function filterDataPlans() {
+
+    const networkSelect =
+        document.getElementById("dnetwork");
+
+    const planSelect =
+        document.getElementById("bundle");
+
+    const amountInput =
+        document.getElementById("dataAmount");
+
+    const button =
+        document.getElementById("dataButton");
+
+    if (
+        !networkSelect ||
+        !planSelect ||
+        !amountInput ||
+        !button
+    ) {
+        return;
+    }
+
+    const selectedNetwork =
+        String(networkSelect.value || "").toUpperCase();
+
+    planSelect.innerHTML =
+        '<option value="">Select data plan</option>';
+
+    amountInput.value = "";
+    button.disabled = true;
+
+    if (!selectedNetwork) {
+        planSelect.disabled = true;
+        return;
+    }
+
+    const plans =
+        card4meDataPlans.filter(
+            plan =>
+                String(plan.network || "").toUpperCase() ===
+                selectedNetwork
+        );
+
+    plans.forEach(plan => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = String(plan.plan_id);
+
+        option.textContent =
+            `${plan.data_size || plan.plan_name} - ₦${Number(plan.price).toLocaleString()}${plan.validity ? ` (${plan.validity})` : ""}`;
+
+        planSelect.appendChild(option);
+
+    });
+
+    planSelect.disabled = plans.length === 0;
+
+    planSelect.onchange = function () {
+
+        const selectedPlan =
+            card4meDataPlans.find(
+                plan =>
+                    String(plan.plan_id) ===
+                    String(planSelect.value)
+            );
+
+        if (!selectedPlan) {
+            amountInput.value = "";
+            button.disabled = true;
+            return;
+        }
+
+        amountInput.value =
+            Number(selectedPlan.price).toString();
+
+        button.disabled = false;
+
+    };
+
+}
+
+
+async function dataPurchase(event) {
+
+    event.preventDefault();
+
+    const phone =
+        document.getElementById("dphone")?.value.trim();
+
+    const network =
+        document.getElementById("dnetwork")?.value;
+
+    const planId =
+        document.getElementById("bundle")?.value;
+
+    if (!phone || !network || !planId) {
+        alert("Please complete all data purchase fields.");
+        return;
+    }
+
+    try {
+
+        const result = await apiRequest(
+            "/api/data/purchase",
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    phone,
+                    network,
+                    planId: Number(planId)
+                })
+            }
+        );
+
+        if (!result || !result.success) {
+            throw new Error(
+                result?.message || "Data purchase failed."
+            );
+        }
+
+        alert(
+            result.message ||
+            "Data purchase successful."
+        );
+
+        window.location.href =
+            "transaction.html";
+
+    } catch (error) {
+
+        console.error(
+            "CARD4ME: Data purchase error:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Unable to purchase data."
+        );
+
+    }
+
+}
+
