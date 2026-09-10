@@ -610,3 +610,98 @@ document.addEventListener(
 </body>
 
 </html>
+
+
+<hr>
+
+<h2>Owner Withdrawal</h2>
+
+<input id="withdrawAmount" placeholder="Amount" type="number">
+
+<select id="withdrawBank">
+    <option value="">Select Bank</option>
+</select>
+
+<input id="withdrawAccount" placeholder="Account Number">
+
+<button onclick="withdrawMoney()">
+    Withdraw
+</button>
+
+<p id="withdrawResult"></p>
+
+
+<script>
+const token = localStorage.getItem("token");
+
+async function loadBanks(){
+
+    const res = await fetch(
+        "https://card4me-backend-1.onrender.com/api/banks",
+        {
+            headers:{
+                Authorization:"Bearer " + token
+            }
+        }
+    );
+
+    const data = await res.json();
+
+    const select =
+        document.getElementById("withdrawBank");
+
+    data.banks.forEach(bank=>{
+
+        const option =
+        document.createElement("option");
+
+        option.value = bank.code;
+        option.textContent = bank.name;
+
+        select.appendChild(option);
+
+    });
+
+}
+
+
+async function withdrawMoney(){
+
+    const body = {
+        amount:
+        Number(document.getElementById("withdrawAmount").value),
+
+        bank_code:
+        document.getElementById("withdrawBank").value,
+
+        account_number:
+        document.getElementById("withdrawAccount").value
+    };
+
+
+    const res = await fetch(
+        "https://card4me-backend-1.onrender.com/api/admin/withdraw",
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                Authorization:"Bearer " + token
+            },
+            body:JSON.stringify(body)
+        }
+    );
+
+
+    const data = await res.json();
+
+    document.getElementById("withdrawResult")
+    .textContent =
+    JSON.stringify(data);
+
+}
+
+
+loadBanks();
+
+</script>
+
