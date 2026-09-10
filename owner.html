@@ -182,7 +182,44 @@
 
 </head>
 
+
 <body>
+
+<div class="owner-header">
+    <h1>👑 CARD4ME Owner Control Center</h1>
+    <p>Manage earnings, withdrawals and platform activity</p>
+</div>
+
+<div class="owner-grid">
+
+<div class="owner-card">
+    <h3>💰 Total Earnings</h3>
+    <p id="ownerEarnings">₦0</p>
+</div>
+
+<div class="owner-card">
+    <h3>🏦 Withdraw Funds</h3>
+
+    <input id="amount" placeholder="Amount (NGN)" type="number">
+
+    <input id="bank_code" placeholder="Bank Code">
+
+    <input id="account_number" placeholder="Account Number">
+
+    <button onclick="withdrawOwner()">
+        Request Withdrawal
+    </button>
+</div>
+
+<div class="owner-card full">
+    <h3>📋 Withdrawal History</h3>
+    <div id="withdrawals">
+        Loading...
+    </div>
+</div>
+
+</div>
+
 
 <header class="site-header">
 
@@ -702,6 +739,92 @@ async function withdrawMoney(){
 
 
 loadBanks();
+
+</script>
+
+
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f7fb;
+    padding:20px;
+}
+
+.owner-header{
+    background:#111827;
+    color:white;
+    padding:25px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.owner-grid{
+    display:grid;
+    gap:20px;
+}
+
+.owner-card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.owner-card.full{
+    grid-column:1/-1;
+}
+
+.owner-card input{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    border-radius:8px;
+    border:1px solid #ddd;
+}
+
+.owner-card button{
+    width:100%;
+    padding:13px;
+    background:#2563eb;
+    color:white;
+    border:0;
+    border-radius:8px;
+}
+
+@media(min-width:700px){
+.owner-grid{
+    grid-template-columns:repeat(2,1fr);
+}
+}
+</style>
+
+<script>
+
+async function withdrawOwner(){
+
+const token=localStorage.getItem("token");
+
+const response=await fetch(
+"/api/admin/withdraw",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer "+token
+},
+body:JSON.stringify({
+amount:amount.value,
+bank_code:bank_code.value,
+account_number:account_number.value
+})
+});
+
+const data=await response.json();
+
+alert(data.message || "Done");
+
+}
 
 </script>
 
