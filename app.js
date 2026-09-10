@@ -8,6 +8,81 @@
    API CONFIGURATION
 ===================================================== */
 
+
+/* =====================================================
+   CARD4ME PROFESSIONAL ALERTS
+===================================================== */
+
+function showCard4MeAlert(message, type = "info", title = "") {
+    const existing = document.getElementById("card4meAlert");
+    if (existing) existing.remove();
+
+    const titles = {
+        success: "Success",
+        error: "Something went wrong",
+        warning: "Attention",
+        info: "CARD4ME"
+    };
+
+    const icons = {
+        success: "✓",
+        error: "!",
+        warning: "!",
+        info: "i"
+    };
+
+    const alertTitle = title || titles[type] || titles.info;
+    const icon = icons[type] || icons.info;
+
+    const box = document.createElement("div");
+    box.id = "card4meAlert";
+    box.className = `card4me-alert card4me-alert-${type}`;
+
+    const iconElement = document.createElement("div");
+    iconElement.className = "card4me-alert-icon";
+    iconElement.textContent = icon;
+
+    const contentElement = document.createElement("div");
+    contentElement.className = "card4me-alert-content";
+
+    const titleElement = document.createElement("strong");
+    titleElement.textContent = alertTitle;
+
+    const messageElement = document.createElement("span");
+    messageElement.textContent = message;
+
+    contentElement.appendChild(titleElement);
+    contentElement.appendChild(messageElement);
+
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "card4me-alert-close";
+    closeButton.setAttribute("aria-label", "Close notification");
+    closeButton.textContent = "×";
+
+    box.appendChild(iconElement);
+    box.appendChild(contentElement);
+    box.appendChild(closeButton);
+
+    document.body.appendChild(box);
+
+    requestAnimationFrame(() => {
+        box.classList.add("show");
+    });
+
+    const close = () => {
+        box.classList.remove("show");
+        setTimeout(() => box.remove(), 250);
+    };
+
+    box.querySelector(".card4me-alert-close").addEventListener(
+        "click",
+        close
+    );
+
+    setTimeout(close, type === "error" ? 5000 : 3500);
+}
+
 const API_BASE =
     "https://card4me-backend.onrender.com";
 
@@ -512,9 +587,7 @@ async function loginUser(event) {
 
     if (!email) {
 
-        alert(
-            "Please enter your email address."
-        );
+        showCard4MeAlert("Please enter your email address.", "warning", "Email required");
 
         if (emailInput) {
             emailInput.focus();
@@ -527,9 +600,7 @@ async function loginUser(event) {
 
     if (!password) {
 
-        alert(
-            "Please enter your password."
-        );
+        showCard4MeAlert("Please enter your password.", "warning", "Password required");
 
         if (passwordInput) {
             passwordInput.focus();
@@ -639,10 +710,7 @@ async function loginUser(event) {
         );
 
 
-        alert(
-            error.message ||
-            "Unable to login. Please try again."
-        );
+        showCard4MeAlert(error.message || "Unable to login. Please try again.", "error", "Login failed");
 
 
         if (loginButton) {
@@ -727,9 +795,7 @@ async function registerUser(event) {
 
     if (!fullName) {
 
-        alert(
-            "Please enter your full name."
-        );
+        showCard4MeAlert("Please enter your full name.", "warning", "Name required");
 
         if (fullNameInput) {
             fullNameInput.focus();
@@ -742,9 +808,7 @@ async function registerUser(event) {
 
     if (fullName.length < 2) {
 
-        alert(
-            "Please enter a valid full name."
-        );
+        showCard4MeAlert("Please enter a valid full name.", "warning", "Invalid name");
 
         if (fullNameInput) {
             fullNameInput.focus();
@@ -757,9 +821,7 @@ async function registerUser(event) {
 
     if (!email) {
 
-        alert(
-            "Please enter your email address."
-        );
+        showCard4MeAlert("Please enter your email address.", "warning", "Email required");
 
         if (emailInput) {
             emailInput.focus();
@@ -778,9 +840,7 @@ async function registerUser(event) {
         !emailPattern.test(email)
     ) {
 
-        alert(
-            "Please enter a valid email address."
-        );
+        showCard4MeAlert("Please enter a valid email address.", "warning", "Invalid email");
 
         if (emailInput) {
             emailInput.focus();
@@ -793,9 +853,7 @@ async function registerUser(event) {
 
     if (!phone) {
 
-        alert(
-            "Please enter your phone number."
-        );
+        showCard4MeAlert("Please enter your phone number.", "warning", "Phone required");
 
         if (phoneInput) {
             phoneInput.focus();
@@ -811,9 +869,7 @@ async function registerUser(event) {
         phone.length > 15
     ) {
 
-        alert(
-            "Please enter a valid phone number."
-        );
+        showCard4MeAlert("Please enter a valid phone number.", "warning", "Invalid phone number");
 
         if (phoneInput) {
             phoneInput.focus();
@@ -826,9 +882,7 @@ async function registerUser(event) {
 
     if (!password) {
 
-        alert(
-            "Please create a password."
-        );
+        showCard4MeAlert("Please create a password.", "warning", "Password required");
 
         if (passwordInput) {
             passwordInput.focus();
@@ -841,9 +895,7 @@ async function registerUser(event) {
 
     if (password.length < 6) {
 
-        alert(
-            "Password must be at least 6 characters."
-        );
+        showCard4MeAlert("Password must be at least 6 characters.", "warning", "Weak password");
 
         if (passwordInput) {
             passwordInput.focus();
@@ -864,9 +916,7 @@ async function registerUser(event) {
         password !== confirmPassword
     ) {
 
-        alert(
-            "Passwords do not match."
-        );
+        showCard4MeAlert("The passwords you entered do not match.", "warning", "Password mismatch");
 
         confirmPasswordInput.focus();
 
@@ -922,10 +972,7 @@ async function registerUser(event) {
         }
 
 
-        alert(
-            result.message ||
-            "Account created successfully. Please login."
-        );
+        showCard4MeAlert(result.message || "Account created successfully. Please login.", "success", "Account created");
 
 
         /*
@@ -948,10 +995,7 @@ async function registerUser(event) {
         );
 
 
-        alert(
-            error.message ||
-            "Unable to create your account."
-        );
+        showCard4MeAlert(error.message || "Unable to create your account.", "error", "Registration failed");
 
 
         if (registerButton) {
@@ -1286,8 +1330,10 @@ async function fundWallet(event) {
         amount < 500
     ) {
 
-        alert(
-            "Minimum wallet funding amount is ₦500."
+        showCard4MeAlert(
+            "Minimum wallet funding amount is ₦500.",
+            "warning",
+            "Amount too low"
         );
 
         if (amountInput) {
@@ -1303,8 +1349,10 @@ async function fundWallet(event) {
 
     if (amount > 1000000) {
 
-        alert(
-            "Maximum wallet funding amount is ₦1,000,000."
+        showCard4MeAlert(
+            "Maximum wallet funding amount is ₦1,000,000.",
+            "warning",
+            "Amount too high"
         );
 
         if (amountInput) {
@@ -1416,6 +1464,12 @@ async function fundWallet(event) {
             account
         );
 
+        showCard4MeAlert(
+            "Transfer the requested amount to the displayed account. Your wallet will be credited after the payment is confirmed.",
+            "success",
+            "Funding account ready"
+        );
+
 
         /*
          * Refresh the authoritative wallet balance.
@@ -1447,9 +1501,11 @@ async function fundWallet(event) {
         );
 
 
-        alert(
+        showCard4MeAlert(
             error.message ||
-            "Unable to start wallet funding."
+            "Unable to start wallet funding.",
+            "error",
+            "Funding failed"
         );
 
 
