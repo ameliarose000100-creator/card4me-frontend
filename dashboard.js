@@ -114,7 +114,7 @@ document.addEventListener(
    OWNER PANEL ACCESS
 ========================================= */
 
-(function () {
+window.addEventListener("DOMContentLoaded", function () {
 
     const ownerLink =
         document.getElementById("ownerLink");
@@ -154,4 +154,4 @@ document.addEventListener(
         ownerLink.style.display = "none";
     }
 
-})();
+});
