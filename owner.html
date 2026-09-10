@@ -644,6 +644,76 @@ document.addEventListener(
 
 </script>
 
+
+<script>
+/* =========================================
+   CARD4ME BANK LIST
+========================================= */
+
+document.addEventListener("DOMContentLoaded", async function () {
+
+    const bankSelect =
+        document.getElementById("bank_code");
+
+    if (!bankSelect) return;
+
+    bankSelect.innerHTML =
+        '<option value="">Loading banks...</option>';
+
+    try {
+
+        const token =
+            localStorage.getItem("card4me_token");
+
+        const response =
+            await fetch(
+                "https://card4me-backend-1.onrender.com/api/banks",
+                {
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token,
+                        "Accept":
+                            "application/json"
+                    }
+                }
+            );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message || "Unable to load banks"
+            );
+        }
+
+        bankSelect.innerHTML =
+            '<option value="">Select bank</option>';
+
+        data.banks.forEach(function (bank) {
+
+            const option =
+                document.createElement("option");
+
+            option.value = bank.code;
+            option.textContent = bank.name;
+
+            bankSelect.appendChild(option);
+        });
+
+    } catch (error) {
+
+        console.error(
+            "CARD4ME bank loading error:",
+            error
+        );
+
+        bankSelect.innerHTML =
+            '<option value="">Unable to load banks</option>';
+    }
+
+});
+</script>
+
 </body>
 
 </html>

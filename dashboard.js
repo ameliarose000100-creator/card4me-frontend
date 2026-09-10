@@ -109,3 +109,39 @@ document.addEventListener(
 
     }
 );
+
+/* =========================================
+   OWNER PANEL ACCESS
+========================================= */
+
+(function () {
+
+    const ownerLink =
+        document.getElementById("ownerLink");
+
+    if (!ownerLink) return;
+
+    try {
+
+        const user =
+            JSON.parse(
+                localStorage.getItem("card4me_user") || "{}"
+            );
+
+        if (Number(user.id) === 4) {
+            ownerLink.style.display = "";
+        } else {
+            ownerLink.style.display = "none";
+        }
+
+    } catch (error) {
+
+        console.error(
+            "CARD4ME owner access check failed:",
+            error
+        );
+
+        ownerLink.style.display = "none";
+    }
+
+})();
