@@ -119,6 +119,9 @@ document.addEventListener(
     const ownerLink =
         document.getElementById("ownerLink");
 
+    const ownerTools =
+        document.getElementById("ownerTools");
+
     if (!ownerLink) return;
 
     try {
@@ -129,7 +132,10 @@ document.addEventListener(
             );
 
         if (Number(user.id) === 4) {
-            ownerLink.style.display = "";
+            ownerLink.style.display = "inline-block";
+            if (ownerTools) {
+                ownerTools.style.display = "block";
+            }
         } else {
             ownerLink.style.display = "none";
         }
