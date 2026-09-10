@@ -477,6 +477,24 @@
     </script>
 
 
+
+<div id="ownerDebug"
+style="position:fixed;bottom:10px;right:10px;background:#222;color:white;padding:10px;z-index:9999;">
+Checking owner...
+</div>
+
+<script>
+try {
+    const u = JSON.parse(localStorage.getItem("card4me_user") || "{}");
+    document.getElementById("ownerDebug").innerHTML =
+        "User ID: " + (u.id || "none") +
+        "<br>Email: " + (u.email || "none");
+} catch(e) {
+    document.getElementById("ownerDebug").innerHTML =
+        "No user data";
+}
+</script>
+
 </body>
 
 </html>
