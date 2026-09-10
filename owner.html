@@ -731,6 +731,106 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 </script>
 
+
+
+<script>
+
+async function withdrawOwner(){
+
+    const amount =
+        document.getElementById("amount").value;
+
+    const bankCode =
+        document.getElementById("bank_code").value;
+
+    const accountNumber =
+        document.getElementById("account_number").value;
+
+    const message =
+        document.getElementById("withdrawMessage");
+
+
+    if (!amount || Number(amount) <= 0) {
+        message.textContent =
+            "Enter a valid amount.";
+        return;
+    }
+
+
+    if (!bankCode) {
+        message.textContent =
+            "Select a bank.";
+        return;
+    }
+
+
+    if (!/^[0-9]{10}$/.test(accountNumber)) {
+        message.textContent =
+            "Enter a valid 10 digit account number.";
+        return;
+    }
+
+
+    message.textContent =
+        "Processing bank transfer...";
+
+
+    try {
+
+        const token =
+            localStorage.getItem("card4me_token");
+
+
+        const response =
+            await fetch(
+                "https://card4me-backend-1.onrender.com/api/admin/withdraw",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            "Bearer " + token
+                    },
+
+                    body: JSON.stringify({
+                        amount: Number(amount),
+                        bank_code: bankCode,
+                        account_number: accountNumber
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message ||
+                "Withdrawal failed."
+            );
+        }
+
+
+        message.textContent =
+            "✅ Bank transfer request submitted.";
+
+    } catch(error){
+
+        message.textContent =
+            "❌ " + error.message;
+
+    }
+
+}
+
+</script>
+
+
 </body>
 
 </html>
