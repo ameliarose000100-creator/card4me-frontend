@@ -197,18 +197,35 @@
     <p id="ownerEarnings">₦0</p>
 </div>
 
-<div class="owner-card">
-    <h3>🏦 Withdraw Funds</h3>
+<div class="owner-section">
 
-    <input id="amount" placeholder="Amount (NGN)" type="number">
+<h2>🏦 Bank Transfer Withdrawal</h2>
 
-    <input id="bank_code" placeholder="Bank Code">
+<input
+id="amount"
+type="number"
+placeholder="Amount (NGN)"
+>
 
-    <input id="account_number" placeholder="Account Number">
+<select id="bank_code">
+    <option value="">Select Bank</option>
+</select>
 
-    <button onclick="withdrawOwner()">
-        Request Withdrawal
-    </button>
+<input
+id="account_number"
+placeholder="Account Number"
+maxlength="10"
+>
+
+<button
+class="owner-actions"
+onclick="withdrawOwner()"
+>
+Request Bank Transfer
+</button>
+
+<p id="withdrawMessage"></p>
+
 </div>
 
 <div class="owner-card full">
