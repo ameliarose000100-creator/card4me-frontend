@@ -138,6 +138,10 @@ document.addEventListener(
             }
         } else {
             ownerLink.style.display = "none";
+
+            if (ownerTools) {
+                ownerTools.style.display = "none";
+            }
         }
 
     } catch (error) {
