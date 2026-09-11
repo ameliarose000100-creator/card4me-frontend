@@ -247,6 +247,10 @@ placeholder="Account Number"
 maxlength="10"
 >
 
+<p id="accountName">
+Account name will appear here.
+</p>
+
 <button
 class="owner-actions"
 onclick="withdrawOwner()"
@@ -857,6 +861,99 @@ async function withdrawOwner(){
     }
 
 }
+
+</script>
+
+
+
+
+<script>
+
+let verifiedAccount = false;
+
+document
+.getElementById("account_number")
+.addEventListener("input", async function(){
+
+    const accountNumber = this.value;
+
+    const bankCode =
+        document.getElementById("bank_code").value;
+
+    const nameBox =
+        document.getElementById("accountName");
+
+
+    verifiedAccount = false;
+
+
+    if (
+        accountNumber.length !== 10 ||
+        !bankCode
+    ) {
+        nameBox.textContent =
+            "Enter bank and 10 digit account number.";
+        return;
+    }
+
+
+    nameBox.textContent =
+        "Verifying account...";
+
+
+    try {
+
+        const token =
+            localStorage.getItem(
+                "card4me_token"
+            );
+
+
+        const response =
+            await fetch(
+                "https://card4me-backend-1.onrender.com/api/banks/resolve-account",
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json",
+                        "Authorization":
+                        "Bearer " + token
+                    },
+                    body:JSON.stringify({
+                        bank_code:bankCode,
+                        account_number:accountNumber
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok || !data.success){
+            throw new Error(
+                data.message ||
+                "Verification failed"
+            );
+        }
+
+
+        verifiedAccount = true;
+
+        nameBox.textContent =
+            "✅ " + data.account_name;
+
+
+    }catch(error){
+
+        nameBox.textContent =
+            "❌ " + error.message;
+
+    }
+
+});
+
 
 </script>
 
