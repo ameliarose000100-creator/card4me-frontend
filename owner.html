@@ -210,6 +210,138 @@
 
 </style>
 
+
+<style>
+/* =========================================
+   CARD4ME OWNER CONTROL CENTER
+========================================= */
+
+.owner-header {
+    padding: 26px 0 10px;
+}
+
+.owner-header h1 {
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+}
+
+.owner-header p {
+    margin-top: 8px;
+}
+
+.earnings-grid {
+    gap: 20px;
+}
+
+.earnings-card {
+    position: relative;
+    padding: 22px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform .2s ease, border-color .2s ease;
+}
+
+.earnings-card:hover {
+    transform: translateY(-2px);
+}
+
+.earnings-card p {
+    margin: 0 0 10px;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.earnings-card h2 {
+    margin: 0;
+    font-size: clamp(22px, 4vw, 30px);
+}
+
+.owner-section {
+    margin-top: 24px;
+    padding: 24px;
+}
+
+.owner-section h2 {
+    margin: 0 0 20px;
+    font-size: 21px;
+}
+
+.breakdown-grid {
+    gap: 18px;
+}
+
+.breakdown-card {
+    padding: 20px;
+    transition: transform .2s ease;
+}
+
+.breakdown-card:hover {
+    transform: translateY(-2px);
+}
+
+.breakdown-card h3 {
+    font-size: 15px;
+    text-transform: capitalize;
+}
+
+.owner-actions {
+    margin-top: 18px;
+}
+
+.owner-actions button {
+    min-height: 44px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+#withdrawMessage {
+    min-height: 22px;
+    margin: 14px 0 0;
+    line-height: 1.5;
+}
+
+#accountName {
+    margin: 8px 0 12px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+@media (max-width: 520px) {
+
+    .owner-page {
+        width: calc(100% - 24px);
+        padding: 20px 0 50px;
+    }
+
+    .owner-header {
+        padding-top: 10px;
+    }
+
+    .owner-header h1 {
+        font-size: 27px;
+    }
+
+    .owner-section {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .earnings-card {
+        min-height: 105px;
+        padding: 18px;
+    }
+
+    .earnings-card h2 {
+        font-size: 24px;
+    }
+
+}
+</style>
+
 </head>
 
 
