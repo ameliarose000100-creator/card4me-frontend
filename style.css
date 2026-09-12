@@ -13482,3 +13482,74 @@ footer {
 }
 
 }
+
+
+/* =====================================================
+   CARD4ME MOBILE EXPERIENCE UPGRADE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .hero {
+        padding-top: 55px;
+        padding-bottom: 45px;
+    }
+
+    .hero-content h1 {
+        font-size: 34px;
+        line-height: 1.15;
+    }
+
+    .hero-content p {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .hero-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .hero-buttons .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+
+    .cards {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+
+    .service-card,
+    .dashboard-card {
+        border-radius: 20px;
+    }
+
+
+    .page-heading h2 {
+        font-size: 26px;
+        line-height: 1.25;
+    }
+
+
+    footer {
+        text-align: center;
+    }
+
+}
+
+
+@media (max-width: 380px) {
+
+    .hero-content h1 {
+        font-size: 29px;
+    }
+
+    .page-heading h2 {
+        font-size: 23px;
+    }
+
+}
