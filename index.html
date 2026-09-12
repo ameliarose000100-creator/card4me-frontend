@@ -31,6 +31,7 @@
 
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="manifest" href="manifest.json">
 
 </head>
 
@@ -518,6 +519,17 @@
 
     <script src="script.js"></script>
 
+
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("CARD4ME app ready"))
+        .catch(err => console.log("Service worker error:", err));
+    });
+}
+</script>
 
 </body>
 

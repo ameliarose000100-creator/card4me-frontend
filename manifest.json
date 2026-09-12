@@ -1,0 +1,16 @@
+{
+  "name": "CARD4ME",
+  "short_name": "CARD4ME",
+  "description": "Simple digital services in one secure platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
