@@ -1,0 +1,22 @@
+#card4me-splash {
+    position: fixed;
+    inset: 0;
+    background: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    color: white;
+    font-family: Arial, sans-serif;
+    flex-direction: column;
+}
+
+#card4me-splash .logo {
+    font-size: 60px;
+    font-weight: bold;
+}
+
+#card4me-splash p {
+    margin-top: 15px;
+    font-size: 18px;
+}

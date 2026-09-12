@@ -30,6 +30,7 @@
     >
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="splash.css">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="manifest" href="manifest.json">
 
@@ -37,6 +38,12 @@
 
 
 <body>
+
+<div id="card4me-splash">
+    <div class="logo">C4</div>
+    <p>CARD4ME</p>
+</div>
+
 
 
     <!-- =========================================
@@ -549,6 +556,18 @@ if ("serviceWorker" in navigator) {
     ">
     Install CARD4ME App
 </button>
+
+
+<script>
+window.addEventListener("load", () => {
+    const splash = document.getElementById("card4me-splash");
+    if (splash) {
+        setTimeout(() => {
+            splash.style.display = "none";
+        }, 1200);
+    }
+});
+</script>
 
 </body>
 
