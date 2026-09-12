@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+  <rect width="1200" height="630" fill="#111827"/>
+
+  <text
+    x="100"
+    y="260"
+    fill="white"
+    font-size="90"
+    font-family="Arial, sans-serif"
+    font-weight="bold">
+    CARD4ME
+  </text>
+
+  <text
+    x="100"
+    y="360"
+    fill="white"
+    font-size="42"
+    font-family="Arial, sans-serif">
+    Simple digital services
+  </text>
+
+  <text
+    x="100"
+    y="420"
+    fill="white"
+    font-size="42"
+    font-family="Arial, sans-serif">
+    in one secure platform
+  </text>
+</svg>
