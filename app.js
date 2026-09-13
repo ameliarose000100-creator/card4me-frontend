@@ -1203,6 +1203,17 @@ async function loadWallet() {
 
     }
 
+    if (
+        balance === undefined &&
+        result.wallet &&
+        result.wallet.balanceNaira !== undefined
+    ) {
+
+        balance =
+            result.wallet.balanceNaira;
+
+    }
+
 
     const numericBalance =
         Number(balance);
