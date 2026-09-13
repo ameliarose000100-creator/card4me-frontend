@@ -1476,7 +1476,7 @@ async function fundWallet(event) {
         );
 
         showCard4MeAlert(
-            "Transfer the requested amount to the displayed account. Your wallet will be credited after the payment is confirmed.",
+            `Transfer exactly ₦${(amount + Math.round(amount * 0.02)).toLocaleString()} to the displayed account. Your CARD4ME wallet will be credited ₦${amount.toLocaleString()} after the payment is confirmed.`,
             "success",
             "Funding account ready"
         );
@@ -1593,8 +1593,27 @@ function displayVirtualAccount(
         "";
 
 
+    const walletAmount = Number(account?.amount || 0);
+    const feeAmount = Math.round(walletAmount * 0.02);
+    const customerPayAmount = walletAmount + feeAmount;
+
     content.innerHTML = `
         <div class="virtual-account-card">
+
+            <div class="virtual-account-row">
+                <span>Wallet Funding</span>
+                <strong>₦${walletAmount.toLocaleString()}</strong>
+            </div>
+
+            <div class="virtual-account-row">
+                <span>Transaction Fee</span>
+                <strong>₦${feeAmount.toLocaleString()}</strong>
+            </div>
+
+            <div class="virtual-account-row">
+                <span>Total to Transfer</span>
+                <strong>₦${customerPayAmount.toLocaleString()}</strong>
+            </div>
 
             <div class="virtual-account-row">
                 <span>Bank</span>
