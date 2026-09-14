@@ -203,6 +203,8 @@
                         name="plan"
                         required
                         disabled
+                        aria-hidden="true"
+                        tabindex="-1"
                     >
 
                         <option value="">
@@ -210,6 +212,30 @@
                         </option>
 
                     </select>
+
+                    <div class="card4me-plan-select" id="card4mePlanSelect">
+
+                        <button
+                            type="button"
+                            class="card4me-plan-trigger"
+                            id="card4mePlanTrigger"
+                            aria-expanded="false"
+                        >
+                            <span id="card4mePlanLabel">
+                                Select a data plan
+                            </span>
+
+                            <span class="card4me-plan-arrow">⌄</span>
+                        </button>
+
+                        <div
+                            class="card4me-plan-menu"
+                            id="card4mePlanMenu"
+                            role="listbox"
+                            aria-label="Available data plans"
+                        ></div>
+
+                    </div>
 
                 </div>
 
@@ -365,7 +391,7 @@
 </footer>
 
 
-<script src="app.js?v=16"></script>
+<script src="app.js?v=22"></script>
 
 <script src="script.js"></script>
 
