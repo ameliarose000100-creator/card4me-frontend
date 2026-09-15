@@ -1481,6 +1481,18 @@ async function fundWallet(event) {
         }
 
 
+        const customerPayAmount =
+            Number(
+                account?.customerPayAmount ??
+                (
+                    Number(account?.amount || 0) +
+                    Math.round(
+                        Number(account?.amount || 0) * 0.02
+                    )
+                )
+            );
+
+
         /*
          * Store this only for temporary display.
          * It is NOT trusted as wallet balance.
