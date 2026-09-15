@@ -5,6 +5,37 @@
 
 
 /* =====================================================
+   COPY VIRTUAL ACCOUNT NUMBER
+===================================================== */
+
+function copyVirtualAccountNumber(accountNumber, button) {
+
+    if (!accountNumber) {
+        return;
+    }
+
+    navigator.clipboard.writeText(accountNumber)
+        .then(() => {
+
+            const originalText = button.textContent;
+
+            button.textContent = "Copied";
+
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 1500);
+        })
+        .catch(() => {
+
+            showCard4MeAlert(
+                "Unable to copy the account number. Please copy it manually.",
+                "error",
+                "Copy failed"
+            );
+        });
+}
+
+/* =====================================================
    API CONFIGURATION
 ===================================================== */
 
@@ -1476,7 +1507,7 @@ async function fundWallet(event) {
         );
 
         showCard4MeAlert(
-            `Transfer exactly ₦${(amount + Math.round(amount * 0.02)).toLocaleString()} to the displayed account. Your CARD4ME wallet will be credited ₦${amount.toLocaleString()} after the payment is confirmed.`,
+            `Transfer exactly ₦${customerPayAmount.toLocaleString()} to the displayed account. Your CARD4ME wallet will be credited ₦${amount.toLocaleString()} after the payment is confirmed. The 2% CARD4ME funding fee is included.`,
             "success",
             "Funding account ready"
         );
@@ -1593,9 +1624,20 @@ function displayVirtualAccount(
         "";
 
 
-    const walletAmount = Number(account?.amount || 0);
-    const feeAmount = Math.round(walletAmount * 0.02);
-    const customerPayAmount = walletAmount + feeAmount;
+    const walletAmount =
+        Number(account?.amount || 0);
+
+    const fundingFee =
+        Number(
+            account?.fundingFee ??
+            Math.round(walletAmount * 0.02)
+        );
+
+    const customerPayAmount =
+        Number(
+            account?.customerPayAmount ??
+            (walletAmount + fundingFee)
+        );
 
     content.innerHTML = `
         <div class="virtual-account-card">
@@ -1606,12 +1648,12 @@ function displayVirtualAccount(
             </div>
 
             <div class="virtual-account-row">
-                <span>Transaction Fee</span>
-                <strong>₦${feeAmount.toLocaleString()}</strong>
+                <span>CARD4ME Fee (2%)</span>
+                <strong>₦${fundingFee.toLocaleString()}</strong>
             </div>
 
             <div class="virtual-account-row">
-                <span>Total to Transfer</span>
+                <span>Amount to Transfer</span>
                 <strong>₦${customerPayAmount.toLocaleString()}</strong>
             </div>
 
@@ -1633,6 +1675,20 @@ function displayVirtualAccount(
                 <span>Account Number</span>
                 <strong>
                     ${escapeHtml(accountNumber || "Unavailable")}
+
+                    ${
+                        accountNumber
+                            ? `
+                                <button
+                                    type="button"
+                                    class="copy-account-button"
+                                    onclick="copyVirtualAccountNumber('${escapeHtml(accountNumber)}', this)"
+                                >
+                                    Copy
+                                </button>
+                            `
+                            : ""
+                    }
                 </strong>
             </div>
 
