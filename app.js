@@ -3501,7 +3501,7 @@ async function dataPurchase(event) {
                 body: JSON.stringify({
                     phone,
                     network,
-                    planId: Number(planId)
+                    planId: String(planId)
                 })
             }
         );
