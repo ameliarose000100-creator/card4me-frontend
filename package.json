@@ -1,0 +1,26 @@
+{
+  "name": "card4me-frontend",
+  "version": "1.0.0",
+  "description": "CARD4ME is a Nigerian digital-services web app for account registration, wallet funding, airtime, data, transaction history, and account management.",
+  "main": "account.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ameliarose000100-creator/card4me-frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ameliarose000100-creator/card4me-frontend/issues"
+  },
+  "homepage": "https://github.com/ameliarose000100-creator/card4me-frontend#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/cli": "^8.5.2",
+    "@capacitor/core": "^8.5.2"
+  }
+}

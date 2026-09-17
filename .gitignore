@@ -4,3 +4,8 @@ login.html.backup_20260909_183749
 backend/
 .env
 *.db
+
+node_modules/
+android/
+resources/
+www/
