@@ -13553,3 +13553,42 @@ footer {
     }
 
 }
+
+/* Final transaction row alignment */
+.transaction-item,
+.transaction-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.transaction-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+}
+
+.transaction-details {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.transaction-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.transaction-amount,
+.transaction-status {
+    white-space: nowrap;
+}
