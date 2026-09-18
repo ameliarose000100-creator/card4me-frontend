@@ -28,12 +28,12 @@ async function loadTransactions() {
 
     const message =
         document.getElementById(
-            "transactionMessage"
+            "transactionsLoading"
         );
 
     const list =
         document.getElementById(
-            "transactionList"
+            "transactionsList"
         );
 
     const user =
@@ -135,8 +135,8 @@ async function loadTransactions() {
 
         if (message) {
 
-            message.textContent =
-                `${transactions.length} transaction(s) found`;
+            message.textContent = "";
+            message.style.display = "none";
 
         }
 
@@ -180,9 +180,28 @@ async function loadTransactions() {
                     transaction.status ||
                     "success";
 
-                const details =
+                let details =
                     transaction.details ||
                     "CARD4ME transaction";
+
+                try {
+                    const parsedDetails =
+                        typeof details === "string"
+                            ? JSON.parse(details)
+                            : details;
+
+                    if (
+                        parsedDetails &&
+                        typeof parsedDetails === "object" &&
+                        parsedDetails.type
+                    ) {
+                        details =
+                            parsedDetails.type;
+                    }
+                } catch (error) {
+                    details =
+                        String(details);
+                }
 
                 const date =
                     transaction.created_at
