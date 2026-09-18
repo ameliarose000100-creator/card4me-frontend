@@ -2061,10 +2061,34 @@ function transactionHtml(
         );
 
 
+    let transactionDetails =
+        transaction.details ||
+        "CARD4ME transaction";
+
+    try {
+        const parsedDetails =
+            typeof transactionDetails === "string"
+                ? JSON.parse(transactionDetails)
+                : transactionDetails;
+
+        if (
+            parsedDetails &&
+            typeof parsedDetails === "object"
+        ) {
+            transactionDetails =
+                parsedDetails.type ||
+                parsedDetails.description ||
+                parsedDetails.narration ||
+                "CARD4ME transaction";
+        }
+    } catch (error) {
+        transactionDetails =
+            String(transactionDetails);
+    }
+
     const details =
         escapeHtml(
-            transaction.details ||
-            "CARD4ME transaction"
+            transactionDetails
         );
 
 
