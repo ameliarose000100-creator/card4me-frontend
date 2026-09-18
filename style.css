@@ -13592,3 +13592,20 @@ footer {
 .transaction-status {
     white-space: nowrap;
 }
+
+/* Keep transaction rows horizontal on small phones */
+@media (max-width: 380px) {
+    .transaction-item {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .transaction-left {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .transaction-right {
+        flex-shrink: 0;
+    }
+}
