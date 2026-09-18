@@ -1645,16 +1645,10 @@ function displayVirtualAccount(
             Math.round(walletAmount * 0.02)
         );
 
-    const flutterwaveFee =
-        Number(
-            account?.flutterwaveFee ??
-            Math.round(walletAmount * 0.02)
-        );
-
     const customerPayAmount =
         Number(
             account?.customerPayAmount ??
-            (walletAmount + fundingFee + flutterwaveFee)
+            (walletAmount + fundingFee)
         );
 
     content.innerHTML = `
@@ -1668,11 +1662,6 @@ function displayVirtualAccount(
             <div class="virtual-account-row">
                 <span>CARD4ME Fee (2%)</span>
                 <strong>₦${fundingFee.toLocaleString()}</strong>
-            </div>
-
-            <div class="virtual-account-row">
-                <span>Flutterwave Fee (2%)</span>
-                <strong>₦${flutterwaveFee.toLocaleString()}</strong>
             </div>
 
             <div class="virtual-account-row">
