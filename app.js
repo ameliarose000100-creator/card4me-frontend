@@ -3688,3 +3688,30 @@ window.addEventListener("load", function () {
     document.body.appendChild(btn);
 });
 
+
+window.showPendingSummary = async function() {
+    try {
+        const result = await apiRequest("/api/transactions/4");
+        const list = result.transactions || result.data || [];
+
+        const pending = list.find(t =>
+            String(t.type || "").toLowerCase() === "data_purchase" &&
+            String(t.status || "").toLowerCase() === "pending"
+        );
+
+        if (!pending) {
+            alert("No pending data purchase found.");
+            return;
+        }
+
+        alert(
+            "ID: " + pending.id +
+            "\nAmount: ₦" + pending.amount +
+            "\nReference: " + pending.reference +
+            "\nStatus: " + pending.status
+        );
+    } catch (error) {
+        alert("Error: " + (error.message || error));
+    }
+};
+
