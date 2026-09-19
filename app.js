@@ -3667,3 +3667,24 @@ window.addEventListener("load", function () {
     document.body.appendChild(btn);
 });
 
+
+window.findPendingDataTransaction = async function() {
+    try {
+        const result = await apiRequest("/api/transactions/4");
+        console.log("TRANSACTIONS:", result);
+        alert(JSON.stringify(result));
+    } catch (error) {
+        console.error("TRANSACTION LOOKUP ERROR:", error);
+        alert("Lookup error: " + (error.message || error));
+    }
+};
+
+
+window.addEventListener("load", function () {
+    const btn = document.createElement("button");
+    btn.textContent = "Find Pending Transaction";
+    btn.style.cssText = "position:fixed;bottom:20px;right:20px;z-index:99999;padding:14px 18px;border:0;border-radius:10px;background:#16a34a;color:#fff;font-weight:bold;";
+    btn.onclick = window.findPendingDataTransaction;
+    document.body.appendChild(btn);
+});
+
