@@ -3715,3 +3715,27 @@ window.showPendingSummary = async function() {
     }
 };
 
+
+window.showTransaction131 = async function() {
+    try {
+        const result = await apiRequest("/api/transactions/4");
+        const list = result.transactions || result.data || [];
+        const t = list.find(x => Number(x.id) === 131);
+
+        if (!t) {
+            alert("Transaction 131 not found.");
+            return;
+        }
+
+        alert(
+            "ID: " + t.id +
+            "\nAmount: ₦" + t.amount +
+            "\nReference: " + (t.reference || "MISSING") +
+            "\nStatus: " + t.status +
+            "\nDetails: " + (t.details || "EMPTY")
+        );
+    } catch (error) {
+        alert("Error: " + (error.message || error));
+    }
+};
+
