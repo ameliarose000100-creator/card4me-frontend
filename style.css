@@ -13841,3 +13841,36 @@ footer {
         padding: 10px;
     }
 }
+
+
+/* =====================================================
+   MOBILE HOMEPAGE SERVICES FIX
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .service-card {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .service-card p {
+        max-width: 100%;
+    }
+
+    .service-card .btn {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        white-space: normal;
+    }
+
+}
+
