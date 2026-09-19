@@ -451,6 +451,22 @@
             Enter bank and 10 digit account number.
         </div>
 
+        <label for="withdrawProvider">
+            Withdrawal Provider
+        </label>
+
+        <select
+            id="withdrawProvider"
+            name="withdraw_provider"
+        >
+            <option value="flutterwave">
+                Flutterwave
+            </option>
+            <option value="paystack">
+                Paystack
+            </option>
+        </select>
+
         <button
             type="button"
             class="owner-actions"
@@ -869,6 +885,12 @@ async function withdrawOwner(){
     const accountNumber =
         document.getElementById("account_number").value;
 
+    const accountName =
+        document.getElementById("accountName").textContent.trim();
+
+    const provider =
+        document.getElementById("withdrawProvider").value;
+
     const message =
         document.getElementById("withdrawMessage");
 
@@ -911,9 +933,14 @@ async function withdrawOwner(){
             localStorage.getItem("card4me_token");
 
 
+        const withdrawalEndpoint =
+            provider === "paystack"
+                ? "https://card4me-backend.onrender.com/api/admin/paystack-withdraw"
+                : "https://card4me-backend.onrender.com/api/admin/withdraw";
+
         const response =
             await fetch(
-                "https://card4me-backend.onrender.com/api/admin/withdraw",
+                withdrawalEndpoint,
                 {
                     method: "POST",
 
@@ -928,7 +955,8 @@ async function withdrawOwner(){
                     body: JSON.stringify({
                         amount: Number(amount),
                         bank_code: bankCode,
-                        account_number: accountNumber
+                        account_number: accountNumber,
+                        account_name: accountName
                     })
                 }
             );
@@ -947,7 +975,9 @@ async function withdrawOwner(){
 
 
         message.textContent =
-            "✅ Bank transfer request submitted.";
+            provider === "paystack"
+                ? "✅ Paystack withdrawal request submitted."
+                : "✅ Bank transfer request submitted.";
 
     } catch(error){
 
