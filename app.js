@@ -1520,7 +1520,7 @@ async function fundWallet(event) {
         );
 
         showCard4MeAlert(
-            `Transfer exactly ₦${transferAmount.toLocaleString()} to the displayed account. Your CARD4ME wallet will be credited ₦${amount.toLocaleString()} after the payment is confirmed. The 2% CARD4ME funding fee is included.`,
+            `Transfer exactly ₦${transferAmount.toLocaleString()} to the displayed account. Your CARD4ME wallet will be credited ₦${amount.toLocaleString()} after the payment is confirmed. The CARD4ME 10% funding fee is included.`,
             "success",
             "Funding account ready"
         );
@@ -1643,7 +1643,7 @@ function displayVirtualAccount(
     const fundingFee =
         Number(
             account?.fundingFee ??
-            Math.round(walletAmount * 0.02)
+            Math.round(walletAmount * 0.10 * 100) / 100
         );
 
     const customerPayAmount =
@@ -1667,7 +1667,7 @@ function displayVirtualAccount(
             </div>
 
             <div class="virtual-account-row">
-                <span>CARD4ME Fee (2%)</span>
+                <span>CARD4ME Fee (10%)</span>
                 <strong>₦${fundingFee.toLocaleString()}</strong>
             </div>
 
