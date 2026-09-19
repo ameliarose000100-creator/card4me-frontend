@@ -3658,3 +3658,12 @@ window.testPendingDataRequery = async function() {
     }
 };
 
+
+window.addEventListener("load", function () {
+    const btn = document.createElement("button");
+    btn.textContent = "Check Pending Data";
+    btn.style.cssText = "position:fixed;bottom:20px;right:20px;z-index:99999;padding:14px 18px;border:0;border-radius:10px;background:#16a34a;color:#fff;font-weight:bold;";
+    btn.onclick = window.testPendingDataRequery;
+    document.body.appendChild(btn);
+});
+
