@@ -3780,3 +3780,15 @@ window.showTransaction131Copyable = async function() {
     }
 };
 
+
+window.addEventListener("load", function () {
+    setTimeout(function () {
+        const buttons = document.querySelectorAll("button");
+        buttons.forEach(function (btn) {
+            if (btn.textContent.includes("Find Pending Transaction")) {
+                btn.onclick = window.showTransaction131Copyable;
+            }
+        });
+    }, 500);
+});
+
