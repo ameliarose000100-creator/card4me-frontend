@@ -3635,3 +3635,26 @@ async function dataPurchase(event) {
 
 }
 
+
+async function requeryPendingData(reference) {
+    return await apiRequest("/api/data/requery", {
+        method: "POST",
+        body: JSON.stringify({ reference })
+    });
+}
+
+
+window.testPendingDataRequery = async function() {
+    const reference = "CARD4ME-DATA-1789801627304-4-78";
+
+    try {
+        const result = await requeryPendingData(reference);
+        console.log("DATA REQUERY RESULT:", result);
+        alert(JSON.stringify(result));
+        return result;
+    } catch (error) {
+        console.error("DATA REQUERY ERROR:", error);
+        alert("Requery error: " + (error.message || error));
+    }
+};
+
