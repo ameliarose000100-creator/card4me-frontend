@@ -1,5 +1,5 @@
 const AIRTIME_API =
-    "https://card4me-backend-1.onrender.com/api/airtime/purchase";
+    "https://card4me-backend.onrender.com/api/airtime/purchase";
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -28,6 +28,100 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("CARD4ME: Airtime JavaScript loaded.");
 
+    /*
+     * Best-effort Nigerian network detection.
+     * Mobile Number Portability means a prefix does not guarantee
+     * the subscriber's current network, so the user can still change
+     * the detected network manually.
+     */
+    function detectNetwork(phone) {
+
+        const digits = String(phone || "").replace(/\D/g, "");
+
+        const normalized = digits.startsWith("234")
+            ? "0" + digits.slice(3)
+            : digits;
+
+        if (!/^0\d{10}$/.test(normalized)) {
+            return null;
+        }
+
+        const prefix = normalized.slice(0, 4);
+
+        const prefixes = {
+            MTN: [
+                "0703", "0704", "0706",
+                "0803", "0806",
+                "0810", "0813", "0814", "0816",
+                "0903", "0906",
+                "0913", "0916"
+            ],
+
+            AIRTEL: [
+                "0701", "0708",
+                "0802", "0808",
+                "0812",
+                "0901", "0902", "0904", "0907",
+                "0912"
+            ],
+
+            GLO: [
+                "0705",
+                "0805", "0807",
+                "0811", "0815",
+                "0905", "0915"
+            ]
+        };
+
+        for (const [network, list] of Object.entries(prefixes)) {
+            if (list.includes(prefix)) {
+                return network;
+            }
+        }
+
+        return null;
+    }
+
+    function updateDetectedNetwork() {
+
+        const detected = detectNetwork(phoneInput.value);
+
+        if (!detected) {
+            return;
+        }
+
+        const option = Array.from(networkInput.options).find(
+            option =>
+                option.value.trim().toUpperCase() === detected ||
+                option.textContent.trim().toUpperCase() === detected
+        );
+
+        if (option) {
+            networkInput.value = option.value;
+
+            networkInput.dispatchEvent(
+                new Event("change", {
+                    bubbles: true
+                })
+            );
+
+            console.log(
+                "CARD4ME: Detected network:",
+                detected
+            );
+        }
+    }
+
+    phoneInput.addEventListener(
+        "input",
+        updateDetectedNetwork
+    );
+
+    phoneInput.addEventListener(
+        "blur",
+        updateDetectedNetwork
+    );
+
     form.addEventListener("submit", async function (event) {
 
         event.preventDefault();
@@ -38,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const token = localStorage.getItem("card4me_token");
 
         if (!token) {
+
             showAirtimeMessage(
                 "Please login before buying airtime.",
                 "error"
@@ -51,14 +146,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const phone = phoneInput.value.trim();
-        const network = networkInput.value.trim().toUpperCase();
-        const amount = Number(amountInput.value);
+
+        updateDetectedNetwork();
+
+        const network =
+            networkInput.value.trim().toUpperCase();
+
+        const amount =
+            Number(amountInput.value);
 
         if (!/^0\d{10}$/.test(phone)) {
+
             showAirtimeMessage(
                 "Please enter a valid Nigerian phone number.",
                 "error"
             );
+
             return;
         }
 
@@ -70,18 +173,22 @@ document.addEventListener("DOMContentLoaded", function () {
         ];
 
         if (!validNetworks.includes(network)) {
+
             showAirtimeMessage(
                 "Please select a valid network.",
                 "error"
             );
+
             return;
         }
 
         if (!Number.isFinite(amount) || amount < 100) {
+
             showAirtimeMessage(
                 "Minimum airtime amount is ₦100.",
                 "error"
             );
+
             return;
         }
 
@@ -90,29 +197,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
 
-            console.log("CARD4ME: Sending request to:", AIRTIME_API);
+            console.log(
+                "CARD4ME: Sending request to:",
+                AIRTIME_API
+            );
 
-            const response = await fetch(AIRTIME_API, {
-                method: "POST",
+            const response = await fetch(
+                AIRTIME_API,
+                {
+                    method: "POST",
 
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + token
-                },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization":
+                            "Bearer " + token
+                    },
 
-                body: JSON.stringify({
-                    phone: phone,
-                    network: network,
-                    amount: amount
-                })
-            });
+                    body: JSON.stringify({
+                        phone: phone,
+                        network: network,
+                        amount: amount
+                    })
+                }
+            );
 
             console.log(
                 "CARD4ME: Server response:",
                 response.status
             );
 
-            const text = await response.text();
+            const text =
+                await response.text();
 
             console.log(
                 "CARD4ME: Server response body:",
@@ -122,11 +237,16 @@ document.addEventListener("DOMContentLoaded", function () {
             let data;
 
             try {
+
                 data = JSON.parse(text);
+
             } catch (parseError) {
+
                 data = {
                     success: false,
-                    message: text || "Invalid server response."
+                    message:
+                        text ||
+                        "Invalid server response."
                 };
             }
 
@@ -135,9 +255,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 response.status === 403
             ) {
 
-                localStorage.removeItem("card4me_token");
-                localStorage.removeItem("card4me_user");
-                localStorage.removeItem("card4meLoggedIn");
+                localStorage.removeItem(
+                    "card4me_token"
+                );
+
+                localStorage.removeItem(
+                    "card4me_user"
+                );
+
+                localStorage.removeItem(
+                    "card4meLoggedIn"
+                );
 
                 showAirtimeMessage(
                     "Your login session has expired. Please login again.",
@@ -145,13 +273,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
                 setTimeout(function () {
-                    window.location.href = "login.html";
+                    window.location.href =
+                        "login.html";
                 }, 1500);
 
                 return;
             }
 
             if (!response.ok) {
+
                 throw new Error(
                     data.message ||
                     "Airtime purchase failed."
@@ -159,6 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (!data.success) {
+
                 throw new Error(
                     data.message ||
                     "Airtime purchase failed."
@@ -197,7 +328,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-function showAirtimeMessage(message, type) {
+function showAirtimeMessage(
+    message,
+    type
+) {
 
     const oldMessage =
         document.querySelector(
@@ -214,36 +348,61 @@ function showAirtimeMessage(message, type) {
     messageBox.className =
         "card4me-airtime-message";
 
-    messageBox.textContent = message;
+    messageBox.textContent =
+        message;
 
-    messageBox.style.marginTop = "15px";
-    messageBox.style.padding = "14px";
-    messageBox.style.borderRadius = "10px";
-    messageBox.style.fontSize = "14px";
-    messageBox.style.fontWeight = "600";
-    messageBox.style.textAlign = "center";
+    messageBox.style.marginTop =
+        "15px";
+
+    messageBox.style.padding =
+        "14px";
+
+    messageBox.style.borderRadius =
+        "10px";
+
+    messageBox.style.fontSize =
+        "14px";
+
+    messageBox.style.fontWeight =
+        "600";
+
+    messageBox.style.textAlign =
+        "center";
 
     if (type === "success") {
 
-        messageBox.style.background = "#e8f7ee";
-        messageBox.style.color = "#137333";
+        messageBox.style.background =
+            "#e8f7ee";
+
+        messageBox.style.color =
+            "#137333";
 
     } else {
 
-        messageBox.style.background = "#fdecec";
-        messageBox.style.color = "#c62828";
+        messageBox.style.background =
+            "#fdecec";
+
+        messageBox.style.color =
+            "#c62828";
     }
 
     const form =
-        document.querySelector(".form-card-inner");
+        document.querySelector(
+            ".form-card-inner"
+        );
 
     if (form) {
-        form.appendChild(messageBox);
+        form.appendChild(
+            messageBox
+        );
     }
 
     setTimeout(function () {
 
-        if (messageBox && messageBox.parentNode) {
+        if (
+            messageBox &&
+            messageBox.parentNode
+        ) {
             messageBox.remove();
         }
 
