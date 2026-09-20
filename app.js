@@ -115,7 +115,7 @@ function showCard4MeAlert(message, type = "info", title = "") {
 }
 
 const API_BASE =
-    "https://card4me-backend-1.onrender.com";
+    "https://card4me-backend.onrender.com";
 
 
 /* =====================================================
