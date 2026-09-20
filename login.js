@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const response =
                     await fetch(
-                        "https://card4me-backend.onrender.com/api/auth/login",
+                        "https://card4me-backend-1.onrender.com/api/auth/login",
                         {
                             method: "POST",
 

@@ -1,5 +1,5 @@
 const AIRTIME_API =
-    "https://card4me-backend.onrender.com/api/airtime/purchase";
+    "https://card4me-backend-1.onrender.com/api/airtime/purchase";
 
 document.addEventListener("DOMContentLoaded", function () {
 
