@@ -726,6 +726,12 @@ async function loginUser(event) {
          * authentication has been saved.
          */
 
+        showCard4MeAlert(
+            "You have logged in successfully.",
+            "success",
+            "Login Successful"
+        );
+
         window.location.replace(
             "dashboard.html"
         );
@@ -1026,7 +1032,19 @@ async function registerUser(event) {
         );
 
 
-        showCard4MeAlert(error.message || "Unable to create your account.", "error", "Registration failed");
+        const registrationError =
+            error.message || "Unable to create your account.";
+
+        const alreadyExists =
+            /already exists|already registered|email.*exist|phone.*exist|duplicate/i.test(
+                registrationError
+            );
+
+        showCard4MeAlert(
+            registrationError,
+            alreadyExists ? "warning" : "error",
+            alreadyExists ? "User Already Exists" : "Registration failed"
+        );
 
 
         if (registerButton) {
@@ -2850,8 +2868,8 @@ async function dataPurchase(
                         network:
                             network,
 
-                        plan:
-                            plan,
+                        planId:
+                            String(plan),
 
                         amount:
                             amount
@@ -3605,9 +3623,22 @@ async function dataPurchase(event) {
             }
         );
 
-        if (!result || !result.success) {
+        if (!result) {
+            throw new Error("Data purchase failed.");
+        }
+
+        if (result.pending) {
+            alert(
+                result.message ||
+                "Your data purchase is being processed. Please wait for confirmation."
+            );
+            window.location.href = "transaction.html";
+            return;
+        }
+
+        if (!result.success) {
             throw new Error(
-                result?.message || "Data purchase failed."
+                result.message || "Data purchase failed."
             );
         }
 
@@ -3644,28 +3675,7 @@ async function requeryPendingData(reference) {
 }
 
 
-window.testPendingDataRequery = async function() {
-    const reference = "CARD4ME-DATA-1789801627304-4-78";
 
-    try {
-        const result = await requeryPendingData(reference);
-        console.log("DATA REQUERY RESULT:", result);
-        alert(JSON.stringify(result));
-        return result;
-    } catch (error) {
-        console.error("DATA REQUERY ERROR:", error);
-        alert("Requery error: " + (error.message || error));
-    }
-};
-
-
-window.addEventListener("load", function () {
-    const btn = document.createElement("button");
-    btn.textContent = "Check Pending Data";
-    btn.style.cssText = "position:fixed;bottom:20px;right:20px;z-index:99999;padding:14px 18px;border:0;border-radius:10px;background:#16a34a;color:#fff;font-weight:bold;";
-    btn.onclick = window.testPendingDataRequery;
-    document.body.appendChild(btn);
-});
 
 
 window.findPendingDataTransaction = async function() {
@@ -3680,13 +3690,6 @@ window.findPendingDataTransaction = async function() {
 };
 
 
-window.addEventListener("load", function () {
-    const btn = document.createElement("button");
-    btn.textContent = "Find Pending Transaction";
-    btn.style.cssText = "position:fixed;bottom:20px;right:20px;z-index:99999;padding:14px 18px;border:0;border-radius:10px;background:#16a34a;color:#fff;font-weight:bold;";
-    btn.onclick = window.findPendingDataTransaction;
-    document.body.appendChild(btn);
-});
 
 
 window.showPendingSummary = async function() {
@@ -3781,14 +3784,4 @@ window.showTransaction131Copyable = async function() {
 };
 
 
-window.addEventListener("load", function () {
-    setTimeout(function () {
-        const buttons = document.querySelectorAll("button");
-        buttons.forEach(function (btn) {
-            if (btn.textContent.includes("Find Pending Transaction")) {
-                btn.onclick = window.showTransaction131Copyable;
-            }
-        });
-    }, 500);
-});
 
