@@ -18258,3 +18258,564 @@ header,
 
 }
 
+
+/* =====================================================
+   CARD4ME — FINAL SHARED UI
+   PART 9: CONTACT + FOOTER + RESPONSIVE CLEANUP
+===================================================== */
+
+/* =====================================================
+   CONTACT PAGE
+===================================================== */
+
+.contact-page {
+    min-height: calc(100vh - 72px);
+
+    padding: 45px 0 80px;
+
+    background:
+        radial-gradient(
+            circle at 85% 5%,
+            rgba(49,209,123,.045),
+            transparent 30%
+        );
+}
+
+.contact-page .page-heading {
+    margin-bottom: 30px;
+}
+
+.contact-page .page-heading h1 {
+    margin-bottom: 8px;
+}
+
+.contact-page .page-heading p {
+    max-width: 650px;
+}
+
+/* Contact form */
+
+.contact-page .form-card {
+    max-width: 680px;
+}
+
+.contact-page textarea {
+    width: 100%;
+
+    min-height: 145px;
+
+    padding: 14px 15px;
+
+    resize: vertical;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 13px;
+
+    outline: none;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color: #fff;
+
+    font: inherit;
+
+    line-height: 1.6;
+
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        background 180ms ease;
+}
+
+.contact-page textarea::placeholder {
+    color: var(--cm-text-muted);
+}
+
+.contact-page textarea:focus {
+    border-color:
+        rgba(49,209,123,.55);
+
+    background:
+        rgba(49,209,123,.025);
+
+    box-shadow:
+        0 0 0 3px rgba(49,209,123,.075);
+}
+
+.contact-page .btn {
+    width: 100%;
+
+    min-height: 51px;
+
+    border-radius: 13px;
+
+    font-weight: 850;
+}
+
+/* Contact email/info */
+
+.contact-email,
+.contact-info {
+    color: var(--cm-primary);
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    overflow-wrap: anywhere;
+}
+
+/* =====================================================
+   GLOBAL ALERTS
+===================================================== */
+
+.alert,
+.account-alert,
+.account-global-alert,
+.form-message {
+    border-radius: 12px;
+
+    line-height: 1.55;
+}
+
+.alert-success,
+.form-message.success {
+    border-color:
+        rgba(49,209,123,.2);
+
+    background:
+        rgba(49,209,123,.055);
+
+    color: var(--cm-primary);
+}
+
+.alert-error,
+.form-message.error {
+    border-color:
+        rgba(255,80,80,.18);
+
+    background:
+        rgba(255,80,80,.045);
+
+    color: #ff8888;
+}
+
+.alert-warning,
+.form-message.warning {
+    border-color:
+        rgba(255,193,7,.18);
+
+    background:
+        rgba(255,193,7,.045);
+
+    color: #f3c85b;
+}
+
+/* =====================================================
+   BUTTON SYSTEM
+===================================================== */
+
+.btn,
+button,
+.login-btn,
+.register-btn,
+.secondary-btn,
+.nav-button {
+    font-family: inherit;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid
+        rgba(49,209,123,.65);
+
+    outline-offset: 2px;
+}
+
+.btn:disabled,
+button:disabled {
+    cursor: not-allowed;
+
+    opacity: .55;
+
+    transform: none !important;
+}
+
+/* Primary button */
+
+.btn,
+.register-btn {
+    background:
+        linear-gradient(
+            135deg,
+            var(--cm-primary),
+            #25b86a
+        );
+
+    color: #06120c;
+
+    border: 1px solid
+        rgba(49,209,123,.45);
+
+    box-shadow:
+        0 8px 22px rgba(49,209,123,.12);
+
+    font-weight: 800;
+
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease,
+        filter 180ms ease;
+}
+
+.btn:hover,
+.register-btn:hover {
+    filter: brightness(1.05);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 12px 28px rgba(49,209,123,.17);
+}
+
+/* Secondary */
+
+.secondary-btn,
+.btn-outline {
+    background:
+        rgba(255,255,255,.025);
+
+    color: var(--cm-text-soft);
+
+    border: 1px solid var(--cm-border-strong);
+
+    transition:
+        background 180ms ease,
+        border-color 180ms ease,
+        color 180ms ease,
+        transform 180ms ease;
+}
+
+.secondary-btn:hover,
+.btn-outline:hover {
+    background:
+        rgba(49,209,123,.045);
+
+    border-color:
+        rgba(49,209,123,.32);
+
+    color: #fff;
+
+    transform: translateY(-1px);
+}
+
+/* =====================================================
+   OWNER / EARNINGS SHARED UI
+===================================================== */
+
+.owner-page {
+    min-height: calc(100vh - 72px);
+
+    padding: 45px 0 80px;
+
+    background:
+        radial-gradient(
+            circle at 85% 5%,
+            rgba(49,209,123,.04),
+            transparent 30%
+        );
+}
+
+.owner-header {
+    margin-bottom: 28px;
+}
+
+.owner-header h1 {
+    margin: 0 0 8px;
+
+    color: #fff;
+
+    font-size:
+        clamp(1.9rem, 5vw, 2.7rem);
+
+    font-weight: 850;
+
+    letter-spacing: -.04em;
+}
+
+.owner-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 6px 10px;
+
+    margin-top: 8px;
+
+    border: 1px solid rgba(49,209,123,.18);
+
+    border-radius: 999px;
+
+    background:
+        rgba(49,209,123,.055);
+
+    color: var(--cm-primary);
+
+    font-size: .65rem;
+    font-weight: 800;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+}
+
+.owner-section {
+    margin-top: 22px;
+
+    padding: 22px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 19px;
+
+    background:
+        var(--cm-surface);
+}
+
+.earnings-grid,
+.breakdown-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 15px;
+}
+
+.profit-positive {
+    color: var(--cm-primary) !important;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+    position: relative;
+
+    margin-top: 70px;
+
+    border-top:
+        1px solid rgba(255,255,255,.06);
+
+    background:
+        rgba(4,8,7,.72);
+
+    backdrop-filter: blur(16px);
+}
+
+footer::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 15%;
+    right: 15%;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(49,209,123,.22),
+            transparent
+        );
+}
+
+.footer-content {
+    width: min(
+        calc(100% - 32px),
+        1180px
+    );
+
+    margin: 0 auto;
+
+    padding: 35px 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+}
+
+.footer-copy,
+.footer-text {
+    color: var(--cm-text-muted);
+
+    font-size: .78rem;
+
+    line-height: 1.6;
+}
+
+.footer-links {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 17px;
+}
+
+.footer-links a {
+    color: var(--cm-text-muted);
+
+    font-size: .76rem;
+    font-weight: 650;
+
+    text-decoration: none;
+
+    transition:
+        color 180ms ease;
+}
+
+.footer-links a:hover {
+    color: var(--cm-primary);
+}
+
+/* =====================================================
+   COMMON EMPTY / NOTE ELEMENTS
+===================================================== */
+
+.note {
+    padding: 14px 15px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,.02);
+
+    color: var(--cm-text-muted);
+
+    font-size: .78rem;
+
+    line-height: 1.6;
+}
+
+/* =====================================================
+   GLOBAL TABLE CLEANUP
+===================================================== */
+
+.earnings-table {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.earnings-table table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.earnings-table th {
+    padding: 12px;
+
+    border-bottom:
+        1px solid var(--cm-border);
+
+    color: var(--cm-text-muted);
+
+    font-size: .68rem;
+    font-weight: 800;
+
+    letter-spacing: .06em;
+
+    text-align: left;
+
+    text-transform: uppercase;
+}
+
+.earnings-table td {
+    padding: 14px 12px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.05);
+
+    color: var(--cm-text-soft);
+
+    font-size: .8rem;
+}
+
+.earnings-table tr:last-child td {
+    border-bottom: 0;
+}
+
+/* =====================================================
+   FINAL MOBILE CLEANUP
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .footer-content {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding:
+            28px 0;
+    }
+
+    .footer-links {
+        justify-content: flex-start;
+    }
+
+    .earnings-grid,
+    .breakdown-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .owner-page {
+        padding-top: 30px;
+
+        padding-bottom: 60px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .footer-content {
+        width:
+            min(
+                calc(100% - 22px),
+                1180px
+            );
+    }
+
+    footer {
+        margin-top: 50px;
+    }
+
+    .footer-links {
+        gap: 12px;
+    }
+
+}
+
