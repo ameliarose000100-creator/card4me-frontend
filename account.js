@@ -96,6 +96,23 @@ async function loadAccountInformation() {
 
 
 /* =========================================
+   ACCOUNT ALERT HELPER
+========================================= */
+
+function showAccountAlert(element, message, type = "success") {
+    if (!element) {
+        return;
+    }
+
+    element.textContent = message;
+    element.className =
+        `account-alert ${type}`;
+
+    element.style.display = "block";
+}
+
+
+/* =========================================
    EDIT PROFILE
 ========================================= */
 
@@ -146,6 +163,7 @@ function setupEditProfile() {
 
             if (message) {
                 message.textContent = "";
+                message.style.display = "none";
             }
 
             panel.scrollIntoView({
@@ -162,6 +180,7 @@ function setupEditProfile() {
 
             if (message) {
                 message.textContent = "";
+                message.style.display = "none";
             }
         }
     );
@@ -187,26 +206,29 @@ function setupEditProfile() {
                 )?.value.trim() || "";
 
             if (!fullName || fullName.length < 2) {
-                if (message) {
-                    message.textContent =
-                        "Enter a valid full name.";
-                }
+                showAccountAlert(
+                    message,
+                    "Enter a valid full name.",
+                    "error"
+                );
                 return;
             }
 
             if (!email || !email.includes("@")) {
-                if (message) {
-                    message.textContent =
-                        "Enter a valid email address.";
-                }
+                showAccountAlert(
+                    message,
+                    "Enter a valid email address.",
+                    "error"
+                );
                 return;
             }
 
             if (!phone) {
-                if (message) {
-                    message.textContent =
-                        "Enter your phone number.";
-                }
+                showAccountAlert(
+                    message,
+                    "Enter your phone number.",
+                    "error"
+                );
                 return;
             }
 
@@ -216,10 +238,11 @@ function setupEditProfile() {
                     "Saving...";
             }
 
-            if (message) {
-                message.textContent =
-                    "Updating your profile...";
-            }
+            showAccountAlert(
+                message,
+                "Updating your profile...",
+                "success"
+            );
 
             try {
                 const result =
@@ -286,10 +309,11 @@ function setupEditProfile() {
                         "Not available";
                 }
 
-                if (message) {
-                    message.textContent =
-                        "Profile updated successfully.";
-                }
+                showAccountAlert(
+                    message,
+                    "Profile updated successfully.",
+                    "success"
+                );
 
             } catch (error) {
                 console.error(
@@ -297,11 +321,12 @@ function setupEditProfile() {
                     error
                 );
 
-                if (message) {
-                    message.textContent =
-                        error.message ||
-                        "Unable to update profile.";
-                }
+                showAccountAlert(
+                    message,
+                    error.message ||
+                    "Unable to update profile.",
+                    "error"
+                );
 
             } finally {
                 if (saveButton) {
@@ -368,6 +393,7 @@ function setupChangePassword() {
 
             if (message) {
                 message.textContent = "";
+                message.style.display = "none";
             }
 
             panel.scrollIntoView({
@@ -385,6 +411,7 @@ function setupChangePassword() {
 
             if (message) {
                 message.textContent = "";
+                message.style.display = "none";
             }
         }
     );
@@ -411,8 +438,11 @@ function setupChangePassword() {
 
             if (newPassword.length < 8) {
                 if (message) {
-                    message.textContent =
-                        "New password must be at least 8 characters.";
+                    showAccountAlert(
+                        message,
+                        "New password must be at least 8 characters.",
+                        "error"
+                    );
                 }
 
                 return;
@@ -423,8 +453,11 @@ function setupChangePassword() {
                 confirmNewPassword
             ) {
                 if (message) {
-                    message.textContent =
-                        "New passwords do not match.";
+                    showAccountAlert(
+                        message,
+                        "New passwords do not match.",
+                        "error"
+                    );
                 }
 
                 return;
@@ -435,8 +468,11 @@ function setupChangePassword() {
                 newPassword
             ) {
                 if (message) {
-                    message.textContent =
-                        "Your new password must be different.";
+                    showAccountAlert(
+                        message,
+                        "Your new password must be different.",
+                        "error"
+                    );
                 }
 
                 return;
@@ -449,8 +485,11 @@ function setupChangePassword() {
             }
 
             if (message) {
-                message.textContent =
-                    "Updating your password...";
+                showAccountAlert(
+                    message,
+                    "Updating your password...",
+                    "success"
+                );
             }
 
             try {
@@ -483,8 +522,11 @@ function setupChangePassword() {
                 form.reset();
 
                 if (message) {
-                    message.textContent =
-                        "Password changed successfully.";
+                    showAccountAlert(
+                        message,
+                        "Password changed successfully.",
+                        "success"
+                    );
                 }
 
             } catch (error) {
@@ -494,9 +536,12 @@ function setupChangePassword() {
                 );
 
                 if (message) {
-                    message.textContent =
+                    showAccountAlert(
+                        message,
                         error.message ||
-                        "Unable to change password.";
+                        "Unable to change password.",
+                        "error"
+                    );
                 }
 
             } finally {

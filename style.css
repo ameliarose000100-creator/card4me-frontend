@@ -8989,7 +8989,7 @@ body:has(.payment-page) {
         box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
     }
 
-    #mainNav.show {
+    #mainNav.active {
         display: flex;
     }
 
@@ -13874,3 +13874,26 @@ footer {
 
 }
 
+
+
+/* =========================================
+   ACCOUNT SECURITY ALERTS
+========================================= */
+
+.account-alert {
+    margin: 14px 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+    background: rgba(0, 230, 160, 0.08);
+    border: 1px solid rgba(0, 230, 160, 0.25);
+    color: #00e6a0;
+}
+
+.account-alert.error {
+    background: rgba(255, 80, 80, 0.08);
+    border-color: rgba(255, 80, 80, 0.25);
+    color: #ff8f8f;
+}
