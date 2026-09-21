@@ -18852,3 +18852,11 @@ footer::before {
     }
 }
 
+
+/* Keep the complete brand name together */
+.logo-text {
+    display: inline-block !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+}
+
