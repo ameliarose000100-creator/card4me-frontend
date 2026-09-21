@@ -15378,3 +15378,492 @@ header,
 
 }
 
+
+/* =====================================================
+   CARD4ME — AUTHENTICATION
+   PART 4: LOGIN / REGISTER / RECOVERY
+===================================================== */
+
+/* Auth page background */
+
+.auth-page {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px 18px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(49, 209, 123, .08),
+            transparent 35%
+        ),
+        var(--cm-bg);
+}
+
+/* Auth container */
+
+.auth-container {
+    width: 100%;
+    max-width: 460px;
+}
+
+/* Auth card */
+
+.auth-card {
+    position: relative;
+
+    padding: 38px 34px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.045),
+            rgba(255,255,255,.012)
+        ),
+        var(--cm-surface);
+
+    box-shadow:
+        0 24px 70px rgba(0,0,0,.35),
+        0 0 45px rgba(49,209,123,.035);
+
+    overflow: hidden;
+}
+
+.auth-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 10%;
+    right: 10%;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(49,209,123,.45),
+            transparent
+        );
+}
+
+/* Auth logo */
+
+.auth-card .brand,
+.auth-card .logo,
+.auth-container .brand,
+.auth-container .logo {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 28px;
+}
+
+.auth-card .brand-logo,
+.auth-card .logo-mark,
+.auth-container .brand-logo,
+.auth-container .logo-mark {
+    border-radius: 14px;
+}
+
+/* Auth headings */
+
+.auth-card h1,
+.auth-card h2 {
+    margin: 0 0 10px;
+
+    color: #ffffff;
+
+    font-size:
+        clamp(1.75rem, 5vw, 2.25rem);
+
+    font-weight: 850;
+
+    letter-spacing: -.035em;
+
+    text-align: center;
+}
+
+.auth-subtitle {
+    max-width: 360px;
+
+    margin: 0 auto 28px;
+
+    color: var(--cm-text-soft);
+
+    font-size: .9rem;
+
+    line-height: 1.7;
+
+    text-align: center;
+}
+
+/* Form */
+
+.auth-card .form-group {
+    margin-bottom: 18px;
+}
+
+.auth-card label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--cm-text-soft);
+
+    font-size: .78rem;
+    font-weight: 750;
+
+    letter-spacing: .02em;
+}
+
+.auth-card input,
+.auth-card select {
+    width: 100%;
+
+    min-height: 50px;
+
+    padding:
+        0 15px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 13px;
+
+    outline: none;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color: #ffffff;
+
+    font: inherit;
+
+    transition:
+        border-color 180ms ease,
+        background 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.auth-card input::placeholder {
+    color: var(--cm-text-muted);
+}
+
+.auth-card input:hover,
+.auth-card select:hover {
+    border-color:
+        var(--cm-border-strong);
+}
+
+.auth-card input:focus,
+.auth-card select:focus {
+    border-color:
+        rgba(49,209,123,.55);
+
+    background:
+        rgba(49,209,123,.025);
+
+    box-shadow:
+        0 0 0 3px rgba(49,209,123,.08);
+}
+
+/* Password fields */
+
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 52px;
+}
+
+.password-toggle {
+    position: absolute;
+
+    right: 10px;
+    top: 50%;
+
+    width: 36px;
+    height: 36px;
+
+    transform: translateY(-50%);
+
+    display: grid;
+    place-items: center;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: var(--cm-text-muted);
+
+    cursor: pointer;
+
+    transition:
+        color 180ms ease,
+        background 180ms ease;
+}
+
+.password-toggle:hover {
+    color: var(--cm-primary);
+
+    background:
+        rgba(49,209,123,.07);
+}
+
+/* Main auth buttons */
+
+.auth-card .btn,
+.auth-card button[type="submit"],
+.auth-card .login-btn,
+.auth-card .register-btn {
+    width: 100%;
+
+    min-height: 51px;
+
+    margin-top: 5px;
+
+    border-radius: 13px;
+
+    font-weight: 800;
+}
+
+/* Secondary links */
+
+.auth-card a {
+    color: var(--cm-primary);
+
+    text-decoration: none;
+
+    transition: color 180ms ease;
+}
+
+.auth-card a:hover {
+    color: #ffffff;
+}
+
+/* Forgot password */
+
+.forgot-password,
+.back-login {
+    display: block;
+
+    margin-top: 18px;
+
+    text-align: center;
+
+    font-size: .84rem;
+}
+
+/* Form hints */
+
+.form-hint {
+    margin-top: 7px;
+
+    color: var(--cm-text-muted);
+
+    font-size: .75rem;
+
+    line-height: 1.55;
+}
+
+/* Messages */
+
+.form-message,
+.password-message,
+.auth-checking {
+    margin-top: 15px;
+
+    padding: 11px 13px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 11px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    color: var(--cm-text-soft);
+
+    font-size: .82rem;
+
+    line-height: 1.5;
+}
+
+/* Success panel */
+
+.success-panel {
+    margin-top: 20px;
+
+    padding: 24px;
+
+    border: 1px solid rgba(49,209,123,.18);
+
+    border-radius: 17px;
+
+    background:
+        rgba(49,209,123,.055);
+
+    text-align: center;
+}
+
+.success-icon {
+    display: grid;
+    place-items: center;
+
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(49,209,123,.1);
+
+    color: var(--cm-primary);
+
+    font-size: 1.35rem;
+}
+
+.success-panel h2,
+.success-panel h3 {
+    margin-bottom: 8px;
+
+    color: #ffffff;
+}
+
+.success-panel p {
+    color: var(--cm-text-soft);
+
+    line-height: 1.65;
+}
+
+/* Security notice */
+
+.security-notice {
+    margin-top: 20px;
+
+    padding: 14px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 13px;
+
+    background:
+        rgba(255,255,255,.02);
+
+    color: var(--cm-text-muted);
+
+    font-size: .76rem;
+
+    line-height: 1.6;
+}
+
+.security-icon {
+    color: var(--cm-primary);
+}
+
+/* Auth footer */
+
+.auth-footer {
+    margin-top: 24px;
+
+    color: var(--cm-text-muted);
+
+    font-size: .78rem;
+
+    line-height: 1.6;
+
+    text-align: center;
+}
+
+.auth-footer a {
+    font-weight: 700;
+}
+
+/* Optional labels */
+
+.optional-label {
+    color: var(--cm-text-muted);
+
+    font-size: .7rem;
+    font-weight: 500;
+}
+
+/* Register referral field */
+
+#referralCode {
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+/* =====================================================
+   AUTH MOBILE
+===================================================== */
+
+@media (max-width: 520px) {
+
+    .auth-page {
+        align-items: flex-start;
+
+        padding:
+            24px 12px;
+    }
+
+    .auth-container {
+        margin-top: 12px;
+    }
+
+    .auth-card {
+        padding:
+            30px 20px;
+
+        border-radius: 20px;
+    }
+
+    .auth-card h1,
+    .auth-card h2 {
+        font-size: 1.75rem;
+    }
+
+    .auth-subtitle {
+        font-size: .85rem;
+    }
+
+}
+
+/* Very small screens */
+
+@media (max-width: 360px) {
+
+    .auth-page {
+        padding-inline: 8px;
+    }
+
+    .auth-card {
+        padding:
+            26px 16px;
+    }
+
+    .auth-card input,
+    .auth-card select {
+        min-height: 48px;
+    }
+
+}
+
