@@ -3400,6 +3400,36 @@ function initializeCard4mePage() {
 
     initializeLogoutButtons();
 
+    /*
+     * Auto-fill referral code from registration URL.
+     */
+    const referralInput =
+        document.getElementById("referralCode");
+
+    if (
+        referralInput &&
+        window.location.pathname
+            .toLowerCase()
+            .endsWith("register.html")
+    ) {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const referralFromUrl =
+            (params.get("ref") || "")
+                .trim()
+                .toUpperCase();
+
+        if (referralFromUrl) {
+            referralInput.value =
+                referralFromUrl;
+        }
+
+    }
+
 
     /*
      * Restore a previously created virtual account
