@@ -203,6 +203,14 @@
                 <button
                     type="button"
                     class="btn btn-outline"
+                    id="editProfileButton"
+                >
+                    Edit Profile
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-outline"
                     id="changePasswordButton"
                 >
                     Change Password
@@ -219,6 +227,91 @@
             </div>
 
         </section>
+
+        <section
+            class="account-card"
+            id="editProfilePanel"
+            style="display:none;"
+        >
+
+            <h2>
+                Edit Profile
+            </h2>
+
+            <form id="editProfileForm">
+
+                <div class="form-group">
+                    <label for="editFullName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editFullName"
+                        name="fullName"
+                        autocomplete="name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="editEmail">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="editEmail"
+                        name="email"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="editPhone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="editPhone"
+                        name="phone"
+                        autocomplete="tel"
+                        required
+                    >
+                </div>
+
+                <div
+                    id="editProfileMessage"
+                    class="form-message"
+                    style="display:none;"
+                ></div>
+
+                <div class="account-actions">
+
+                    <button
+                        type="submit"
+                        class="btn"
+                        id="saveProfileButton"
+                    >
+                        Save Changes
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline"
+                        id="cancelEditProfileButton"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
 
         <section
             class="account-card"
