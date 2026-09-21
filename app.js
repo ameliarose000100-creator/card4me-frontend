@@ -565,17 +565,25 @@ function toggleMenu() {
         document.getElementById("mainNav") ||
         document.getElementById("nav");
 
+    const button =
+        document.querySelector(".menu") ||
+        document.querySelector(".menu-btn");
 
     if (!nav) {
-
+        console.warn("Navigation element not found.");
         return;
-
     }
 
+    const isOpen = nav.classList.toggle("active");
 
-    nav.classList.toggle(
-        "active"
-    );
+    nav.classList.toggle("open", isOpen);
+
+    if (button) {
+        button.setAttribute(
+            "aria-expanded",
+            String(isOpen)
+        );
+    }
 
 }
 
