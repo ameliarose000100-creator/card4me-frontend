@@ -62,6 +62,53 @@ async function loadAccountInformation() {
                 )}`;
         }
 
+        /* =========================================
+           REFERRAL INFORMATION
+        ========================================= */
+
+        const referralCodeElement =
+            document.getElementById("referralCode");
+
+        const referralLinkElement =
+            document.getElementById("referralLink");
+
+        const successfulReferralsElement =
+            document.getElementById("successfulReferrals");
+
+        const rewardsEarnedElement =
+            document.getElementById("rewardsEarned");
+
+        if (referralCodeElement) {
+            referralCodeElement.textContent =
+                profile.referralCode || "Not available";
+        }
+
+        if (referralLinkElement) {
+            referralLinkElement.value =
+                profile.referralLink || "Not available";
+        }
+
+        if (successfulReferralsElement) {
+            successfulReferralsElement.textContent =
+                Number(profile.successfulReferrals || 0).toLocaleString(
+                    "en-NG"
+                );
+        }
+
+        if (rewardsEarnedElement) {
+            const rewards =
+                Number(profile.rewardsEarned || 0);
+
+            rewardsEarnedElement.textContent =
+                `₦${rewards.toLocaleString(
+                    "en-NG",
+                    {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                )}`;
+        }
+
         const editFullName =
             document.getElementById("editFullName");
 
@@ -91,6 +138,108 @@ async function loadAccountInformation() {
             "Account profile error:",
             error
         );
+    }
+}
+
+
+/* =========================================
+   REFERRAL ACTIONS
+========================================= */
+
+function setupReferralActions() {
+    const copyButton =
+        document.getElementById("copyReferralButton");
+
+    const shareButton =
+        document.getElementById("shareReferralButton");
+
+    const linkElement =
+        document.getElementById("referralLink");
+
+    const message =
+        document.getElementById("referralMessage");
+
+    if (copyButton && linkElement) {
+        copyButton.addEventListener("click", async () => {
+            const link = linkElement.value;
+
+            if (!link || link === "Not available" || link === "Loading...") {
+                showAccountAlert(
+                    message,
+                    "Referral link is not available yet.",
+                    "error"
+                );
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(link);
+
+                showAccountAlert(
+                    message,
+                    "Referral link copied!",
+                    "success"
+                );
+            } catch (error) {
+                linkElement.select();
+                document.execCommand("copy");
+
+                showAccountAlert(
+                    message,
+                    "Referral link copied!",
+                    "success"
+                );
+            }
+        });
+    }
+
+    if (shareButton && linkElement) {
+        shareButton.addEventListener("click", async () => {
+            const link = linkElement.value;
+
+            if (!link || link === "Not available" || link === "Loading...") {
+                showAccountAlert(
+                    message,
+                    "Referral link is not available yet.",
+                    "error"
+                );
+                return;
+            }
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: "Join CARD4ME",
+                        text: "Join me on CARD4ME using my referral link.",
+                        url: link
+                    });
+                } catch (error) {
+                    if (error?.name !== "AbortError") {
+                        showAccountAlert(
+                            message,
+                            "Unable to open sharing options.",
+                            "error"
+                        );
+                    }
+                }
+            } else {
+                try {
+                    await navigator.clipboard.writeText(link);
+
+                    showAccountAlert(
+                        message,
+                        "Sharing is unavailable. Link copied instead!",
+                        "success"
+                    );
+                } catch (error) {
+                    showAccountAlert(
+                        message,
+                        "Unable to share the referral link.",
+                        "error"
+                    );
+                }
+            }
+        });
     }
 }
 
@@ -580,6 +729,7 @@ document.addEventListener(
     "DOMContentLoaded",
     () => {
         loadAccountInformation();
+        setupReferralActions();
         setupEditProfile();
         setupChangePassword();
     }

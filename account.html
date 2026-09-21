@@ -237,6 +237,96 @@
 
         </section>
 
+        <section class="account-card" id="referralSection">
+
+            <h2>
+                Refer & Earn
+            </h2>
+
+            <p>
+                Invite friends to CARD4ME and earn ₦100
+                when a referred user makes a qualifying
+                deposit of at least ₦500.
+            </p>
+
+            <div class="account-details">
+
+                <div class="account-detail">
+                    <strong>
+                        Your Referral Code
+                    </strong>
+
+                    <span id="referralCode">
+                        Loading...
+                    </span>
+                </div>
+
+                <div class="account-detail">
+                    <strong>
+                        Successful Referrals
+                    </strong>
+
+                    <span id="successfulReferrals">
+                        0
+                    </span>
+                </div>
+
+                <div class="account-detail">
+                    <strong>
+                        Rewards Earned
+                    </strong>
+
+                    <span id="rewardsEarned">
+                        ₦0.00
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="form-group" style="margin-top:20px;">
+                <label for="referralLink">
+                    Your Referral Link
+                </label>
+
+                <input
+                    type="text"
+                    id="referralLink"
+                    readonly
+                    value="Loading..."
+                >
+            </div>
+
+            <div class="account-actions">
+
+                <button
+                    type="button"
+                    class="btn"
+                    id="copyReferralButton"
+                >
+                    Copy Link
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-outline"
+                    id="shareReferralButton"
+                >
+                    Share
+                </button>
+
+            </div>
+
+            <div
+                id="referralMessage"
+                class="account-alert"
+                style="display:none;"
+                role="status"
+                aria-live="polite"
+            ></div>
+
+        </section>
+
+
         <section
             class="account-card"
             id="editProfilePanel"
