@@ -14225,3 +14225,53 @@ footer {
 
 }
 
+
+/* =====================================================
+   ACCOUNT PAGE — CLEAN INFORMATION LAYOUT
+===================================================== */
+
+.account-page .account-details {
+    gap: 0;
+}
+
+.account-page .account-detail {
+    padding: 18px 4px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.account-page .account-detail + .account-detail {
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.account-page .account-detail strong {
+    margin-bottom: 6px;
+}
+
+.account-page .account-detail span {
+    padding: 0;
+}
+
+/* Keep referral statistics visually separated */
+#referralSection .account-details {
+    gap: 12px;
+}
+
+#referralSection .account-detail {
+    padding: 17px;
+    border: 1px solid rgba(53, 208, 127, 0.10);
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.14);
+}
+
+#referralSection .account-detail + .account-detail {
+    border-top: 1px solid rgba(53, 208, 127, 0.10);
+}
+
+/* Wallet balance remains a featured block */
+.account-page > .account-card:nth-of-type(2) .account-detail {
+    padding: 22px 4px;
+}
+
