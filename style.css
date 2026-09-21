@@ -15867,3 +15867,622 @@ header,
 
 }
 
+
+/* =====================================================
+   CARD4ME — DASHBOARD + WALLET
+   PART 5
+===================================================== */
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+.dashboard-page,
+.wallet-page {
+    min-height: calc(100vh - 72px);
+    padding: 45px 0 80px;
+}
+
+.dashboard-page,
+.wallet-page {
+    background:
+        radial-gradient(
+            circle at 85% 5%,
+            rgba(49, 209, 123, .045),
+            transparent 30%
+        );
+}
+
+.dashboard-header,
+.wallet-heading {
+    margin-bottom: 30px;
+}
+
+.dashboard-header h1,
+.wallet-heading h1,
+.page-heading h1 {
+    margin: 0 0 8px;
+
+    color: #fff;
+
+    font-size:
+        clamp(1.9rem, 5vw, 2.8rem);
+
+    font-weight: 850;
+
+    letter-spacing: -.04em;
+}
+
+.dashboard-header p,
+.wallet-heading p,
+.page-heading p {
+    margin: 0;
+
+    max-width: 650px;
+
+    color: var(--cm-text-soft);
+
+    line-height: 1.7;
+}
+
+/* =====================================================
+   BALANCE CARD
+===================================================== */
+
+.balance-card {
+    position: relative;
+
+    min-height: 210px;
+
+    padding: 30px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(49,209,123,.18);
+
+    border-radius: 24px;
+
+    background:
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(49,209,123,.15),
+            transparent 35%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(49,209,123,.08),
+            rgba(255,255,255,.025)
+        ),
+        var(--cm-surface);
+
+    box-shadow:
+        0 20px 55px rgba(0,0,0,.28);
+}
+
+.balance-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 240px;
+    height: 240px;
+
+    right: -110px;
+    bottom: -150px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(49,209,123,.10);
+
+    filter: blur(20px);
+}
+
+.balance-card::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 30px;
+    right: 30px;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(49,209,123,.5),
+            transparent
+        );
+}
+
+.balance-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.balance-card .label,
+.balance-card small {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--cm-text-muted);
+
+    font-size: .72rem;
+    font-weight: 750;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+.balance-card .balance,
+.balance-card h2,
+.balance-card h3 {
+    margin: 0;
+
+    color: #fff;
+
+    font-size:
+        clamp(2rem, 6vw, 3.1rem);
+
+    font-weight: 900;
+
+    letter-spacing: -.045em;
+}
+
+.balance-card .currency {
+    color: var(--cm-primary);
+}
+
+/* =====================================================
+   DASHBOARD GRID
+===================================================== */
+
+.dashboard-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-top: 22px;
+}
+
+/* Dashboard cards */
+
+.dashboard-card,
+.earnings-card,
+.breakdown-card {
+    position: relative;
+
+    padding: 23px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 19px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.04),
+            rgba(255,255,255,.012)
+        ),
+        var(--cm-surface);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.16);
+}
+
+.dashboard-card h3,
+.earnings-card h3,
+.breakdown-card h3 {
+    margin: 0 0 8px;
+
+    color: #fff;
+
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.dashboard-card p,
+.earnings-card p,
+.breakdown-card p {
+    color: var(--cm-text-soft);
+
+    line-height: 1.65;
+}
+
+/* Dashboard card icon */
+
+.dashboard-card .card-icon {
+    margin-bottom: 16px;
+}
+
+/* =====================================================
+   QUICK ACTIONS
+===================================================== */
+
+.quick-services {
+    margin-top: 22px;
+}
+
+.quick-services .service-card {
+    transition:
+        transform 180ms ease,
+        background 180ms ease,
+        border-color 180ms ease;
+}
+
+.quick-services .service-card:hover {
+    transform: translateY(-3px);
+
+    background:
+        rgba(49,209,123,.035);
+}
+
+/* =====================================================
+   WALLET PAGE
+===================================================== */
+
+.wallet-section {
+    margin-top: 24px;
+}
+
+.wallet-section-heading {
+    margin-bottom: 14px;
+}
+
+.wallet-section-heading h2 {
+    margin: 0 0 6px;
+
+    color: #fff;
+
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.wallet-section-heading p {
+    margin: 0;
+
+    color: var(--cm-text-muted);
+
+    font-size: .85rem;
+}
+
+/* Wallet box */
+
+.wallet-box,
+.wallet-balance-box,
+.virtual-account-box {
+    position: relative;
+
+    padding: 24px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.04),
+            rgba(255,255,255,.012)
+        ),
+        var(--cm-surface);
+
+    box-shadow:
+        0 14px 40px rgba(0,0,0,.18);
+}
+
+/* Wallet balance */
+
+.wallet-balance-box {
+    border-color:
+        rgba(49,209,123,.18);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(49,209,123,.075),
+            rgba(255,255,255,.02)
+        ),
+        var(--cm-surface);
+}
+
+.wallet-balance-box .label,
+.wallet-balance-box small {
+    color: var(--cm-text-muted);
+
+    font-size: .72rem;
+    font-weight: 750;
+
+    letter-spacing: .1em;
+
+    text-transform: uppercase;
+}
+
+.wallet-balance-box .balance,
+.wallet-balance-box h2 {
+    margin: 8px 0 0;
+
+    color: #fff;
+
+    font-size:
+        clamp(2rem, 6vw, 3rem);
+
+    font-weight: 900;
+
+    letter-spacing: -.045em;
+}
+
+/* Virtual account */
+
+.virtual-account-box {
+    overflow: hidden;
+}
+
+.virtual-account-box::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 4px;
+    height: 100%;
+
+    background: var(--cm-primary);
+
+    box-shadow:
+        0 0 18px rgba(49,209,123,.35);
+}
+
+.virtual-account-box h3 {
+    margin: 0 0 18px;
+
+    color: #fff;
+
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.virtual-account-box strong {
+    color: #fff;
+}
+
+.virtual-account-box span,
+.virtual-account-box p {
+    color: var(--cm-text-soft);
+}
+
+/* Wallet details */
+
+.virtual-account-details,
+.payment-details {
+    display: grid;
+
+    gap: 10px;
+}
+
+.virtual-account-details > div,
+.payment-details > div {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid rgba(255,255,255,.055);
+}
+
+.virtual-account-details > div:last-child,
+.payment-details > div:last-child {
+    border-bottom: 0;
+}
+
+.virtual-account-details span:first-child,
+.payment-details span:first-child {
+    color: var(--cm-text-muted);
+
+    font-size: .78rem;
+}
+
+.virtual-account-details span:last-child,
+.payment-details span:last-child {
+    color: #fff;
+
+    font-size: .85rem;
+    font-weight: 700;
+
+    text-align: right;
+}
+
+/* =====================================================
+   WALLET FUNDING / PAYMENT
+===================================================== */
+
+.payment-page {
+    padding: 45px 0 80px;
+}
+
+.payment-status-card {
+    position: relative;
+
+    padding: 30px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.04),
+            rgba(255,255,255,.012)
+        ),
+        var(--cm-surface);
+
+    box-shadow:
+        0 20px 55px rgba(0,0,0,.25);
+}
+
+.payment-status-icon {
+    display: grid;
+    place-items: center;
+
+    width: 62px;
+    height: 62px;
+
+    margin-bottom: 18px;
+
+    border-radius: 17px;
+
+    background:
+        rgba(49,209,123,.09);
+
+    color: var(--cm-primary);
+
+    font-size: 1.35rem;
+}
+
+.payment-status-card h1,
+.payment-status-card h2 {
+    margin: 0 0 9px;
+
+    color: #fff;
+
+    font-size:
+        clamp(1.5rem, 4vw, 2.1rem);
+
+    font-weight: 850;
+}
+
+.payment-status-card p {
+    color: var(--cm-text-soft);
+
+    line-height: 1.7;
+}
+
+/* Payment actions */
+
+.payment-actions {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+/* =====================================================
+   WALLET SECURITY
+===================================================== */
+
+.wallet-security-box,
+.wallet-note {
+    margin-top: 18px;
+
+    padding: 17px 18px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 15px;
+
+    background:
+        rgba(255,255,255,.02);
+
+    color: var(--cm-text-muted);
+
+    font-size: .8rem;
+
+    line-height: 1.65;
+}
+
+.wallet-security-box {
+    border-color:
+        rgba(49,209,123,.13);
+}
+
+.wallet-security-box strong,
+.wallet-note strong {
+    color: var(--cm-text-soft);
+}
+
+/* =====================================================
+   DASHBOARD / WALLET MOBILE
+===================================================== */
+
+@media (max-width: 850px) {
+
+    .dashboard-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .dashboard-page,
+    .wallet-page,
+    .payment-page {
+        padding-top: 30px;
+
+        padding-bottom: 60px;
+    }
+
+    .balance-card {
+        padding: 25px;
+
+        border-radius: 20px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-card,
+    .earnings-card,
+    .breakdown-card,
+    .wallet-box,
+    .wallet-balance-box,
+    .virtual-account-box,
+    .payment-status-card {
+        padding: 20px;
+    }
+
+    .virtual-account-details > div,
+    .payment-details > div {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 4px;
+    }
+
+    .virtual-account-details span:last-child,
+    .payment-details span:last-child {
+        text-align: left;
+    }
+
+    .payment-actions {
+        flex-direction: column;
+    }
+
+    .payment-actions .btn,
+    .payment-actions button {
+        width: 100%;
+    }
+
+}
+
