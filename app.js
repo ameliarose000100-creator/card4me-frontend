@@ -791,6 +791,25 @@ async function registerUser(event) {
     const referralCodeInput =
         document.getElementById("referralCode");
 
+    /* =========================================
+       AUTO-FILL REFERRAL CODE FROM URL
+    ========================================= */
+
+    if (referralCodeInput) {
+        const params =
+            new URLSearchParams(window.location.search);
+
+        const referralFromUrl =
+            (params.get("ref") || "")
+                .trim()
+                .toUpperCase();
+
+        if (referralFromUrl) {
+            referralCodeInput.value =
+                referralFromUrl;
+        }
+    }
+
     const passwordInput =
         document.getElementById("password");
 
