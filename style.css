@@ -14275,3 +14275,224 @@ footer {
     padding: 22px 4px;
 }
 
+
+/* =====================================================
+   CARD4ME — PROFESSIONAL DESIGN FOUNDATION
+   PART 1
+===================================================== */
+
+:root {
+    --cm-bg: #070b10;
+    --cm-surface: #0d131a;
+    --cm-surface-2: #111922;
+    --cm-surface-3: #151f29;
+
+    --cm-border: rgba(255, 255, 255, 0.08);
+    --cm-border-strong: rgba(255, 255, 255, 0.13);
+
+    --cm-text: #f5f7f8;
+    --cm-text-soft: #a9b3bd;
+    --cm-text-muted: #71808d;
+
+    --cm-primary: #31d17b;
+    --cm-primary-dark: #20ad63;
+    --cm-primary-soft: rgba(49, 209, 123, 0.12);
+
+    --cm-danger: #ff5c6c;
+    --cm-warning: #f5b942;
+
+    --cm-radius-sm: 10px;
+    --cm-radius-md: 14px;
+    --cm-radius-lg: 20px;
+    --cm-radius-xl: 26px;
+
+    --cm-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.28);
+
+    --cm-transition:
+        180ms ease;
+}
+
+/* Global */
+
+html {
+    background: var(--cm-bg);
+    color-scheme: dark;
+}
+
+body {
+    background:
+        radial-gradient(
+            circle at 15% 0%,
+            rgba(49, 209, 123, 0.055),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(49, 209, 123, 0.035),
+            transparent 30%
+        ),
+        var(--cm-bg);
+
+    color: var(--cm-text);
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* Links */
+
+body a {
+    color: inherit;
+    transition:
+        color var(--cm-transition),
+        opacity var(--cm-transition);
+}
+
+/* Buttons */
+
+body button,
+body .btn,
+body .secondary-btn,
+body .login-btn {
+    border-radius: var(--cm-radius-md);
+    font-weight: 700;
+    transition:
+        transform var(--cm-transition),
+        background var(--cm-transition),
+        border-color var(--cm-transition),
+        box-shadow var(--cm-transition);
+}
+
+body button:hover,
+body .btn:hover,
+body .secondary-btn:hover,
+body .login-btn:hover {
+    transform: translateY(-1px);
+}
+
+body button:active,
+body .btn:active,
+body .secondary-btn:active,
+body .login-btn:active {
+    transform: translateY(0);
+}
+
+/* Inputs */
+
+body input,
+body select,
+body textarea {
+    border: 1px solid var(--cm-border-strong);
+    border-radius: var(--cm-radius-md);
+    background: var(--cm-surface);
+    color: var(--cm-text);
+    transition:
+        border-color var(--cm-transition),
+        box-shadow var(--cm-transition),
+        background var(--cm-transition);
+}
+
+body input:focus,
+body select:focus,
+body textarea:focus {
+    border-color: rgba(49, 209, 123, 0.65);
+    background: var(--cm-surface-2);
+    box-shadow:
+        0 0 0 3px rgba(49, 209, 123, 0.10);
+    outline: none;
+}
+
+body input::placeholder,
+body textarea::placeholder {
+    color: var(--cm-text-muted);
+}
+
+/* Cards */
+
+body .card,
+body .account-card,
+body .dashboard-card,
+body .service-card,
+body .form-card,
+body .breakdown-card,
+body .earnings-card,
+body .payment-status-card,
+body .wallet-box,
+body .wallet-security-box,
+body .security-notice {
+    border: 1px solid var(--cm-border);
+    border-radius: var(--cm-radius-lg);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.045),
+            rgba(255, 255, 255, 0.015)
+        ),
+        var(--cm-surface);
+    box-shadow: var(--cm-shadow);
+}
+
+/* Section headings */
+
+body .page-heading h1,
+body .page-heading h2,
+body .section-heading h1,
+body .section-heading h2,
+body .account-heading h1,
+body .dashboard-header h1,
+body .wallet-heading h1 {
+    color: var(--cm-text);
+    letter-spacing: -0.025em;
+}
+
+/* Muted text */
+
+body .page-heading p,
+body .section-heading p,
+body .account-heading p,
+body .subtitle,
+body .auth-subtitle,
+body .form-hint,
+body .wallet-note {
+    color: var(--cm-text-soft);
+}
+
+/* Primary green emphasis */
+
+body .profit-positive,
+body #accountBalance,
+body #walletBalance,
+body #dashBalance,
+body #rewardsEarned {
+    color: var(--cm-primary);
+}
+
+/* Mobile foundation */
+
+@media (max-width: 700px) {
+
+    body .card,
+    body .account-card,
+    body .dashboard-card,
+    body .service-card,
+    body .form-card,
+    body .breakdown-card,
+    body .earnings-card,
+    body .payment-status-card,
+    body .wallet-box,
+    body .wallet-security-box,
+    body .security-notice {
+        border-radius: var(--cm-radius-md);
+        box-shadow:
+            0 12px 30px rgba(0, 0, 0, 0.22);
+    }
+
+}
+
