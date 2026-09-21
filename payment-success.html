@@ -24,13 +24,46 @@
 
     <link
         rel="stylesheet"
-        href="style.css"
+        href="style.css?v=20260921"
     >
 
 </head>
 
 
 <body>
+
+
+    <header class="site-header">
+
+        <div class="logo">CARD4ME</div>
+
+        <button
+            type="button"
+            class="menu-btn"
+            onclick="toggleMenu()"
+            aria-label="Open menu"
+        >
+            ☰
+        </button>
+
+        <nav id="mainNav">
+
+            <a href="dashboard.html">Dashboard</a>
+            <a href="wallet.html">Wallet</a>
+            <a href="services.html">Services</a>
+            <a href="transaction.html">Transactions</a>
+
+            <button
+                type="button"
+                onclick="logoutUser()"
+            >
+                Logout
+            </button>
+
+        </nav>
+
+    </header>
+
 
 
     <!-- =================================
@@ -112,6 +145,8 @@
     <!-- =================================
          PAYMENT VERIFICATION
     ================================== -->
+
+    <script src="app.js"></script>
 
     <script>
 
@@ -309,6 +344,15 @@
 
                     paymentMessage.textContent =
                         "Your CARD4ME wallet has been updated successfully.";
+
+
+                    if (typeof showCard4MeAlert === "function") {
+                        showCard4MeAlert(
+                            "Your CARD4ME wallet has been credited successfully.",
+                            "success",
+                            "Payment Successful"
+                        );
+                    }
 
 
                     paymentDetails.innerHTML = `
