@@ -18819,3 +18819,13 @@ footer::before {
 
 }
 
+
+/* CARD4ME CSS LIVE TEST */
+body {
+    outline: 3px solid #31d17b !important;
+}
+
+.hero {
+    border: 3px solid #31d17b !important;
+}
+
