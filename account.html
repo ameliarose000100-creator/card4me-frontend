@@ -200,6 +200,14 @@
                     Back to Dashboard
                 </a>
 
+                <button
+                    type="button"
+                    class="btn btn-outline"
+                    id="changePasswordButton"
+                >
+                    Change Password
+                </button>
+
                 <a
                     href="#"
                     class="btn btn-outline"
@@ -209,6 +217,88 @@
                 </a>
 
             </div>
+
+        </section>
+
+        <section
+            class="account-card"
+            id="changePasswordPanel"
+            style="display:none;"
+        >
+
+            <h2>
+                Change Password
+            </h2>
+
+            <form id="changePasswordForm">
+
+                <div class="form-group">
+                    <label for="currentPassword">
+                        Current Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="currentPassword"
+                        name="currentPassword"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">
+                        New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="newPassword"
+                        name="newPassword"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmNewPassword">
+                        Confirm New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmNewPassword"
+                        name="confirmNewPassword"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+
+                <p id="changePasswordMessage"></p>
+
+                <div class="account-actions">
+
+                    <button
+                        type="submit"
+                        class="btn"
+                        id="savePasswordButton"
+                    >
+                        Update Password
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-outline"
+                        id="cancelPasswordButton"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
 
         </section>
 
