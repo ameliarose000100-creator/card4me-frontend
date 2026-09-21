@@ -17701,3 +17701,560 @@ header,
 
 }
 
+
+/* =====================================================
+   CARD4ME — ACCOUNT
+   PART 8: PROFILE + SECURITY + REFERRALS
+===================================================== */
+
+.account-page {
+    min-height: calc(100vh - 72px);
+
+    padding: 45px 0 80px;
+
+    background:
+        radial-gradient(
+            circle at 85% 5%,
+            rgba(49,209,123,.045),
+            transparent 30%
+        );
+}
+
+/* =====================================================
+   ACCOUNT HEADER
+===================================================== */
+
+.account-heading {
+    margin-bottom: 30px;
+}
+
+.account-heading h1 {
+    margin: 0 0 8px;
+
+    color: #fff;
+
+    font-size:
+        clamp(1.9rem, 5vw, 2.8rem);
+
+    font-weight: 850;
+
+    letter-spacing: -.04em;
+}
+
+.account-heading p {
+    margin: 0;
+
+    max-width: 650px;
+
+    color: var(--cm-text-soft);
+
+    line-height: 1.7;
+}
+
+/* =====================================================
+   ACCOUNT CARDS
+===================================================== */
+
+.account-card {
+    position: relative;
+
+    margin-bottom: 18px;
+
+    padding: 25px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.04),
+            rgba(255,255,255,.012)
+        ),
+        var(--cm-surface);
+
+    box-shadow:
+        0 13px 38px rgba(0,0,0,.17);
+}
+
+.account-card h2,
+.account-card h3 {
+    margin: 0 0 17px;
+
+    color: #fff;
+
+    font-weight: 820;
+}
+
+.account-card h2 {
+    font-size: 1.12rem;
+}
+
+.account-card h3 {
+    font-size: .95rem;
+}
+
+/* =====================================================
+   ACCOUNT DETAILS
+===================================================== */
+
+.account-details {
+    display: grid;
+
+    gap: 0;
+}
+
+.account-detail {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    min-height: 60px;
+
+    padding: 12px 0;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.055);
+}
+
+.account-detail:last-child {
+    border-bottom: 0;
+}
+
+.account-detail > span:first-child,
+.account-detail .label {
+    color: var(--cm-text-muted);
+
+    font-size: .75rem;
+    font-weight: 700;
+
+    letter-spacing: .02em;
+}
+
+.account-detail > span:last-child,
+.account-detail .value {
+    color: #fff;
+
+    font-size: .85rem;
+    font-weight: 700;
+
+    text-align: right;
+
+    overflow-wrap: anywhere;
+}
+
+/* =====================================================
+   ACCOUNT BALANCE
+===================================================== */
+
+.account-card .account-balance,
+.account-card .balance {
+    color: #fff;
+
+    font-size:
+        clamp(1.8rem, 5vw, 2.6rem);
+
+    font-weight: 900;
+
+    letter-spacing: -.04em;
+}
+
+.account-card .account-balance::first-letter,
+.account-card .balance::first-letter {
+    color: var(--cm-primary);
+}
+
+/* =====================================================
+   ACCOUNT ACTIONS
+===================================================== */
+
+.account-actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+.account-actions .btn,
+.account-actions button,
+.account-actions a {
+    min-height: 46px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 15px;
+
+    border-radius: 12px;
+}
+
+/* =====================================================
+   EDIT PROFILE / PASSWORD PANELS
+===================================================== */
+
+#editProfilePanel,
+#changePasswordPanel {
+    margin-top: 18px;
+
+    padding: 25px;
+
+    border: 1px solid rgba(49,209,123,.13);
+
+    border-radius: 19px;
+
+    background:
+        rgba(49,209,123,.025);
+}
+
+#editProfilePanel h2,
+#changePasswordPanel h2 {
+    margin-bottom: 20px;
+}
+
+/* Account forms */
+
+#editProfileForm,
+#changePasswordForm {
+    display: grid;
+
+    gap: 15px;
+}
+
+#editProfileForm .form-group,
+#changePasswordForm .form-group {
+    margin-bottom: 0;
+}
+
+#editProfileForm label,
+#changePasswordForm label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--cm-text-soft);
+
+    font-size: .76rem;
+    font-weight: 750;
+}
+
+#editProfileForm input,
+#changePasswordForm input {
+    width: 100%;
+
+    min-height: 50px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 12px;
+
+    outline: none;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color: #fff;
+
+    font: inherit;
+
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+}
+
+#editProfileForm input:focus,
+#changePasswordForm input:focus {
+    border-color:
+        rgba(49,209,123,.5);
+
+    box-shadow:
+        0 0 0 3px rgba(49,209,123,.07);
+}
+
+#editProfileForm button,
+#changePasswordForm button {
+    min-height: 48px;
+
+    border-radius: 12px;
+
+    font-weight: 800;
+}
+
+/* =====================================================
+   REFERRAL SECTION
+===================================================== */
+
+#referralSection {
+    border-color:
+        rgba(49,209,123,.16);
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(49,209,123,.08),
+            transparent 35%
+        ),
+        var(--cm-surface);
+}
+
+#referralSection h2 {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+}
+
+#referralSection h2::before {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--cm-primary);
+
+    box-shadow:
+        0 0 12px rgba(49,209,123,.65);
+}
+
+/* Referral stats */
+
+#referralSection .referral-stats,
+.referral-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin: 18px 0;
+}
+
+.referral-stat {
+    padding: 16px;
+
+    border: 1px solid rgba(255,255,255,.07);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255,255,255,.025);
+}
+
+.referral-stat strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #fff;
+
+    font-size: 1.25rem;
+    font-weight: 850;
+}
+
+.referral-stat span {
+    color: var(--cm-text-muted);
+
+    font-size: .7rem;
+}
+
+/* Referral code */
+
+#referralCode {
+    color: var(--cm-primary);
+
+    font-weight: 850;
+
+    letter-spacing: .08em;
+}
+
+/* Referral link */
+
+#referralLink {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 0 13px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 11px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    color: var(--cm-text-soft);
+
+    font-size: .76rem;
+
+    outline: none;
+}
+
+/* Referral actions */
+
+#copyReferralButton,
+#shareReferralButton {
+    min-height: 44px;
+
+    border-radius: 11px;
+
+    font-weight: 750;
+}
+
+/* Referral message */
+
+#referralMessage {
+    margin-top: 12px;
+
+    color: var(--cm-text-muted);
+
+    font-size: .78rem;
+
+    line-height: 1.55;
+}
+
+/* =====================================================
+   ACCOUNT ALERTS
+===================================================== */
+
+.account-alert,
+.account-global-alert {
+    margin-bottom: 18px;
+
+    padding: 13px 15px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 13px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    color: var(--cm-text-soft);
+
+    font-size: .8rem;
+
+    line-height: 1.55;
+}
+
+/* =====================================================
+   SECURITY
+===================================================== */
+
+.account-security,
+.security-notice {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-top: 15px;
+
+    padding: 15px;
+
+    border: 1px solid rgba(49,209,123,.12);
+
+    border-radius: 14px;
+
+    background:
+        rgba(49,209,123,.025);
+}
+
+.account-security .security-icon,
+.security-notice .security-icon {
+    flex-shrink: 0;
+
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 10px;
+
+    background:
+        rgba(49,209,123,.08);
+
+    color: var(--cm-primary);
+}
+
+/* =====================================================
+   ACCOUNT MOBILE
+===================================================== */
+
+@media (max-width: 650px) {
+
+    .account-page {
+        padding-top: 30px;
+
+        padding-bottom: 60px;
+    }
+
+    .account-card {
+        padding: 20px;
+
+        border-radius: 18px;
+    }
+
+    .account-detail {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+    .account-detail > span:last-child,
+    .account-detail .value {
+        text-align: left;
+    }
+
+    .account-actions {
+        grid-template-columns: 1fr;
+    }
+
+    #editProfilePanel,
+    #changePasswordPanel {
+        padding: 20px;
+    }
+
+    #referralSection .referral-stats,
+    .referral-stats {
+        grid-template-columns:
+            1fr;
+    }
+
+    .referral-stat {
+        display: flex;
+
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 12px;
+    }
+
+    .referral-stat strong {
+        margin: 0;
+    }
+
+}
+
