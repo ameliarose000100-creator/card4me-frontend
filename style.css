@@ -13897,3 +13897,40 @@ footer {
     border-color: rgba(255, 80, 80, 0.25);
     color: #ff8f8f;
 }
+
+
+/* =========================================
+   ACCOUNT GLOBAL NOTIFICATIONS
+========================================= */
+
+.account-global-alert {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    z-index: 99999;
+    width: min(92%, 420px);
+    padding: 14px 18px;
+    border-radius: 14px;
+    background: #071a14;
+    border: 1px solid rgba(0, 230, 160, 0.45);
+    color: #00e6a0;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.account-global-alert.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.account-global-alert.error {
+    background: #1d0b0b;
+    border-color: rgba(255, 80, 80, 0.5);
+    color: #ff8f8f;
+}

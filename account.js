@@ -100,15 +100,31 @@ async function loadAccountInformation() {
 ========================================= */
 
 function showAccountAlert(element, message, type = "success") {
-    if (!element) {
+    if (element) {
+        element.textContent = message;
+        element.className = `account-alert ${type}`;
+        element.style.display = "block";
+    }
+
+    const globalAlert =
+        document.getElementById("accountGlobalAlert");
+
+    if (!globalAlert) {
         return;
     }
 
-    element.textContent = message;
-    element.className =
-        `account-alert ${type}`;
+    globalAlert.textContent = message;
+    globalAlert.className =
+        `account-global-alert ${type} show`;
 
-    element.style.display = "block";
+    clearTimeout(
+        window.accountAlertTimer
+    );
+
+    window.accountAlertTimer =
+        setTimeout(() => {
+            globalAlert.classList.remove("show");
+        }, 3500);
 }
 
 
