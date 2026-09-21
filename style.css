@@ -18860,3 +18860,34 @@ footer::before {
     flex: 0 0 auto !important;
 }
 
+
+/* Reliable mobile navigation */
+@media (max-width: 768px) {
+    .nav-links.active,
+    .nav-links.open {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+        position: absolute !important;
+        top: 74px !important;
+        left: 16px !important;
+        right: 16px !important;
+        padding: 16px !important;
+        border-radius: 16px !important;
+        background: #101b18 !important;
+        border: 1px solid rgba(49, 209, 123, 0.2) !important;
+        z-index: 9999 !important;
+    }
+
+    .nav-links.active a,
+    .nav-links.open a,
+    .nav-links.active button,
+    .nav-links.open button {
+        display: block !important;
+        width: 100% !important;
+        text-align: left !important;
+        padding: 12px !important;
+    }
+}
+
