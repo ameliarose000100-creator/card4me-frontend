@@ -16486,3 +16486,625 @@ header,
 
 }
 
+
+/* =====================================================
+   CARD4ME — TRANSACTIONS
+   PART 6: HISTORY + STATUS
+===================================================== */
+
+.transactions-page {
+    min-height: calc(100vh - 72px);
+
+    padding: 45px 0 80px;
+
+    background:
+        radial-gradient(
+            circle at 85% 5%,
+            rgba(49,209,123,.04),
+            transparent 30%
+        );
+}
+
+/* =====================================================
+   TRANSACTION HEADER
+===================================================== */
+
+.transactions-page .page-heading {
+    margin-bottom: 28px;
+}
+
+.transactions-page .page-heading h1 {
+    margin-bottom: 8px;
+}
+
+.transactions-page .page-heading p {
+    max-width: 650px;
+}
+
+/* =====================================================
+   TRANSACTION CONTAINER
+===================================================== */
+
+.transaction-list,
+.transactions-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.transaction-list {
+    padding: 8px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 21px;
+
+    background:
+        rgba(255,255,255,.018);
+
+    box-shadow:
+        0 16px 45px rgba(0,0,0,.16);
+}
+
+/* =====================================================
+   TRANSACTION ROW
+===================================================== */
+
+.transaction-row {
+    display: grid;
+
+    grid-template-columns:
+        52px
+        minmax(0, 1fr)
+        auto
+        auto;
+
+    align-items: center;
+
+    gap: 15px;
+
+    min-height: 76px;
+
+    padding: 13px 15px;
+
+    border: 1px solid transparent;
+
+    border-radius: 15px;
+
+    background:
+        rgba(255,255,255,.018);
+
+    transition:
+        background 180ms ease,
+        border-color 180ms ease,
+        transform 180ms ease;
+}
+
+.transaction-row:hover {
+    border-color:
+        rgba(49,209,123,.13);
+
+    background:
+        rgba(49,209,123,.025);
+
+    transform: translateX(2px);
+}
+
+/* Transaction icon */
+
+.transaction-icon {
+    display: grid;
+    place-items: center;
+
+    width: 46px;
+    height: 46px;
+
+    border-radius: 13px;
+
+    background:
+        rgba(49,209,123,.08);
+
+    color: var(--cm-primary);
+
+    font-size: 1rem;
+}
+
+/* Transaction information */
+
+.transaction-info {
+    min-width: 0;
+}
+
+.transaction-info strong,
+.transaction-title {
+    display: block;
+
+    overflow: hidden;
+
+    color: #fff;
+
+    font-size: .9rem;
+    font-weight: 750;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.transaction-info small,
+.transaction-date {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--cm-text-muted);
+
+    font-size: .72rem;
+}
+
+/* Transaction amount */
+
+.transaction-amount {
+    color: #fff;
+
+    font-size: .9rem;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.transaction-amount.credit,
+.transaction-credit,
+.transaction-positive {
+    color: var(--cm-primary);
+}
+
+.transaction-amount.debit,
+.transaction-debit {
+    color: #fff;
+}
+
+/* =====================================================
+   STATUS BADGES
+===================================================== */
+
+.transaction-status,
+.status-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 72px;
+
+    padding: 6px 9px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    color: var(--cm-text-muted);
+
+    font-size: .66rem;
+    font-weight: 800;
+
+    letter-spacing: .04em;
+
+    text-transform: capitalize;
+}
+
+.transaction-status.success,
+.status-badge.success,
+.status-success,
+.status-completed {
+    border-color:
+        rgba(49,209,123,.2);
+
+    background:
+        rgba(49,209,123,.07);
+
+    color: var(--cm-primary);
+}
+
+.transaction-status.pending,
+.status-badge.pending,
+.status-pending {
+    border-color:
+        rgba(255,193,7,.18);
+
+    background:
+        rgba(255,193,7,.05);
+
+    color: #f3c85b;
+}
+
+.transaction-status.failed,
+.status-badge.failed,
+.status-failed {
+    border-color:
+        rgba(255,80,80,.18);
+
+    background:
+        rgba(255,80,80,.05);
+
+    color: #ff7777;
+}
+
+.transaction-status.refunded,
+.status-badge.refunded {
+    border-color:
+        rgba(120,150,255,.18);
+
+    background:
+        rgba(120,150,255,.05);
+
+    color: #9aaeff;
+}
+
+/* =====================================================
+   TRANSACTION DETAILS
+===================================================== */
+
+.transaction-details,
+.payment-details {
+    margin-top: 18px;
+}
+
+.transaction-details {
+    padding: 22px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 19px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.04),
+            rgba(255,255,255,.012)
+        ),
+        var(--cm-surface);
+}
+
+.transaction-details h2,
+.transaction-details h3 {
+    margin: 0 0 18px;
+
+    color: #fff;
+
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.transaction-detail-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 13px 0;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.055);
+}
+
+.transaction-detail-row:last-child {
+    border-bottom: 0;
+}
+
+.transaction-detail-row span:first-child {
+    color: var(--cm-text-muted);
+
+    font-size: .78rem;
+}
+
+.transaction-detail-row span:last-child {
+    color: #fff;
+
+    font-size: .82rem;
+    font-weight: 700;
+
+    text-align: right;
+
+    overflow-wrap: anywhere;
+}
+
+/* =====================================================
+   LOADING STATE
+===================================================== */
+
+#transactionsLoading,
+.transactions-loading {
+    padding: 40px 20px;
+
+    color: var(--cm-text-muted);
+
+    font-size: .85rem;
+
+    text-align: center;
+}
+
+#transactionsLoading::before,
+.transactions-loading::before {
+    content: "";
+
+    display: block;
+
+    width: 24px;
+    height: 24px;
+
+    margin: 0 auto 12px;
+
+    border: 2px solid rgba(255,255,255,.08);
+
+    border-top-color: var(--cm-primary);
+
+    border-radius: 50%;
+
+    animation:
+        card4me-spin .75s linear infinite;
+}
+
+@keyframes card4me-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.empty-history,
+.empty-message,
+#emptyTransactions {
+    padding: 55px 25px;
+
+    border: 1px dashed
+        rgba(255,255,255,.10);
+
+    border-radius: 19px;
+
+    background:
+        rgba(255,255,255,.018);
+
+    color: var(--cm-text-muted);
+
+    text-align: center;
+}
+
+.empty-history::before,
+.empty-message::before {
+    content: "↗";
+
+    display: grid;
+    place-items: center;
+
+    width: 48px;
+    height: 48px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(49,209,123,.07);
+
+    color: var(--cm-primary);
+
+    font-size: 1.2rem;
+}
+
+/* =====================================================
+   TRANSACTION ERROR
+===================================================== */
+
+#transactionsError,
+.transactions-error {
+    padding: 14px 16px;
+
+    border: 1px solid
+        rgba(255,80,80,.18);
+
+    border-radius: 13px;
+
+    background:
+        rgba(255,80,80,.045);
+
+    color: #ff8888;
+
+    font-size: .8rem;
+
+    line-height: 1.55;
+}
+
+/* =====================================================
+   PAYMENT STATUS PAGE
+===================================================== */
+
+.payment-status-page {
+    min-height: calc(100vh - 72px);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 45px 18px 80px;
+
+    background:
+        radial-gradient(
+            circle at 50% 25%,
+            rgba(49,209,123,.055),
+            transparent 35%
+        );
+}
+
+.payment-status {
+    width: 100%;
+    max-width: 620px;
+
+    padding: 38px;
+
+    border: 1px solid var(--cm-border);
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.045),
+            rgba(255,255,255,.012)
+        ),
+        var(--cm-surface);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.32);
+
+    text-align: center;
+}
+
+.payment-status-icon {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.payment-status h1,
+.payment-status h2 {
+    margin: 0 0 10px;
+
+    color: #fff;
+
+    font-size:
+        clamp(1.7rem, 5vw, 2.4rem);
+
+    font-weight: 850;
+}
+
+.payment-status p {
+    max-width: 500px;
+
+    margin: 0 auto;
+
+    color: var(--cm-text-soft);
+
+    line-height: 1.75;
+}
+
+/* Payment status actions */
+
+.payment-status-actions {
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 11px;
+
+    margin-top: 25px;
+}
+
+.payment-status-actions .btn,
+.payment-status-actions button {
+    min-width: 150px;
+}
+
+/* =====================================================
+   TRANSACTION MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .transactions-page {
+        padding-top: 30px;
+        padding-bottom: 60px;
+    }
+
+    .transaction-list {
+        padding: 6px;
+    }
+
+    .transaction-row {
+        grid-template-columns:
+            44px
+            minmax(0, 1fr)
+            auto;
+
+        gap: 11px;
+
+        min-height: 70px;
+
+        padding: 11px;
+    }
+
+    .transaction-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .transaction-status,
+    .status-badge {
+        grid-column: 2 / -1;
+
+        justify-self: start;
+
+        margin-top: -4px;
+    }
+
+    .transaction-amount {
+        font-size: .82rem;
+    }
+
+    .transaction-detail-row {
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+    .transaction-detail-row span:last-child {
+        text-align: left;
+    }
+
+    .payment-status-page {
+        padding:
+            30px 12px
+            60px;
+    }
+
+    .payment-status {
+        padding: 30px 20px;
+
+        border-radius: 20px;
+    }
+
+}
+
+@media (max-width: 380px) {
+
+    .transaction-row {
+        grid-template-columns:
+            40px
+            minmax(0, 1fr);
+    }
+
+    .transaction-amount {
+        grid-column: 2;
+
+        margin-top: -3px;
+    }
+
+    .transaction-status,
+    .status-badge {
+        grid-column: 2;
+
+        margin-top: 0;
+    }
+
+}
+
