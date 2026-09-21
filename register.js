@@ -1,3 +1,27 @@
+/* =========================================
+   REFERRAL CODE FROM URL
+========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const referralInput =
+        document.getElementById("referralCode");
+
+    if (!referralInput) {
+        return;
+    }
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const referralCode =
+        (params.get("ref") || "").trim().toUpperCase();
+
+    if (referralCode) {
+        referralInput.value = referralCode;
+    }
+});
+
+
 "use strict";
 
 /* =========================================
