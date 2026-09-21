@@ -788,6 +788,9 @@ async function registerUser(event) {
     const phoneInput =
         document.getElementById("phone");
 
+    const referralCodeInput =
+        document.getElementById("referralCode");
+
     const passwordInput =
         document.getElementById("password");
 
@@ -817,6 +820,13 @@ async function registerUser(event) {
             ? phoneInput.value
                 .replace(/\s+/g, "")
                 .trim()
+            : "";
+
+    const referralCode =
+        referralCodeInput
+            ? referralCodeInput.value
+                .trim()
+                .toUpperCase()
             : "";
 
     const password =
@@ -990,7 +1000,8 @@ async function registerUser(event) {
                         fullName: fullName,
                         email: email,
                         phone: phone,
-                        password: password
+                        password: password,
+                        referralCode: referralCode || undefined
                     })
                 }
             );
