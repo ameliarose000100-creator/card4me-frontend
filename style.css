@@ -18891,3 +18891,628 @@ footer::before {
     }
 }
 
+
+/* =========================================================
+   CARD4ME — FINAL WALLET + NAVIGATION POLISH
+   Premium fintech UI
+========================================================= */
+
+/* -------------------------
+   HEADER
+------------------------- */
+
+body:has(.wallet-page) .nav,
+body:has(.site-header) .nav {
+    min-height: 72px;
+}
+
+header.nav {
+    padding: 0 0;
+}
+
+header.nav .logo {
+    gap: 0;
+    font-size: 1.05rem;
+    letter-spacing: 0.08em;
+}
+
+header.nav .logo-mark {
+    width: 36px;
+    height: 36px;
+    margin-right: 9px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #45e994, #18a963);
+    box-shadow:
+        0 0 0 1px rgba(49, 209, 123, 0.20),
+        0 8px 24px rgba(49, 209, 123, 0.16);
+}
+
+header.nav .logo-text span {
+    color: var(--cm-primary);
+}
+
+header.nav .nav-links {
+    gap: 5px;
+}
+
+header.nav .nav-links a,
+header.nav .nav-links button {
+    min-height: 42px;
+    padding: 9px 13px;
+
+    border: 0;
+    border-radius: 11px;
+
+    background: transparent;
+
+    color: var(--cm-text-soft);
+
+    font-family: inherit;
+    font-size: 0.86rem;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+header.nav .nav-links a:hover,
+header.nav .nav-links button:hover {
+    color: #ffffff;
+    background: rgba(49, 209, 123, 0.08);
+}
+
+header.nav .nav-links button {
+    color: #ff8f8f;
+}
+
+header.nav .nav-links button:hover {
+    color: #ffffff;
+    background: rgba(255, 90, 90, 0.09);
+}
+
+/* Mobile menu button */
+
+header.nav .menu {
+    width: 44px;
+    height: 44px;
+
+    border: 1px solid rgba(49, 209, 123, 0.16);
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(49, 209, 123, 0.08),
+            rgba(255, 255, 255, 0.025)
+        );
+
+    color: #ffffff;
+
+    font-size: 0;
+}
+
+header.nav .menu::before {
+    content: "☰";
+
+    font-size: 20px;
+    line-height: 1;
+    color: var(--cm-primary);
+}
+
+header.nav .menu:hover {
+    border-color: rgba(49, 209, 123, 0.42);
+
+    background:
+        rgba(49, 209, 123, 0.10);
+
+    box-shadow:
+        0 0 22px rgba(49, 209, 123, 0.10);
+}
+
+/* -------------------------
+   WALLET PAGE
+------------------------- */
+
+body:has(.wallet-page) {
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(49, 209, 123, 0.055),
+            transparent 32%
+        ),
+        #070b10;
+}
+
+.wallet-page {
+    max-width: 820px;
+    padding-top: 42px;
+}
+
+/* Heading */
+
+.wallet-heading {
+    margin-bottom: 25px;
+}
+
+.wallet-heading small {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 6px 10px;
+
+    border: 1px solid rgba(49, 209, 123, 0.14);
+    border-radius: 999px;
+
+    background: rgba(49, 209, 123, 0.055);
+}
+
+.wallet-heading small::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--cm-primary);
+
+    box-shadow:
+        0 0 10px rgba(49, 209, 123, 0.65);
+}
+
+.wallet-heading h1 {
+    margin-top: 12px;
+    font-size: clamp(31px, 5vw, 43px);
+}
+
+/* Balance */
+
+.wallet-balance-box {
+    min-height: 155px !important;
+
+    padding: 27px !important;
+
+    background:
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(49, 209, 123, 0.13),
+            transparent 34%
+        ),
+        linear-gradient(
+            145deg,
+            #101d1d,
+            #091114
+        ) !important;
+
+    border-color:
+        rgba(49, 209, 123, 0.18) !important;
+
+    box-shadow:
+        0 20px 55px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025) !important;
+}
+
+.wallet-balance-box span {
+    color: #8da4a0 !important;
+    font-size: 12px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.wallet-balance-box strong {
+    color: #ffffff !important;
+    font-size: clamp(32px, 7vw, 45px) !important;
+}
+
+/* Funding card */
+
+.wallet-section {
+    padding: 27px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 27, 29, 0.98),
+            rgba(8, 15, 18, 0.98)
+        ) !important;
+
+    border-color:
+        rgba(255, 255, 255, 0.075) !important;
+
+    box-shadow:
+        0 18px 48px rgba(0, 0, 0, 0.27) !important;
+}
+
+.wallet-section-heading {
+    margin-bottom: 22px;
+}
+
+.wallet-section-heading small {
+    letter-spacing: 0.15em;
+}
+
+.wallet-section-heading h2 {
+    font-size: 22px !important;
+}
+
+.wallet-section-heading p {
+    max-width: 560px;
+}
+
+/* Amount input */
+
+.wallet-section input {
+    min-height: 58px !important;
+
+    padding: 0 17px !important;
+
+    border-radius: 15px !important;
+
+    border-color:
+        rgba(255, 255, 255, 0.10) !important;
+
+    background:
+        #070f12 !important;
+
+    font-size: 18px !important;
+    font-weight: 700;
+}
+
+.wallet-section input:focus {
+    border-color:
+        rgba(49, 209, 123, 0.62) !important;
+
+    box-shadow:
+        0 0 0 4px rgba(49, 209, 123, 0.08),
+        0 0 25px rgba(49, 209, 123, 0.055) !important;
+}
+
+/* Funding button */
+
+.wallet-section .btn {
+    min-height: 58px !important;
+
+    border-radius: 15px !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #45e994,
+            #20bd70
+        ) !important;
+
+    box-shadow:
+        0 12px 28px rgba(49, 209, 123, 0.15) !important;
+
+    font-size: 15px !important;
+    font-weight: 850 !important;
+}
+
+.wallet-section .btn:hover {
+    box-shadow:
+        0 16px 34px rgba(49, 209, 123, 0.23) !important;
+}
+
+/* -------------------------
+   VIRTUAL ACCOUNT
+------------------------- */
+
+.virtual-account-box {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(12, 27, 27, 0.99),
+            rgba(7, 16, 19, 0.99)
+        ) !important;
+
+    border-color:
+        rgba(49, 209, 123, 0.16) !important;
+}
+
+.virtual-account-box .wallet-section-heading {
+    margin-bottom: 0;
+}
+
+#virtualAccountContent {
+    margin-top: 20px !important;
+}
+
+/* Generated account card */
+
+.virtual-account-card {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.075);
+
+    border-radius: 17px;
+
+    background:
+        rgba(3, 10, 12, 0.68);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.virtual-account-row {
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    padding: 12px 16px;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.055);
+}
+
+.virtual-account-row:last-child {
+    border-bottom: 0;
+}
+
+.virtual-account-row span {
+    flex: 0 0 auto;
+
+    color: #809591 !important;
+
+    font-size: 12px !important;
+    font-weight: 650;
+}
+
+.virtual-account-row strong {
+    min-width: 0;
+
+    color: #ffffff !important;
+
+    font-size: 14px;
+
+    font-weight: 750;
+
+    text-align: right;
+
+    word-break: break-word;
+}
+
+/* Make transfer amount stand out */
+
+.virtual-account-row:nth-child(3) {
+    margin: 7px;
+
+    padding: 15px;
+
+    border:
+        1px solid rgba(49, 209, 123, 0.18);
+
+    border-radius: 13px;
+
+    background:
+        rgba(49, 209, 123, 0.065);
+}
+
+.virtual-account-row:nth-child(3) span {
+    color: var(--cm-primary) !important;
+    font-weight: 750;
+}
+
+.virtual-account-row:nth-child(3) strong {
+    color: var(--cm-primary) !important;
+    font-size: 18px;
+}
+
+/* Copy account button */
+
+.copy-account-button {
+    margin-left: 8px;
+
+    padding: 7px 10px;
+
+    border:
+        1px solid rgba(49, 209, 123, 0.25);
+
+    border-radius: 9px;
+
+    background:
+        rgba(49, 209, 123, 0.08);
+
+    color: var(--cm-primary);
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    vertical-align: middle;
+}
+
+.copy-account-button:hover {
+    background:
+        rgba(49, 209, 123, 0.15);
+
+    border-color:
+        rgba(49, 209, 123, 0.45);
+}
+
+/* -------------------------
+   SECURITY
+------------------------- */
+
+.wallet-security-box {
+    padding: 21px 24px !important;
+
+    border-color:
+        rgba(49, 209, 123, 0.10) !important;
+}
+
+.wallet-security-box strong {
+    color: var(--cm-primary) !important;
+}
+
+/* -------------------------
+   MOBILE MENU
+------------------------- */
+
+@media (max-width: 820px) {
+
+    header.nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        padding: 0 10px;
+
+        background:
+            rgba(7, 11, 16, 0.92);
+
+        border-bottom:
+            1px solid rgba(255, 255, 255, 0.07);
+
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+
+    header.nav .nav-links {
+        top: calc(100% + 9px);
+
+        left: 10px;
+        right: 10px;
+
+        padding: 8px;
+
+        border-radius: 18px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(14, 24, 22, 0.985),
+                rgba(7, 13, 17, 0.985)
+            );
+
+        border-color:
+            rgba(49, 209, 123, 0.14);
+
+        box-shadow:
+            0 24px 55px rgba(0, 0, 0, 0.52),
+            0 0 30px rgba(49, 209, 123, 0.035);
+    }
+
+    header.nav .nav-links a,
+    header.nav .nav-links button {
+        min-height: 50px;
+
+        padding: 12px 14px;
+
+        border-radius: 12px;
+
+        font-size: 14px;
+    }
+
+    header.nav .nav-links a.active {
+        color: var(--cm-primary);
+
+        background:
+            rgba(49, 209, 123, 0.10);
+    }
+
+    header.nav .nav-links button {
+        margin-top: 3px;
+
+        border-top:
+            1px solid rgba(255, 255, 255, 0.055);
+
+        border-radius: 10px;
+
+        color: #ff8f8f;
+    }
+
+    .wallet-page {
+        padding:
+            30px 14px 50px;
+    }
+
+    .wallet-section,
+    .wallet-page .wallet-box {
+        padding: 21px !important;
+        border-radius: 18px !important;
+    }
+
+    .wallet-balance-box {
+        min-height: 135px !important;
+    }
+
+    .virtual-account-row {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 5px;
+
+        min-height: auto;
+
+        padding: 14px;
+    }
+
+    .virtual-account-row strong {
+        width: 100%;
+
+        text-align: left;
+    }
+
+    .virtual-account-row:nth-child(3) {
+        margin: 6px;
+
+        padding: 14px;
+    }
+
+    .copy-account-button {
+        margin-left: 6px;
+    }
+}
+
+@media (max-width: 420px) {
+
+    header.nav {
+        padding-inline: 8px;
+    }
+
+    header.nav .logo {
+        font-size: 0.96rem;
+    }
+
+    header.nav .logo-mark {
+        width: 33px;
+        height: 33px;
+    }
+
+    header.nav .menu {
+        width: 42px;
+        height: 42px;
+    }
+
+    .wallet-page {
+        padding-inline: 12px;
+    }
+
+    .wallet-heading h1 {
+        font-size: 29px;
+    }
+
+    .wallet-section,
+    .wallet-page .wallet-box {
+        padding: 18px !important;
+    }
+
+    .wallet-section input,
+    .wallet-section .btn {
+        min-height: 55px !important;
+    }
+}
+
