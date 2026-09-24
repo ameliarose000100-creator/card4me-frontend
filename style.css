@@ -19516,3 +19516,19 @@ body:has(.wallet-page) {
     }
 }
 
+
+/* FINAL FIX: Hide mobile navigation until opened */
+@media (max-width: 820px) {
+
+    header.nav .nav-links {
+        display: none !important;
+    }
+
+    header.nav .nav-links.active,
+    header.nav .nav-links.open {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+}
+
