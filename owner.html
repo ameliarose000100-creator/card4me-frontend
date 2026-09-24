@@ -396,6 +396,11 @@
         </div>
 
         <div class="earnings-card">
+            <p>Available Profit</p>
+            <h2 id="availableProfit">₦0.00</h2>
+        </div>
+
+        <div class="earnings-card">
             <p>Transactions</p>
             <h2 id="totalTransactions">0</h2>
         </div>
@@ -569,6 +574,12 @@ async function loadEarnings() {
             "totalProfit"
         ).textContent =
             formatNaira(earnings.total_profit);
+
+
+        document.getElementById(
+            "availableProfit"
+        ).textContent =
+            formatNaira(earnings.withdrawable_profit);
 
 
         document.getElementById(
@@ -978,6 +989,8 @@ async function withdrawOwner(){
             provider === "paystack"
                 ? "✅ Paystack withdrawal request submitted."
                 : "✅ Bank transfer request submitted.";
+
+        await loadEarnings();
 
     } catch(error){
 
