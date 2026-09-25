@@ -574,13 +574,23 @@
             rows="10"
         ></textarea>
 
-        <button
-            type="button"
-            class="owner-actions"
-            onclick="publishNews()"
-        >
-            Publish News
-        </button>
+        <div class="news-editor-actions">
+            <button
+                type="button"
+                class="owner-actions"
+                onclick="saveNewsDraft()"
+            >
+                Save Draft
+            </button>
+
+            <button
+                type="button"
+                class="owner-actions"
+                onclick="publishNews()"
+            >
+                Publish News
+            </button>
+        </div>
 
         <p
             id="newsPublishMessage"
@@ -642,6 +652,95 @@ function escapeHtml(value) {
 
 
 
+async function saveNewsDraft() {
+
+    const title =
+        document.getElementById("newsTitle").value.trim();
+
+    const summary =
+        document.getElementById("newsSummary").value.trim();
+
+    const category =
+        document.getElementById("newsCategory").value;
+
+    const coverImage =
+        document.getElementById("newsCoverImage").value.trim();
+
+    const content =
+        document.getElementById("newsContent").value.trim();
+
+    const message =
+        document.getElementById("newsPublishMessage");
+
+
+    if (!title || !content) {
+
+        message.textContent =
+            "News title and article content are required.";
+
+        return;
+    }
+
+
+    message.textContent =
+        "Saving draft...";
+
+
+    try {
+
+        const response =
+            await apiRequest(
+                "/api/community/news",
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        title,
+                        summary,
+                        content,
+                        category,
+                        cover_image: coverImage,
+                        status: "draft"
+                    })
+                }
+            );
+
+
+        if (!response.success) {
+
+            throw new Error(
+                response.message ||
+                "Could not save news draft."
+            );
+        }
+
+
+        message.textContent =
+            "News draft saved successfully.";
+
+        if (typeof showCard4MeAlert === "function") {
+            showCard4MeAlert(
+                "Your news draft has been saved.",
+                "success",
+                "CARD4ME News"
+            );
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Save news draft error:",
+            error
+        );
+
+        message.textContent =
+            error.message ||
+            "Could not save news draft.";
+
+    }
+
+}
+
+
 async function publishNews() {
 
     const title =
@@ -688,7 +787,8 @@ async function publishNews() {
                         summary,
                         content,
                         category,
-                        cover_image: coverImage
+                        cover_image: coverImage,
+                        status: "published"
                     })
                 }
             );
