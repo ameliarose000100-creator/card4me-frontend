@@ -647,7 +647,10 @@ async function verifyAgentPaymentFromRedirect() {
 
 agentApplyButton.addEventListener(
     "click",
-    startAgentApplication
+    function () {
+        console.log("AGENT BUTTON CLICKED");
+        startAgentApplication();
+    }
 );
 
 
