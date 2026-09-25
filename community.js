@@ -124,6 +124,34 @@ function renderChannels() {
                     Latest CARD4ME updates
                 </span>
             </button>
+
+            <button
+                type="button"
+                class="channel-button"
+                id="whatsappChannelButton"
+            >
+                <span class="channel-name">
+                    📢 WhatsApp Channel
+                </span>
+
+                <span class="channel-description">
+                    Follow CARD4ME on WhatsApp
+                </span>
+            </button>
+
+            <button
+                type="button"
+                class="channel-button"
+                id="whatsappGroupButton"
+            >
+                <span class="channel-name">
+                    👥 WhatsApp Group
+                </span>
+
+                <span class="channel-description">
+                    Join the CARD4ME community
+                </span>
+            </button>
         `;
 
     document
@@ -144,6 +172,42 @@ function renderChannels() {
         newsButton.addEventListener(
             "click",
             selectNews
+        );
+    }
+
+    const whatsappChannelButton =
+        document.getElementById(
+            "whatsappChannelButton"
+        );
+
+    if (whatsappChannelButton) {
+        whatsappChannelButton.addEventListener(
+            "click",
+            () => {
+                window.open(
+                    "https://whatsapp.com/channel/0029VbDlqJv30LKX31QtkY1V",
+                    "_blank",
+                    "noopener,noreferrer"
+                );
+            }
+        );
+    }
+
+    const whatsappGroupButton =
+        document.getElementById(
+            "whatsappGroupButton"
+        );
+
+    if (whatsappGroupButton) {
+        whatsappGroupButton.addEventListener(
+            "click",
+            () => {
+                window.open(
+                    "https://chat.whatsapp.com/LoM90QeFrswIWMbpM2xoG0?s=cl&p=a&mlu=4&ilr=4",
+                    "_blank",
+                    "noopener,noreferrer"
+                );
+            }
         );
     }
 }
