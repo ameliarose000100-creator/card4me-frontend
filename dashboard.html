@@ -27,7 +27,60 @@
 </head>
 
 
+
 <body>
+
+    <!-- =================================
+         LOGIN WELCOME MODAL
+    ================================== -->
+
+    <div
+        id="welcomeModal"
+        class="welcome-modal"
+        aria-hidden="true"
+    >
+        <div
+            class="welcome-modal-backdrop"
+            data-welcome-close
+        ></div>
+
+        <section
+            class="welcome-modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="welcomeModalTitle"
+        >
+
+            <div class="welcome-modal-icon">
+                <span>✓</span>
+            </div>
+
+            <p class="welcome-modal-label">
+                CARD4ME
+            </p>
+
+            <h2 id="welcomeModalTitle">
+                Welcome back
+            </h2>
+
+            <p
+                id="welcomeModalMessage"
+                class="welcome-modal-message"
+            >
+                Welcome back to CARD4ME. Your digital services are ready whenever you are.
+            </p>
+
+            <button
+                type="button"
+                id="welcomeModalContinue"
+                class="welcome-modal-button"
+            >
+                Continue
+            </button>
+
+        </section>
+    </div>
+
 
 
     <!-- =================================

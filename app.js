@@ -728,6 +728,11 @@ async function loginUser(event) {
             user
         );
 
+        localStorage.setItem(
+            "card4me_show_welcome",
+            "true"
+        );
+
 
         /*
          * Go to dashboard only after

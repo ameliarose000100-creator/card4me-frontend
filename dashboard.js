@@ -90,6 +90,128 @@ function loadUserInformation() {
 
 
 /* =========================================
+   LOGIN WELCOME MODAL
+========================================= */
+
+function showLoginWelcome() {
+
+    const shouldShow =
+        localStorage.getItem(
+            "card4me_show_welcome"
+        );
+
+    if (shouldShow !== "true") {
+        return;
+    }
+
+    const modal =
+        document.getElementById(
+            "welcomeModal"
+        );
+
+    const title =
+        document.getElementById(
+            "welcomeModalTitle"
+        );
+
+    const message =
+        document.getElementById(
+            "welcomeModalMessage"
+        );
+
+    const continueButton =
+        document.getElementById(
+            "welcomeModalContinue"
+        );
+
+    if (!modal || !title || !message || !continueButton) {
+        return;
+    }
+
+    let user = {};
+
+    try {
+        user = JSON.parse(
+            localStorage.getItem(
+                "card4me_user"
+            ) || "{}"
+        );
+    } catch (error) {
+        console.warn(
+            "Could not read CARD4ME user information."
+        );
+    }
+
+    const fullName =
+        String(
+            user.full_name ||
+            user.fullName ||
+            ""
+        ).trim();
+
+    const firstName =
+        fullName
+            ? fullName.split(/\s+/)[0]
+            : "there";
+
+    title.textContent =
+        "Welcome back, " +
+        firstName +
+        " 👋";
+
+    message.textContent =
+        "Welcome back to CARD4ME. Your digital services are ready whenever you are.";
+
+    modal.classList.add(
+        "is-visible"
+    );
+
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    localStorage.removeItem(
+        "card4me_show_welcome"
+    );
+
+    function closeWelcome() {
+
+        modal.classList.remove(
+            "is-visible"
+        );
+
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+    }
+
+    continueButton.addEventListener(
+        "click",
+        closeWelcome,
+        {
+            once: true
+        }
+    );
+
+    modal.querySelectorAll(
+        "[data-welcome-close]"
+    ).forEach(function (element) {
+
+        element.addEventListener(
+            "click",
+            closeWelcome,
+            {
+                once: true
+            }
+        );
+
+    });
+}
+
+
+/* =========================================
    START DASHBOARD
 ========================================= */
 
@@ -106,6 +228,8 @@ document.addEventListener(
         loadUserInformation();
 
         loadWallet();
+
+        showLoginWelcome();
 
     }
 );

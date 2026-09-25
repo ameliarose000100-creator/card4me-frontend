@@ -19532,3 +19532,142 @@ body:has(.wallet-page) {
 
 }
 
+
+/* =================================
+   CARD4ME LOGIN WELCOME MODAL
+================================== */
+
+.welcome-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        opacity 220ms ease,
+        visibility 220ms ease;
+}
+
+.welcome-modal.is-visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.welcome-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, .72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.welcome-modal-card {
+    position: relative;
+    width: min(100%, 430px);
+    padding: 34px 28px 28px;
+    border: 1px solid rgba(74, 222, 128, .20);
+    border-radius: 24px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18, 28, 24, .98),
+            rgba(7, 12, 10, .99)
+        );
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, .55),
+        0 0 45px rgba(34, 197, 94, .10);
+    text-align: center;
+    transform: translateY(18px) scale(.97);
+    transition: transform 260ms ease;
+}
+
+.welcome-modal.is-visible .welcome-modal-card {
+    transform: translateY(0) scale(1);
+}
+
+.welcome-modal-icon {
+    width: 62px;
+    height: 62px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(34, 197, 94, .12);
+    border: 1px solid rgba(74, 222, 128, .28);
+    box-shadow: 0 0 28px rgba(34, 197, 94, .12);
+}
+
+.welcome-modal-icon span {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: #4ade80;
+}
+
+.welcome-modal-label {
+    margin: 0 0 8px;
+    color: #4ade80;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+}
+
+.welcome-modal-card h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(1.55rem, 5vw, 2rem);
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.welcome-modal-message {
+    margin: 14px auto 26px;
+    max-width: 340px;
+    color: rgba(255, 255, 255, .68);
+    font-size: .94rem;
+    line-height: 1.65;
+}
+
+.welcome-modal-button {
+    width: 100%;
+    min-height: 50px;
+    border: 0;
+    border-radius: 14px;
+    background: #22c55e;
+    color: #061109;
+    font-size: .92rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(34, 197, 94, .18);
+    transition:
+        transform 160ms ease,
+        filter 160ms ease,
+        box-shadow 160ms ease;
+}
+
+.welcome-modal-button:hover {
+    filter: brightness(1.08);
+    box-shadow: 0 12px 32px rgba(34, 197, 94, .24);
+}
+
+.welcome-modal-button:active {
+    transform: scale(.98);
+}
+
+@media (max-width: 480px) {
+    .welcome-modal {
+        padding: 18px;
+    }
+
+    .welcome-modal-card {
+        padding: 30px 22px 22px;
+        border-radius: 20px;
+    }
+}
+
