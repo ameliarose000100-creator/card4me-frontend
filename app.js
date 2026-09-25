@@ -1151,6 +1151,17 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
+        const menuButton =
+            document.querySelector(".menu") ||
+            document.querySelector(".menu-btn");
+
+        if (menuButton) {
+            menuButton.addEventListener(
+                "click",
+                toggleMenu
+            );
+        }
+
         const loginForm =
             document.getElementById(
                 "loginForm"
