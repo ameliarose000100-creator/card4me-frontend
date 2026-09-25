@@ -14,12 +14,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     menuButton.addEventListener("click", function () {
-        nav.classList.toggle("open");
+        const isOpen = nav.classList.toggle("active");
+        nav.classList.toggle("open", isOpen);
+        menuButton.setAttribute("aria-expanded", String(isOpen));
     });
 
     nav.querySelectorAll("a").forEach(function (link) {
         link.addEventListener("click", function () {
+            nav.classList.remove("active");
             nav.classList.remove("open");
+            menuButton.setAttribute("aria-expanded", "false");
         });
     });
 
