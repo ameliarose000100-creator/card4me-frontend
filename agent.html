@@ -463,9 +463,22 @@ async function startAgentApplication() {
             !paymentResponse.ok ||
             !paymentData.success
         ) {
-            throw new Error(
+            const paymentError =
                 paymentData.message ||
-                "Unable to create Agent payment."
+                paymentData.flutterwave_error ||
+                "Unable to create Agent payment.";
+
+            const readablePaymentError =
+                typeof paymentError === "string"
+                    ? paymentError
+                    : JSON.stringify(
+                        paymentError,
+                        null,
+                        2
+                    );
+
+            throw new Error(
+                readablePaymentError
             );
         }
 
@@ -488,8 +501,17 @@ async function startAgentApplication() {
             error
         );
 
+        const readableError =
+            typeof error.message === "string"
+                ? error.message
+                : JSON.stringify(
+                    error.message || error,
+                    null,
+                    2
+                );
+
         agentMessage.textContent =
-            error.message ||
+            readableError ||
             "Unable to start Agent payment.";
 
         agentApplyButton.disabled = false;
