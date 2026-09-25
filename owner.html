@@ -604,6 +604,27 @@
     <section class="owner-section">
 
         <h2>
+            🗂️ News Management
+        </h2>
+
+        <p class="empty-history">
+            Manage your CARD4ME news articles, drafts, published stories, and archived content.
+        </p>
+
+        <div id="newsManagementContainer">
+
+            <p class="empty-history">
+                Loading news management...
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="owner-section">
+
+        <h2>
             Earnings History
         </h2>
 
@@ -650,6 +671,136 @@ function escapeHtml(value) {
     return div.innerHTML;
 }
 
+
+
+async function loadNewsManagement() {
+
+    const container =
+        document.getElementById("newsManagementContainer");
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = `
+        <p class="empty-history">
+            Loading news management...
+        </p>
+    `;
+
+    try {
+
+        const response =
+            await apiRequest(
+                "/api/community/news/manage"
+            );
+
+        if (!response.success) {
+            throw new Error(
+                response.message ||
+                "Could not load news management."
+            );
+        }
+
+        const news = Array.isArray(response.news)
+            ? response.news
+            : [];
+
+        if (!news.length) {
+            container.innerHTML = `
+                <p class="empty-history">
+                    No news articles found.
+                </p>
+            `;
+            return;
+        }
+
+        container.innerHTML = news.map(article => {
+
+            const status =
+                String(article.status || "unknown");
+
+            const featured =
+                Boolean(article.featured);
+
+            const publishedDate =
+                article.published_at
+                    ? new Date(article.published_at)
+                        .toLocaleString("en-NG")
+                    : "Not published";
+
+            return `
+                <div class="news-management-card">
+
+                    <div class="news-management-header">
+
+                        <div>
+
+                            <h3>
+                                ${escapeHtml(article.title)}
+                            </h3>
+
+                            <p class="empty-history">
+                                ${escapeHtml(
+                                    article.summary || "No summary"
+                                )}
+                            </p>
+
+                        </div>
+
+                        <span class="news-management-status">
+                            ${escapeHtml(status)}
+                        </span>
+
+                    </div>
+
+                    <div class="news-management-meta">
+
+                        <span>
+                            Category:
+                            ${escapeHtml(
+                                article.category || "CARD4ME Updates"
+                            )}
+                        </span>
+
+                        <span>
+                            Views:
+                            ${Number(article.views_count || 0)}
+                        </span>
+
+                        <span>
+                            ${featured ? "⭐ Featured" : "Not featured"}
+                        </span>
+
+                        <span>
+                            Published:
+                            ${escapeHtml(publishedDate)}
+                        </span>
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+
+    } catch (error) {
+
+        console.error(
+            "Load news management error:",
+            error
+        );
+
+        container.innerHTML = `
+            <p class="empty-history">
+                ${escapeHtml(
+                    error.message ||
+                    "Could not load news management."
+                )}
+            </p>
+        `;
+    }
+}
 
 
 async function saveNewsDraft() {
@@ -1101,6 +1252,7 @@ document.addEventListener(
         }
 
         loadEarnings();
+        loadNewsManagement();
 
     }
 );
