@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>CARD4ME AI Help</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="ai-help-page">
+
+    <main class="ai-help-shell">
+
+        <section class="ai-help-card">
+
+            <header class="ai-help-header">
+                <div class="ai-help-brand">
+                    <div class="ai-help-icon">✦</div>
+
+                    <div>
+                        <p class="ai-help-eyebrow">CARD4ME</p>
+                        <h1>AI Help</h1>
+                    </div>
+                </div>
+
+                <span class="ai-help-status">
+                    <span></span>
+                    Online
+                </span>
+            </header>
+
+            <div class="ai-help-intro">
+                <h2>How can I help you?</h2>
+
+                <p>
+                    Ask a question about your CARD4ME account,
+                    wallet, airtime, data, transactions or community.
+                </p>
+            </div>
+
+            <div
+                id="aiChatMessages"
+                class="ai-chat-messages"
+                aria-live="polite"
+            >
+                <div class="ai-message ai-message-bot">
+                    <div class="ai-message-avatar">✦</div>
+
+                    <div class="ai-message-content">
+                        <span class="ai-message-name">
+                            CARD4ME AI
+                        </span>
+
+                        <p>
+                            Hi! I'm CARD4ME AI Help. Ask me anything
+                            about using CARD4ME.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ai-quick-questions">
+                <button type="button" data-question="How do I fund my wallet?">
+                    Fund wallet
+                </button>
+
+                <button type="button" data-question="How do I buy airtime?">
+                    Buy airtime
+                </button>
+
+                <button type="button" data-question="How do I buy data?">
+                    Buy data
+                </button>
+
+                <button type="button" data-question="How do I check my transactions?">
+                    Transactions
+                </button>
+            </div>
+
+            <form id="aiHelpForm" class="ai-help-form">
+
+                <input
+                    type="text"
+                    id="aiHelpInput"
+                    maxlength="500"
+                    autocomplete="off"
+                    placeholder="Ask CARD4ME AI..."
+                    aria-label="Ask CARD4ME AI"
+                    required
+                >
+
+                <button
+                    type="submit"
+                    id="aiHelpSend"
+                    aria-label="Send question"
+                >
+                    <span>➤</span>
+                </button>
+
+            </form>
+
+            <p class="ai-help-disclaimer">
+                CARD4ME AI provides general platform assistance.
+                For account-specific issues, contact CARD4ME Support.
+            </p>
+
+        </section>
+
+    </main>
+
+    <script src="ai-help.js"></script>
+</body>
+</html>
