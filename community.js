@@ -1,5 +1,6 @@
 let communityChannels = [];
 let activeChannelId = null;
+let activeSpace = "channel";
 
 const channelsList =
     document.getElementById("channelsList");
@@ -54,6 +55,25 @@ function formatMessageTime(value) {
 }
 
 
+function formatNewsDate(value) {
+    if (!value) {
+        return "";
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "";
+    }
+
+    return date.toLocaleDateString([], {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+
 function renderChannels() {
     if (!communityChannels.length) {
         channelsList.innerHTML = `
@@ -70,6 +90,7 @@ function renderChannels() {
             <button
                 type="button"
                 class="channel-button ${
+                    activeSpace === "channel" &&
                     Number(channel.id) === Number(activeChannelId)
                         ? "active"
                         : ""
@@ -77,17 +98,36 @@ function renderChannels() {
                 data-channel-id="${channel.id}"
             >
                 <span class="channel-name">
-                    ${escapeHtml(channel.name)}
+                    💬 ${escapeHtml(channel.name)}
                 </span>
 
                 <span class="channel-description">
                     ${escapeHtml(channel.description || "")}
                 </span>
             </button>
-        `).join("");
+        `).join("") +
+        `
+            <button
+                type="button"
+                class="channel-button ${
+                    activeSpace === "news"
+                        ? "active"
+                        : ""
+                }"
+                id="newsSpaceButton"
+            >
+                <span class="channel-name">
+                    📰 CARD4ME News
+                </span>
+
+                <span class="channel-description">
+                    Latest CARD4ME updates
+                </span>
+            </button>
+        `;
 
     document
-        .querySelectorAll(".channel-button")
+        .querySelectorAll(".channel-button[data-channel-id]")
         .forEach(button => {
             button.addEventListener("click", () => {
                 const channelId =
@@ -96,6 +136,16 @@ function renderChannels() {
                 selectChannel(channelId);
             });
         });
+
+    const newsButton =
+        document.getElementById("newsSpaceButton");
+
+    if (newsButton) {
+        newsButton.addEventListener(
+            "click",
+            selectNews
+        );
+    }
 }
 
 
@@ -126,6 +176,8 @@ async function loadChannels() {
         activeChannelId =
             Number(communityChannels[0].id);
 
+        activeSpace = "channel";
+
         renderChannels();
 
         await loadMessages(activeChannelId);
@@ -146,6 +198,8 @@ async function loadChannels() {
 
 
 async function selectChannel(channelId) {
+    activeSpace = "channel";
+
     activeChannelId =
         Number(channelId);
 
@@ -175,6 +229,10 @@ async function loadMessages(channelId) {
             Loading messages...
         </div>
     `;
+
+    messageForm.style.display = "";
+    messageInput.disabled = false;
+    messageSend.disabled = false;
 
     try {
         const result =
@@ -208,6 +266,136 @@ async function loadMessages(channelId) {
         `;
     }
 }
+
+
+async function selectNews() {
+    activeSpace = "news";
+
+    renderChannels();
+
+    channelTitle.textContent =
+        "📰 CARD4ME News";
+
+    channelDescription.textContent =
+        "Latest CARD4ME updates, features, services and community news.";
+
+    messageForm.style.display = "none";
+
+    messagesElement.innerHTML = `
+        <div class="empty-community">
+            Loading news...
+        </div>
+    `;
+
+    try {
+        const result =
+            await apiRequest(
+                "/api/community/news"
+            );
+
+        if (!result.success) {
+            throw new Error(
+                result.message ||
+                "Could not load news."
+            );
+        }
+
+        const articles =
+            Array.isArray(result.news)
+                ? result.news
+                : [];
+
+        renderNews(articles);
+
+    } catch (error) {
+        console.error(
+            "Community news error:",
+            error
+        );
+
+        messagesElement.innerHTML = `
+            <div class="empty-community">
+                ${escapeHtml(error.message)}
+            </div>
+        `;
+    }
+}
+
+
+function renderNews(articles) {
+    if (!articles.length) {
+        messagesElement.innerHTML = `
+            <div class="empty-community">
+                📰 No news articles have been published yet.
+            </div>
+        `;
+
+        return;
+    }
+
+    messagesElement.innerHTML =
+        articles.map(article => `
+            <article
+                class="community-news-card"
+            >
+                ${
+                    article.cover_image
+                        ? `
+                            <img
+                                src="${escapeHtml(article.cover_image)}"
+                                alt=""
+                                class="community-news-image"
+                                loading="lazy"
+                            >
+                        `
+                        : ""
+                }
+
+                <div class="community-news-content">
+
+                    <div class="community-news-category">
+                        ${escapeHtml(
+                            article.category ||
+                            "CARD4ME Updates"
+                        )}
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(article.title)}
+                    </h3>
+
+                    ${
+                        article.summary
+                            ? `
+                                <p class="community-news-summary">
+                                    ${escapeHtml(article.summary)}
+                                </p>
+                            `
+                            : ""
+                    }
+
+                    <div class="community-news-meta">
+                        ${escapeHtml(
+                            article.author_name ||
+                            "CARD4ME"
+                        )}
+                        ${
+                            article.published_at
+                                ? ` · ${formatNewsDate(article.published_at)}`
+                                : ""
+                        }
+                    </div>
+
+                    <div class="community-news-body">
+                        ${escapeHtml(article.content)
+                            .replace(/\n/g, "<br>")}
+                    </div>
+
+                </div>
+            </article>
+        `).join("");
+}
+
 
 
 function renderMessages(messages) {
@@ -251,76 +439,73 @@ function renderMessages(messages) {
 }
 
 
-messageForm.addEventListener(
-    "submit",
-    async event => {
-        event.preventDefault();
+document
+    .getElementById("messageForm")
+    ?.addEventListener(
+        "submit",
+        async event => {
 
-        const message =
-            messageInput.value.trim();
+            event.preventDefault();
 
-        if (!activeChannelId || !message) {
-            return;
-        }
+            const message =
+                messageInput.value.trim();
 
-        messageSend.disabled = true;
-
-        communityStatus.textContent =
-            "Sending...";
-
-        try {
-            const result =
-                await apiRequest(
-                    `/api/community/channels/${activeChannelId}/messages`,
-                    {
-                        method: "POST",
-                        body: JSON.stringify({
-                            message
-                        })
-                    }
-                );
-
-            if (!result.success) {
-                throw new Error(
-                    result.message ||
-                    "Could not send message."
-                );
+            if (!message || !activeChannelId) {
+                return;
             }
 
-            messageInput.value = "";
+            messageSend.disabled = true;
 
             communityStatus.textContent =
-                "Message sent.";
+                "Sending...";
 
-            await loadMessages(
-                activeChannelId
-            );
+            try {
+                const result =
+                    await apiRequest(
+                        `/api/community/channels/${activeChannelId}/messages`,
+                        {
+                            method: "POST",
+                            body: JSON.stringify({
+                                message
+                            })
+                        }
+                    );
 
-            setTimeout(() => {
-                communityStatus.textContent = "";
-            }, 2000);
+                if (!result.success) {
+                    throw new Error(
+                        result.message ||
+                        "Could not send message."
+                    );
+                }
 
-        } catch (error) {
-            console.error(
-                "Community message error:",
-                error
-            );
+                messageInput.value = "";
 
-            communityStatus.textContent =
-                error.message ||
-                "Could not send message.";
+                communityStatus.textContent =
+                    "";
 
-        } finally {
-            messageSend.disabled = false;
-            messageInput.focus();
+                await loadMessages(
+                    activeChannelId
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Community message error:",
+                    error
+                );
+
+                communityStatus.textContent =
+                    error.message ||
+                    "Could not send message.";
+
+            } finally {
+
+                messageSend.disabled = false;
+                messageInput.focus();
+
+            }
         }
-    }
-);
+    );
 
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-        loadChannels();
-    }
-);
+loadChannels();
