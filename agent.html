@@ -533,7 +533,8 @@ async function verifyAgentPaymentFromRedirect() {
         );
 
     const transactionId =
-        params.get("transaction_id");
+        params.get("transaction_id") ||
+        params.get("transactionId");
 
     const paymentStatus =
         String(
