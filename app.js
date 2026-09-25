@@ -1699,7 +1699,7 @@ function displayVirtualAccount(
     const fundingFee =
         Number(
             account?.fundingFee ??
-            Math.round(walletAmount * 0.10 * 100) / 100
+            Math.round(walletAmount * 0.01 * 100) / 100
         );
 
     const customerPayAmount =
@@ -1723,7 +1723,7 @@ function displayVirtualAccount(
             </div>
 
             <div class="virtual-account-row">
-                <span>CARD4ME Fee (10%)</span>
+                <span>CARD4ME Fee (1%)</span>
                 <strong>₦${fundingFee.toLocaleString()}</strong>
             </div>
 
