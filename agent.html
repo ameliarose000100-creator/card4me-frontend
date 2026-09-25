@@ -382,7 +382,7 @@
 
 /*
  * CREATE AGENT APPLICATION
- * THEN START FLUTTERWAVE PAYMENT
+ * THEN CREATE FLUTTERWAVE BANK-TRANSFER ACCOUNT
  */
 async function startAgentApplication() {
 
@@ -394,9 +394,7 @@ async function startAgentApplication() {
     }
 
     agentApplyButton.disabled = true;
-
-    agentApplyButton.textContent =
-        "Preparing payment...";
+    agentApplyButton.textContent = "Preparing payment...";
 
     try {
 
@@ -409,11 +407,8 @@ async function startAgentApplication() {
                 {
                     method: "POST",
                     headers: {
-                        "Authorization":
-                            `Bearer ${token}`,
-
-                        "Content-Type":
-                            "application/json"
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
                     }
                 }
             );
@@ -421,10 +416,6 @@ async function startAgentApplication() {
         const applicationData =
             await applicationResponse.json();
 
-        /*
-         * A 409 pending response means the application
-         * already exists, which is fine.
-         */
         if (
             !applicationResponse.ok &&
             applicationResponse.status !== 409
@@ -436,10 +427,10 @@ async function startAgentApplication() {
         }
 
         /*
-         * Now create the actual ₦1,000 payment.
+         * Create the Flutterwave dynamic bank-transfer account.
          */
         agentApplyButton.textContent =
-            "Opening payment...";
+            "Creating bank account...";
 
         const paymentResponse =
             await fetch(
@@ -447,11 +438,8 @@ async function startAgentApplication() {
                 {
                     method: "POST",
                     headers: {
-                        "Authorization":
-                            `Bearer ${token}`,
-
-                        "Content-Type":
-                            "application/json"
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
                     }
                 }
             );
@@ -468,31 +456,37 @@ async function startAgentApplication() {
                 paymentData.flutterwave_error ||
                 "Unable to create Agent payment.";
 
-            const readablePaymentError =
+            throw new Error(
                 typeof paymentError === "string"
                     ? paymentError
                     : JSON.stringify(
                         paymentError,
                         null,
                         2
-                    );
-
-            throw new Error(
-                readablePaymentError
+                    )
             );
         }
 
-        if (!paymentData.checkout_url) {
+        if (
+            !paymentData.account ||
+            !paymentData.account.accountNumber
+        ) {
             throw new Error(
-                "Flutterwave did not return a payment page."
+                "Flutterwave did not return the Agent bank-transfer account."
             );
         }
 
-        agentMessage.textContent =
-            "Redirecting you to Flutterwave to complete your ₦1,000.00 Agent registration payment...";
+        window.agentPaymentTransactionId =
+            paymentData.card4me_transaction_id ||
+            null;
 
-        window.location.href =
-            paymentData.checkout_url;
+        if (!window.agentPaymentTransactionId) {
+            throw new Error(
+                "Agent payment transaction ID was not returned."
+            );
+        }
+
+        showAgentBankTransfer(paymentData);
 
     } catch (error) {
 
@@ -501,17 +495,8 @@ async function startAgentApplication() {
             error
         );
 
-        const readableError =
-            typeof error.message === "string"
-                ? error.message
-                : JSON.stringify(
-                    error.message || error,
-                    null,
-                    2
-                );
-
         agentMessage.textContent =
-            readableError ||
+            error.message ||
             "Unable to start Agent payment.";
 
         agentApplyButton.disabled = false;
@@ -523,45 +508,272 @@ async function startAgentApplication() {
 
 
 /*
- * VERIFY PAYMENT AFTER FLUTTERWAVE REDIRECT
+ * SHOW FLUTTERWAVE BANK-TRANSFER DETAILS
  */
-async function verifyAgentPaymentFromRedirect() {
+function showAgentBankTransfer(paymentData) {
 
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-    const transactionId =
-        params.get("transaction_id") ||
-        params.get("transactionId");
-
-    const paymentStatus =
-        String(
-            params.get("status") || ""
-        ).toLowerCase();
-
-    if (!transactionId) {
-        return false;
-    }
-
-    const token = getAgentToken();
-
-    if (!token) {
-        window.location.replace("login.html");
-        return true;
-    }
+    const account =
+        paymentData.account || {};
 
     agentApplyButton.style.display =
         "none";
 
     agentStatus.textContent =
-        "Verifying Payment...";
+        "Payment Pending";
 
-    agentMessage.textContent =
-        "We received your Flutterwave return. Verifying your ₦1,000.00 Agent registration payment...";
+    agentMessage.innerHTML = `
+        <div id="agentBankTransferBox"
+             style="
+                margin-top:18px;
+                padding:20px;
+                border-radius:18px;
+                background:rgba(10,18,30,.92);
+                border:1px solid rgba(0,255,170,.20);
+                box-shadow:0 0 25px rgba(0,255,170,.06);
+                text-align:left;
+             ">
+
+            <div style="
+                font-size:12px;
+                text-transform:uppercase;
+                letter-spacing:1px;
+                opacity:.65;
+                margin-bottom:7px;
+            ">
+                Bank Transfer Payment
+            </div>
+
+            <div style="
+                font-size:14px;
+                margin-bottom:18px;
+                opacity:.85;
+            ">
+                Transfer exactly <strong>₦1,000.00</strong>
+                to the account below to activate your Agent account.
+            </div>
+
+            <div style="margin-bottom:13px;">
+                <div style="font-size:11px;opacity:.55;">
+                    BANK
+                </div>
+                <strong id="agentBankName">
+                    ${escapeAgentHtml(account.bankName || "Flutterwave")}
+                </strong>
+            </div>
+
+            <div style="margin-bottom:13px;">
+                <div style="font-size:11px;opacity:.55;">
+                    ACCOUNT NAME
+                </div>
+                <strong id="agentAccountName">
+                    ${escapeAgentHtml(account.accountName || "CARD4ME DIGITAL ENTERPRISES")}
+                </strong>
+            </div>
+
+            <div style="margin-bottom:13px;">
+                <div style="font-size:11px;opacity:.55;">
+                    ACCOUNT NUMBER
+                </div>
+
+                <div style="
+                    display:flex;
+                    gap:8px;
+                    align-items:center;
+                    margin-top:4px;
+                ">
+                    <strong id="agentAccountNumber"
+                            style="font-size:20px;letter-spacing:1px;">
+                        ${escapeAgentHtml(account.accountNumber)}
+                    </strong>
+
+                    <button
+                        type="button"
+                        onclick="copyAgentAccountNumber()"
+                        style="
+                            border:0;
+                            border-radius:9px;
+                            padding:7px 10px;
+                            cursor:pointer;
+                        "
+                    >
+                        Copy
+                    </button>
+                </div>
+            </div>
+
+            <div style="margin-bottom:13px;">
+                <div style="font-size:11px;opacity:.55;">
+                    AMOUNT
+                </div>
+                <strong>₦1,000.00</strong>
+            </div>
+
+            <div style="margin-bottom:18px;">
+                <div style="font-size:11px;opacity:.55;">
+                    REFERENCE
+                </div>
+                <span style="font-size:12px;word-break:break-all;">
+                    ${escapeAgentHtml(account.reference || paymentData.reference || "")}
+                </span>
+            </div>
+
+            <div style="
+                font-size:12px;
+                opacity:.65;
+                margin-bottom:16px;
+            ">
+                Account expiry:
+                ${escapeAgentHtml(
+                    account.expiresAt
+                        ? new Date(account.expiresAt).toLocaleString()
+                        : "See payment details"
+                )}
+            </div>
+
+            <button
+                id="verifyAgentBankTransferButton"
+                type="button"
+                style="
+                    width:100%;
+                    border:0;
+                    border-radius:12px;
+                    padding:13px 16px;
+                    font-weight:700;
+                    cursor:pointer;
+                "
+            >
+                I Have Made The Transfer
+            </button>
+
+            <div id="agentTransferVerificationMessage"
+                 style="
+                    margin-top:12px;
+                    font-size:12px;
+                    opacity:.75;
+                    text-align:center;
+                 ">
+            </div>
+
+        </div>
+    `;
+
+    const verifyButton =
+        document.getElementById(
+            "verifyAgentBankTransferButton"
+        );
+
+    if (verifyButton) {
+        verifyButton.addEventListener(
+            "click",
+            verifyAgentBankTransfer
+        );
+    }
+}
+
+
+/*
+ * ESCAPE BANK DETAILS BEFORE INSERTING INTO HTML
+ */
+function escapeAgentHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/*
+ * COPY BANK ACCOUNT NUMBER
+ */
+async function copyAgentAccountNumber() {
+
+    const accountNumber =
+        document.getElementById(
+            "agentAccountNumber"
+        )?.textContent?.trim();
+
+    if (!accountNumber) {
+        return;
+    }
 
     try {
+
+        await navigator.clipboard.writeText(
+            accountNumber
+        );
+
+        const message =
+            document.getElementById(
+                "agentTransferVerificationMessage"
+            );
+
+        if (message) {
+            message.textContent =
+                "Account number copied.";
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Unable to copy Agent account number:",
+            error
+        );
+    }
+}
+
+
+/*
+ * VERIFY FLUTTERWAVE BANK TRANSFER
+ */
+async function verifyAgentBankTransfer() {
+
+    const token = getAgentToken();
+
+    if (!token) {
+        window.location.replace("login.html");
+        return;
+    }
+
+    const verifyButton =
+        document.getElementById(
+            "verifyAgentBankTransferButton"
+        );
+
+    const verificationMessage =
+        document.getElementById(
+            "agentTransferVerificationMessage"
+        );
+
+    if (verifyButton) {
+        verifyButton.disabled = true;
+        verifyButton.textContent =
+            "Checking payment...";
+    }
+
+    if (verificationMessage) {
+        verificationMessage.textContent =
+            "Checking Flutterwave for your ₦1,000.00 transfer...";
+    }
+
+    try {
+
+        /*
+         * The backend knows the pending Agent transaction
+         * belonging to the authenticated user.
+         *
+         * We therefore need the local transaction ID.
+         */
+        const transactionId =
+            window.agentPaymentTransactionId;
+
+        if (!transactionId) {
+            throw new Error(
+                "Payment transaction reference is missing. Please start the payment again."
+            );
+        }
 
         const response =
             await fetch(
@@ -569,11 +781,8 @@ async function verifyAgentPaymentFromRedirect() {
                 {
                     method: "GET",
                     headers: {
-                        "Authorization":
-                            `Bearer ${token}`,
-
-                        "Content-Type":
-                            "application/json"
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
                     }
                 }
             );
@@ -596,20 +805,19 @@ async function verifyAgentPaymentFromRedirect() {
             agentStatus.textContent =
                 "Payment Pending";
 
-            agentMessage.textContent =
-                data.message ||
-                "Your payment has not been confirmed yet.";
+            if (verificationMessage) {
+                verificationMessage.textContent =
+                    data.message ||
+                    "Payment has not been confirmed yet. After making the transfer, wait a moment and check again.";
+            }
 
-            agentApplyButton.style.display =
-                "inline-block";
+            if (verifyButton) {
+                verifyButton.disabled = false;
+                verifyButton.textContent =
+                    "Check Payment Again";
+            }
 
-            agentApplyButton.disabled =
-                false;
-
-            agentApplyButton.textContent =
-                "Check Payment Again";
-
-            return true;
+            return;
         }
 
         agentStatus.textContent =
@@ -624,43 +832,131 @@ async function verifyAgentPaymentFromRedirect() {
         agentDashboardPanel.style.display =
             "block";
 
-        /*
-         * Remove Flutterwave query parameters from the
-         * visible URL after successful verification.
-         */
-        window.history.replaceState(
-            {},
-            document.title,
-            "agent.html"
-        );
-
-        return true;
+        window.agentPaymentTransactionId =
+            null;
 
     } catch (error) {
 
         console.error(
-            "Agent payment verification error:",
+            "Agent bank-transfer verification error:",
             error
         );
 
         agentStatus.textContent =
             "Verification Failed";
 
-        agentMessage.textContent =
-            error.message ||
-            "We could not verify the payment yet. Please try again.";
+        if (verificationMessage) {
+            verificationMessage.textContent =
+                error.message ||
+                "We could not verify the payment yet. Please try again.";
+        }
 
-        agentApplyButton.style.display =
-            "inline-block";
-
-        agentApplyButton.disabled =
-            false;
-
-        agentApplyButton.textContent =
-            "Check Payment Again";
-
-        return true;
+        if (verifyButton) {
+            verifyButton.disabled = false;
+            verifyButton.textContent =
+                "Check Payment Again";
+        }
     }
+}
+
+
+/*
+ * RESTORE AN EXISTING PENDING BANK-TRANSFER PAYMENT
+ */
+async function loadExistingAgentPayment() {
+
+    const token = getAgentToken();
+
+    if (!token) {
+        return false;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE}/api/agent`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`,
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+        if (!response.ok) {
+            return false;
+        }
+
+        const data =
+            await response.json();
+
+        if (!data.success || !data.agent) {
+            return false;
+        }
+
+        const details =
+            data.agent.paymentDetails ||
+            data.agent.payment_details;
+
+        if (
+            data.agent.status === "pending" &&
+            details &&
+            details.accountNumber
+        ) {
+
+            window.agentPaymentTransactionId =
+                details.card4me_transaction_id ||
+                details.transactionId ||
+                null;
+
+            if (window.agentPaymentTransactionId) {
+
+                showAgentBankTransfer({
+                    success: true,
+                    reference:
+                        details.reference,
+                    account: {
+                        accountNumber:
+                            details.accountNumber,
+                        accountName:
+                            details.accountName ||
+                            "CARD4ME DIGITAL ENTERPRISES",
+                        bankName:
+                            details.bankName ||
+                            "Flutterwave",
+                        amount:
+                            details.amount ||
+                            1000,
+                        transferAmount:
+                            details.transferAmount ||
+                            1000,
+                        currency:
+                            details.currency ||
+                            "NGN",
+                        reference:
+                            details.reference,
+                        expiresAt:
+                            details.expiresAt
+                    }
+                });
+
+                return true;
+            }
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Unable to restore Agent payment:",
+            error
+        );
+    }
+
+    return false;
 }
 
 
@@ -681,10 +977,10 @@ document.addEventListener(
             return;
         }
 
-        const returnedFromPayment =
-            await verifyAgentPaymentFromRedirect();
+        const restoredPendingPayment =
+            await loadExistingAgentPayment();
 
-        if (!returnedFromPayment) {
+        if (!restoredPendingPayment) {
             await loadAgentStatus();
         }
     }
