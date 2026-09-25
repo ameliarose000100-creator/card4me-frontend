@@ -276,255 +276,402 @@
 
 
     async function loadAgentStatus() {
+    const token = getAgentToken();
 
-        const token =
-            getAgentToken();
+    if (!token) {
+        window.location.replace("login.html");
+        return;
+    }
 
-        if (!token) {
+    try {
+        const response = await fetch(
+            `${API_BASE}/api/agent`,
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
 
-            window.location.replace(
-                "login.html"
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message ||
+                "Unable to load Agent status."
             );
-
-            return;
-
         }
 
-        try {
-
-            const response =
-                await fetch(
-                    `${API_BASE}/api/agent`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Authorization":
-                                `Bearer ${token}`,
-                            "Content-Type":
-                                "application/json"
-                        }
-                    }
-                );
-
-            const data =
-                await response.json();
-
-            if (!response.ok || !data.success) {
-
-                throw new Error(
-                    data.message ||
-                    "Unable to load Agent status."
-                );
-
-            }
-
-
-            if (!data.agent) {
-
-                agentStatus.textContent =
-                    "Not registered";
-
-                agentMessage.textContent =
-                    "Pay the ₦1,000 registration fee to become a CARD4ME Agent.";
-
-                agentApplyButton.style.display =
-                    "inline-block";
-
-                return;
-
-            }
-
-
-            if (
-                data.agent.status ===
-                "pending"
-            ) {
-
-                agentStatus.textContent =
-                    "Pending";
-
-                agentMessage.textContent =
-                    "Your Agent application has been created. Payment verification is the next step.";
-
-                agentApplyButton.style.display =
-                    "none";
-
-                return;
-
-            }
-
-
-            if (
-                data.agent.status ===
-                "active"
-            ) {
-
-                agentStatus.textContent =
-                    "Active";
-
-                agentMessage.textContent =
-                    "Your CARD4ME Agent account is active.";
-
-                agentApplyButton.style.display =
-                    "none";
-
-                agentDashboardPanel.style.display =
-                    "block";
-
-                return;
-
-            }
-
-
-            if (
-                data.agent.status ===
-                "suspended"
-            ) {
-
-                agentStatus.textContent =
-                    "Suspended";
-
-                agentMessage.textContent =
-                    "Your Agent account is currently suspended.";
-
-                agentApplyButton.style.display =
-                    "none";
-
-                return;
-
-            }
-
-
+        if (!data.agent) {
             agentStatus.textContent =
-                data.agent.status;
+                "Not registered";
+
+            agentMessage.textContent =
+                "Pay the ₦1,000.00 registration fee to become a CARD4ME Agent.";
+
+            agentApplyButton.style.display =
+                "inline-block";
+
+            return;
+        }
+
+        if (data.agent.status === "pending") {
+            agentStatus.textContent =
+                "Payment Required";
+
+            agentMessage.textContent =
+                "Your Agent application is ready. Complete the ₦1,000.00 registration payment to activate your Agent account.";
+
+            agentApplyButton.style.display =
+                "inline-block";
+
+            agentApplyButton.textContent =
+                "Pay ₦1,000 Registration Fee";
+
+            return;
+        }
+
+        if (data.agent.status === "active") {
+            agentStatus.textContent =
+                "Active";
+
+            agentMessage.textContent =
+                "Your CARD4ME Agent account is active.";
 
             agentApplyButton.style.display =
                 "none";
 
-        } catch (error) {
+            agentDashboardPanel.style.display =
+                "block";
 
-            console.error(
-                "Agent status error:",
-                error
-            );
+            return;
+        }
 
+        if (data.agent.status === "suspended") {
             agentStatus.textContent =
-                "Unable to load";
+                "Suspended";
 
             agentMessage.textContent =
-                "Unable to retrieve your Agent status. Please try again.";
+                "Your Agent account is currently suspended.";
 
+            agentApplyButton.style.display =
+                "none";
+
+            return;
         }
 
+        agentStatus.textContent =
+            data.agent.status;
+
+        agentApplyButton.style.display =
+            "none";
+
+    } catch (error) {
+
+        console.error(
+            "Agent status error:",
+            error
+        );
+
+        agentStatus.textContent =
+            "Unable to load";
+
+        agentMessage.textContent =
+            "Unable to retrieve your Agent status. Please try again.";
+    }
+}
+
+
+/*
+ * CREATE AGENT APPLICATION
+ * THEN START FLUTTERWAVE PAYMENT
+ */
+async function startAgentApplication() {
+
+    const token = getAgentToken();
+
+    if (!token) {
+        window.location.replace("login.html");
+        return;
     }
 
+    agentApplyButton.disabled = true;
 
-    agentApplyButton.addEventListener(
-        "click",
-        async function () {
+    agentApplyButton.textContent =
+        "Preparing payment...";
 
-            const token =
-                getAgentToken();
+    try {
 
-            if (!token) {
+        /*
+         * First make sure the Agent application exists.
+         */
+        const applicationResponse =
+            await fetch(
+                `${API_BASE}/api/agent/apply`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`,
 
-                window.location.replace(
-                    "login.html"
-                );
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
 
-                return;
+        const applicationData =
+            await applicationResponse.json();
 
-            }
+        /*
+         * A 409 pending response means the application
+         * already exists, which is fine.
+         */
+        if (
+            !applicationResponse.ok &&
+            applicationResponse.status !== 409
+        ) {
+            throw new Error(
+                applicationData.message ||
+                "Unable to create Agent application."
+            );
+        }
 
+        /*
+         * Now create the actual ₦1,000 payment.
+         */
+        agentApplyButton.textContent =
+            "Opening payment...";
+
+        const paymentResponse =
+            await fetch(
+                `${API_BASE}/api/agent/payment`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`,
+
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+        const paymentData =
+            await paymentResponse.json();
+
+        if (
+            !paymentResponse.ok ||
+            !paymentData.success
+        ) {
+            throw new Error(
+                paymentData.message ||
+                "Unable to create Agent payment."
+            );
+        }
+
+        if (!paymentData.checkout_url) {
+            throw new Error(
+                "Flutterwave did not return a payment page."
+            );
+        }
+
+        agentMessage.textContent =
+            "Redirecting you to Flutterwave to complete your ₦1,000.00 Agent registration payment...";
+
+        window.location.href =
+            paymentData.checkout_url;
+
+    } catch (error) {
+
+        console.error(
+            "Agent payment error:",
+            error
+        );
+
+        agentMessage.textContent =
+            error.message ||
+            "Unable to start Agent payment.";
+
+        agentApplyButton.disabled = false;
+
+        agentApplyButton.textContent =
+            "Pay ₦1,000 Registration Fee";
+    }
+}
+
+
+/*
+ * VERIFY PAYMENT AFTER FLUTTERWAVE REDIRECT
+ */
+async function verifyAgentPaymentFromRedirect() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const transactionId =
+        params.get("transaction_id");
+
+    const paymentStatus =
+        String(
+            params.get("status") || ""
+        ).toLowerCase();
+
+    if (!transactionId) {
+        return false;
+    }
+
+    const token = getAgentToken();
+
+    if (!token) {
+        window.location.replace("login.html");
+        return true;
+    }
+
+    agentApplyButton.style.display =
+        "none";
+
+    agentStatus.textContent =
+        "Verifying Payment...";
+
+    agentMessage.textContent =
+        "We received your Flutterwave return. Verifying your ₦1,000.00 Agent registration payment...";
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_BASE}/api/agent/payment/verify/${encodeURIComponent(transactionId)}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Authorization":
+                            `Bearer ${token}`,
+
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
+            throw new Error(
+                data.message ||
+                "Unable to verify Agent payment."
+            );
+        }
+
+        if (!data.verified) {
+
+            agentStatus.textContent =
+                "Payment Pending";
+
+            agentMessage.textContent =
+                data.message ||
+                "Your payment has not been confirmed yet.";
+
+            agentApplyButton.style.display =
+                "inline-block";
 
             agentApplyButton.disabled =
-                true;
+                false;
 
             agentApplyButton.textContent =
-                "Creating application...";
+                "Check Payment Again";
 
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_BASE}/api/agent/apply`,
-                        {
-                            method: "POST",
-                            headers: {
-                                "Authorization":
-                                    `Bearer ${token}`,
-                                "Content-Type":
-                                    "application/json"
-                            }
-                        }
-                    );
-
-                const data =
-                    await response.json();
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        data.message ||
-                        "Unable to create Agent application."
-                    );
-
-                }
-
-
-                agentStatus.textContent =
-                    "Pending";
-
-                agentMessage.textContent =
-                    "Your Agent application has been created. Payment verification is the next step.";
-
-                agentApplyButton.style.display =
-                    "none";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Agent application error:",
-                    error
-                );
-
-                agentMessage.textContent =
-                    error.message ||
-                    "Unable to create Agent application.";
-
-                agentApplyButton.disabled =
-                    false;
-
-                agentApplyButton.textContent =
-                    "Apply as Agent";
-
-            }
-
+            return true;
         }
-    );
+
+        agentStatus.textContent =
+            "Active";
+
+        agentMessage.textContent =
+            "Payment successful. Your CARD4ME Agent account is now active.";
+
+        agentApplyButton.style.display =
+            "none";
+
+        agentDashboardPanel.style.display =
+            "block";
+
+        /*
+         * Remove Flutterwave query parameters from the
+         * visible URL after successful verification.
+         */
+        window.history.replaceState(
+            {},
+            document.title,
+            "agent.html"
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Agent payment verification error:",
+            error
+        );
+
+        agentStatus.textContent =
+            "Verification Failed";
+
+        agentMessage.textContent =
+            error.message ||
+            "We could not verify the payment yet. Please try again.";
+
+        agentApplyButton.style.display =
+            "inline-block";
+
+        agentApplyButton.disabled =
+            false;
+
+        agentApplyButton.textContent =
+            "Check Payment Again";
+
+        return true;
+    }
+}
 
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
+agentApplyButton.addEventListener(
+    "click",
+    startAgentApplication
+);
 
-            if (
-                typeof requireLogin ===
-                "function" &&
-                !requireLogin()
-            ) {
-                return;
-            }
 
-            loadAgentStatus();
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
 
+        if (
+            typeof requireLogin === "function" &&
+            !requireLogin()
+        ) {
+            return;
         }
-    );
 
-    </script>
+        const returnedFromPayment =
+            await verifyAgentPaymentFromRedirect();
+
+        if (!returnedFromPayment) {
+            await loadAgentStatus();
+        }
+    }
+);
+
+</script>
 
 </body>
 
