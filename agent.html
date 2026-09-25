@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CARD4ME Agent</title>
+
+    <meta
+        name="description"
+        content="Become a CARD4ME Agent and access Agent services."
+    >
+
+    <link rel="stylesheet" href="style.css?v=20260921">
+
+</head>
+
+<body>
+
+    <header>
+        <nav class="nav">
+
+            <a href="index.html" class="logo">
+                CARD4ME
+            </a>
+
+            <button
+                class="menu"
+                type="button"
+                aria-label="Open navigation menu"
+            >
+                ☰
+            </button>
+
+            <div class="nav-links" id="nav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="index.html#services">
+                    Services
+                </a>
+
+                <a href="dashboard.html">
+                    Dashboard
+                </a>
+
+                <a href="wallet.html">
+                    Wallet
+                </a>
+
+                <a href="transaction.html">
+                    Transactions
+                </a>
+
+                <a href="ai-help.html">
+                    🤖 AI Help
+                </a>
+
+                <a href="community.html">
+                    Community
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a
+                    href="#"
+                    onclick="logout(); return false;"
+                >
+                    Logout
+                </a>
+
+            </div>
+
+        </nav>
+    </header>
+
+
+    <main class="account-page">
+
+        <section class="account-heading">
+
+            <small>
+                CARD4ME AGENT
+            </small>
+
+            <h1>
+                Become a CARD4ME Agent
+            </h1>
+
+            <p>
+                Unlock Agent access and get special pricing
+                on selected CARD4ME digital services.
+            </p>
+
+        </section>
+
+
+        <section class="account-card">
+
+            <h2>
+                🤝 Agent Program
+            </h2>
+
+            <div class="account-details">
+
+                <div class="account-detail">
+
+                    <strong>
+                        Registration Fee
+                    </strong>
+
+                    <span>
+                        ₦1,000.00
+                    </span>
+
+                </div>
+
+                <div class="account-detail">
+
+                    <strong>
+                        Current Status
+                    </strong>
+
+                    <span id="agentStatus">
+                        Checking...
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="account-card">
+
+            <h2>
+                Agent Benefits
+            </h2>
+
+            <div class="account-details">
+
+                <div class="account-detail">
+
+                    <strong>
+                        💰 Discounted Pricing
+                    </strong>
+
+                    <span>
+                        Access special Agent prices on supported services.
+                    </span>
+
+                </div>
+
+                <div class="account-detail">
+
+                    <strong>
+                        📱 Airtime & Data
+                    </strong>
+
+                    <span>
+                        Purchase supported digital services at Agent rates.
+                    </span>
+
+                </div>
+
+                <div class="account-detail">
+
+                    <strong>
+                        📊 Agent Records
+                    </strong>
+
+                    <span>
+                        Track your Agent activity and transactions.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="account-card">
+
+            <h2 id="agentActionTitle">
+                Start Your Agent Application
+            </h2>
+
+            <p
+                id="agentMessage"
+                style="margin-bottom: 20px;"
+            >
+                The CARD4ME Agent registration fee is
+                ₦1,000.00.
+            </p>
+
+            <button
+                id="agentApplyButton"
+                class="primary-button"
+                type="button"
+            >
+                Apply as Agent
+            </button>
+
+        </section>
+
+
+        <section
+            class="account-card"
+            id="agentDashboardPanel"
+            style="display: none;"
+        >
+
+            <h2>
+                Agent Dashboard
+            </h2>
+
+            <p>
+                Your Agent account is active.
+            </p>
+
+            <a
+                href="agent-dashboard.html"
+                class="primary-button"
+                style="display: inline-block; text-decoration: none;"
+            >
+                Open Agent Dashboard
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+    <script>
+
+    "use strict";
+
+
+    const API_BASE =
+        "https://card4me-backend-1.onrender.com";
+
+
+    const agentStatus =
+        document.getElementById("agentStatus");
+
+    const agentMessage =
+        document.getElementById("agentMessage");
+
+    const agentApplyButton =
+        document.getElementById("agentApplyButton");
+
+    const agentDashboardPanel =
+        document.getElementById("agentDashboardPanel");
+
+
+    function getAgentToken() {
+
+        return localStorage.getItem(
+            "card4me_token"
+        );
+
+    }
+
+
+    async function loadAgentStatus() {
+
+        const token =
+            getAgentToken();
+
+        if (!token) {
+
+            window.location.replace(
+                "login.html"
+            );
+
+            return;
+
+        }
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE}/api/agent`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Authorization":
+                                `Bearer ${token}`,
+                            "Content-Type":
+                                "application/json"
+                        }
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.message ||
+                    "Unable to load Agent status."
+                );
+
+            }
+
+
+            if (!data.agent) {
+
+                agentStatus.textContent =
+                    "Not registered";
+
+                agentMessage.textContent =
+                    "Pay the ₦1,000 registration fee to become a CARD4ME Agent.";
+
+                agentApplyButton.style.display =
+                    "inline-block";
+
+                return;
+
+            }
+
+
+            if (
+                data.agent.status ===
+                "pending"
+            ) {
+
+                agentStatus.textContent =
+                    "Pending";
+
+                agentMessage.textContent =
+                    "Your Agent application has been created. Payment verification is the next step.";
+
+                agentApplyButton.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            if (
+                data.agent.status ===
+                "active"
+            ) {
+
+                agentStatus.textContent =
+                    "Active";
+
+                agentMessage.textContent =
+                    "Your CARD4ME Agent account is active.";
+
+                agentApplyButton.style.display =
+                    "none";
+
+                agentDashboardPanel.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            if (
+                data.agent.status ===
+                "suspended"
+            ) {
+
+                agentStatus.textContent =
+                    "Suspended";
+
+                agentMessage.textContent =
+                    "Your Agent account is currently suspended.";
+
+                agentApplyButton.style.display =
+                    "none";
+
+                return;
+
+            }
+
+
+            agentStatus.textContent =
+                data.agent.status;
+
+            agentApplyButton.style.display =
+                "none";
+
+        } catch (error) {
+
+            console.error(
+                "Agent status error:",
+                error
+            );
+
+            agentStatus.textContent =
+                "Unable to load";
+
+            agentMessage.textContent =
+                "Unable to retrieve your Agent status. Please try again.";
+
+        }
+
+    }
+
+
+    agentApplyButton.addEventListener(
+        "click",
+        async function () {
+
+            const token =
+                getAgentToken();
+
+            if (!token) {
+
+                window.location.replace(
+                    "login.html"
+                );
+
+                return;
+
+            }
+
+
+            agentApplyButton.disabled =
+                true;
+
+            agentApplyButton.textContent =
+                "Creating application...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_BASE}/api/agent/apply`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Authorization":
+                                    `Bearer ${token}`,
+                                "Content-Type":
+                                    "application/json"
+                            }
+                        }
+                    );
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to create Agent application."
+                    );
+
+                }
+
+
+                agentStatus.textContent =
+                    "Pending";
+
+                agentMessage.textContent =
+                    "Your Agent application has been created. Payment verification is the next step.";
+
+                agentApplyButton.style.display =
+                    "none";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Agent application error:",
+                    error
+                );
+
+                agentMessage.textContent =
+                    error.message ||
+                    "Unable to create Agent application.";
+
+                agentApplyButton.disabled =
+                    false;
+
+                agentApplyButton.textContent =
+                    "Apply as Agent";
+
+            }
+
+        }
+    );
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            if (
+                typeof requireLogin ===
+                "function" &&
+                !requireLogin()
+            ) {
+                return;
+            }
+
+            loadAgentStatus();
+
+        }
+    );
+
+    </script>
+
+</body>
+
+</html>

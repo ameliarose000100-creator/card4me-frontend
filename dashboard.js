@@ -229,6 +229,8 @@ document.addEventListener(
 
         loadWallet();
 
+        loadAgentDashboardStatus();
+
         showLoginWelcome();
 
     }
@@ -279,3 +281,95 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+
+
+/* =========================================
+   CARD4ME AGENT
+========================================= */
+
+async function loadAgentDashboardStatus() {
+
+    const card =
+        document.getElementById("agentDashboardCard");
+
+    const text =
+        document.getElementById("agentDashboardText");
+
+    if (!card || !text) {
+        return;
+    }
+
+    const token =
+        localStorage.getItem("card4me_token");
+
+    if (!token) {
+        return;
+    }
+
+    card.href = "agent.html";
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE}/api/agent`,
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        card.style.display = "block";
+
+        if (
+            data.success &&
+            data.agent &&
+            data.agent.status === "active"
+        ) {
+
+            text.textContent =
+                "Open Agent Dashboard";
+
+            return;
+        }
+
+        if (
+            data.success &&
+            data.agent &&
+            data.agent.status === "pending"
+        ) {
+
+            text.textContent =
+                "Complete Agent Registration";
+
+            return;
+        }
+
+        if (
+            data.success &&
+            data.agent &&
+            data.agent.status === "suspended"
+        ) {
+
+            text.textContent =
+                "Agent Account Suspended";
+
+            return;
+        }
+
+        text.textContent =
+            "Become a CARD4ME Agent";
+
+    } catch (error) {
+
+        console.warn(
+            "Unable to load Agent status:",
+            error
+        );
+
+    }
+}
