@@ -304,6 +304,50 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* NEWS MANAGER */
+
+#newsTitle,
+#newsSummary,
+#newsCoverImage,
+#newsContent,
+#newsCategory {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 50px;
+    margin: 0 0 14px;
+    padding: 13px 15px;
+    border: 1px solid #285256;
+    border-radius: 11px;
+    background: #0b292d;
+    color: #ffffff;
+    font-size: 15px;
+}
+
+#newsContent {
+    min-height: 220px;
+    resize: vertical;
+    line-height: 1.6;
+    font-family: inherit;
+}
+
+#newsTitle::placeholder,
+#newsSummary::placeholder,
+#newsCoverImage::placeholder,
+#newsContent::placeholder {
+    color: #789295;
+}
+
+#newsTitle:focus,
+#newsSummary:focus,
+#newsCoverImage:focus,
+#newsContent:focus,
+#newsCategory:focus {
+    outline: none;
+    border-color: #73d5cc;
+    box-shadow: 0 0 0 3px rgba(115,213,204,.10);
+}
+
 </style>
 
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -492,6 +536,64 @@
     <section class="owner-section">
 
         <h2>
+            📰 Publish CARD4ME News
+        </h2>
+
+        <input
+            type="text"
+            id="newsTitle"
+            placeholder="News title"
+            maxlength="200"
+        >
+
+        <input
+            type="text"
+            id="newsSummary"
+            placeholder="Short summary"
+            maxlength="500"
+        >
+
+        <select id="newsCategory">
+            <option value="CARD4ME Updates">CARD4ME Updates</option>
+            <option value="Digital Services">Digital Services</option>
+            <option value="Community">Community</option>
+            <option value="Events">Events</option>
+            <option value="Announcements">Announcements</option>
+            <option value="Business & Tech">Business & Tech</option>
+        </select>
+
+        <input
+            type="url"
+            id="newsCoverImage"
+            placeholder="Cover image URL (optional)"
+        >
+
+        <textarea
+            id="newsContent"
+            placeholder="Write the full news article..."
+            rows="10"
+        ></textarea>
+
+        <button
+            type="button"
+            class="owner-actions"
+            onclick="publishNews()"
+        >
+            Publish News
+        </button>
+
+        <p
+            id="newsPublishMessage"
+            class="empty-history"
+            aria-live="polite"
+        ></p>
+
+    </section>
+
+
+    <section class="owner-section">
+
+        <h2>
             Earnings History
         </h2>
 
@@ -536,6 +638,100 @@ function escapeHtml(value) {
     div.textContent = value ?? "";
 
     return div.innerHTML;
+}
+
+
+
+async function publishNews() {
+
+    const title =
+        document.getElementById("newsTitle").value.trim();
+
+    const summary =
+        document.getElementById("newsSummary").value.trim();
+
+    const category =
+        document.getElementById("newsCategory").value;
+
+    const coverImage =
+        document.getElementById("newsCoverImage").value.trim();
+
+    const content =
+        document.getElementById("newsContent").value.trim();
+
+    const message =
+        document.getElementById("newsPublishMessage");
+
+
+    if (!title || !content) {
+
+        message.textContent =
+            "News title and article content are required.";
+
+        return;
+    }
+
+
+    message.textContent =
+        "Publishing news...";
+
+
+    try {
+
+        const response =
+            await apiRequest(
+                "/api/community/news",
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        title,
+                        summary,
+                        content,
+                        category,
+                        cover_image: coverImage
+                    })
+                }
+            );
+
+
+        if (!response.success) {
+
+            throw new Error(
+                response.message ||
+                "Could not publish news."
+            );
+        }
+
+
+        document.getElementById("newsTitle").value = "";
+        document.getElementById("newsSummary").value = "";
+        document.getElementById("newsCoverImage").value = "";
+        document.getElementById("newsContent").value = "";
+
+        message.textContent =
+            "News published successfully.";
+
+        if (typeof showCard4MeAlert === "function") {
+            showCard4MeAlert(
+                "Your news article is now live.",
+                "success",
+                "CARD4ME News"
+            );
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Publish news error:",
+            error
+        );
+
+        message.textContent =
+            error.message ||
+            "Could not publish news.";
+
+    }
+
 }
 
 
