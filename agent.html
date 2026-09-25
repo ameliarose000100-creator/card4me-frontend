@@ -249,10 +249,6 @@
     "use strict";
 
 
-    const API_BASE =
-        "https://card4me-backend-1.onrender.com";
-
-
     const agentStatus =
         document.getElementById("agentStatus");
 
@@ -647,10 +643,7 @@ async function verifyAgentPaymentFromRedirect() {
 
 agentApplyButton.addEventListener(
     "click",
-    function () {
-        console.log("AGENT BUTTON CLICKED");
-        startAgentApplication();
-    }
+    startAgentApplication
 );
 
 
