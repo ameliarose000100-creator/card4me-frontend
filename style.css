@@ -20222,3 +20222,71 @@ body:has(.wallet-page) {
 .news-read-button:active {
     transform: scale(.98);
 }
+
+/* =================================
+   DASHBOARD QUICK SERVICES GRID
+================================== */
+
+.quick-services .service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.quick-services .service-card {
+    min-height: 150px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 18px;
+    text-decoration: none;
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background 180ms ease;
+}
+
+.quick-services .service-card:hover {
+    transform: translateY(-3px);
+}
+
+.quick-services .service-card > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 14px;
+    border-radius: 14px;
+    background: rgba(49, 209, 123, .09);
+    font-size: 1.25rem;
+}
+
+.quick-services .service-card h3 {
+    margin: 0 0 6px;
+    font-size: .98rem;
+}
+
+.quick-services .service-card p {
+    margin: 0;
+    color: var(--cm-text-muted, #9ba8ad);
+    font-size: .76rem;
+    line-height: 1.45;
+}
+
+@media (max-width: 850px) {
+    .quick-services .service-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .quick-services .service-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-services .service-card {
+        min-height: 125px;
+    }
+}

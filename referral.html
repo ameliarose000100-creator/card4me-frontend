@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CARD4ME Referral</title>
+
+    <link rel="stylesheet" href="style.css?v=20260925">
+
+    <style>
+        .referral-page {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 30px 18px 70px;
+        }
+
+        .referral-hero {
+            padding: 32px 26px;
+            margin-bottom: 20px;
+            border-radius: 24px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(12, 30, 27, .96),
+                    rgba(7, 17, 25, .98)
+                );
+            border: 1px solid rgba(80, 220, 160, .16);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, .28);
+        }
+
+        .referral-kicker {
+            margin-bottom: 8px;
+            color: #5ee6a5;
+            font-size: .76rem;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .referral-hero h1 {
+            margin: 0 0 9px;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+        }
+
+        .referral-hero p {
+            max-width: 700px;
+            margin: 0;
+            color: var(--cm-text-muted, #9ba8ad);
+            line-height: 1.7;
+        }
+
+        .referral-stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .referral-stat {
+            padding: 22px;
+            border-radius: 18px;
+            background: rgba(13, 20, 25, .92);
+            border: 1px solid rgba(255, 255, 255, .07);
+        }
+
+        .referral-stat-label {
+            margin-bottom: 7px;
+            color: #75838a;
+            font-size: .75rem;
+            font-weight: 700;
+        }
+
+        .referral-stat-value {
+            font-size: 1.55rem;
+            font-weight: 850;
+        }
+
+        .referral-card {
+            margin-bottom: 20px;
+            padding: 24px;
+            border-radius: 20px;
+            background: rgba(13, 20, 25, .92);
+            border: 1px solid rgba(255, 255, 255, .07);
+        }
+
+        .referral-card h2 {
+            margin: 0 0 8px;
+            font-size: 1.15rem;
+        }
+
+        .referral-card-description {
+            margin: 0 0 18px;
+            color: var(--cm-text-muted, #9ba8ad);
+            font-size: .85rem;
+            line-height: 1.65;
+        }
+
+        .referral-link-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .referral-link-input {
+            flex: 1;
+            min-width: 0;
+            height: 46px;
+            padding: 0 13px;
+            border: 1px solid rgba(255, 255, 255, .09);
+            border-radius: 11px;
+            background: rgba(255, 255, 255, .035);
+            color: #dce5e8;
+            font: inherit;
+            font-size: .8rem;
+            outline: none;
+        }
+
+        .referral-link-input:focus {
+            border-color: rgba(80, 220, 160, .35);
+        }
+
+        .referral-button {
+            min-height: 46px;
+            padding: 0 17px;
+            border: 1px solid rgba(80, 220, 160, .22);
+            border-radius: 11px;
+            background: rgba(80, 220, 160, .1);
+            color: #5ee6a5;
+            font: inherit;
+            font-size: .78rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .referral-button:hover {
+            background: rgba(80, 220, 160, .16);
+        }
+
+        .referral-code {
+            display: inline-flex;
+            margin-top: 14px;
+            padding: 8px 11px;
+            border-radius: 9px;
+            background: rgba(80, 220, 160, .07);
+            color: #5ee6a5;
+            font-size: .8rem;
+            font-weight: 800;
+            letter-spacing: .04em;
+        }
+
+        .referral-rules {
+            margin: 0;
+            padding-left: 20px;
+            color: var(--cm-text-muted, #9ba8ad);
+            font-size: .84rem;
+            line-height: 1.8;
+        }
+
+        .referral-status {
+            min-height: 20px;
+            margin-bottom: 16px;
+            color: #75838a;
+            font-size: .8rem;
+        }
+
+        .referral-back {
+            display: inline-flex;
+            margin-bottom: 18px;
+            color: #5ee6a5;
+            text-decoration: none;
+            font-size: .82rem;
+            font-weight: 750;
+        }
+
+        .referral-back:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 620px) {
+            .referral-page {
+                padding: 20px 14px 50px;
+            }
+
+            .referral-hero {
+                padding: 26px 18px;
+                border-radius: 20px;
+            }
+
+            .referral-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .referral-card {
+                padding: 20px 17px;
+            }
+
+            .referral-link-row {
+                flex-direction: column;
+            }
+
+            .referral-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="logo">CARD4ME</div>
+
+    <button
+        type="button"
+        class="menu-btn"
+        onclick="toggleMenu()"
+        aria-label="Open menu"
+        aria-expanded="false"
+    >
+        ☰
+    </button>
+
+    <nav id="mainNav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="wallet.html">Wallet</a>
+        <a href="services.html">Services</a>
+        <a href="transaction.html">Transactions</a>
+        <a href="community.html">Community</a>
+        <a href="news.html">News</a>
+        <a href="account.html">Account</a>
+        <a href="#" onclick="logoutUser(); return false;">Logout</a>
+    </nav>
+</header>
+
+<main class="referral-page">
+
+    <a href="dashboard.html" class="referral-back">
+        ← Back to Dashboard
+    </a>
+
+    <section class="referral-hero">
+        <div class="referral-kicker">
+            CARD4ME Referral
+        </div>
+
+        <h1>
+            Invite friends & earn rewards
+        </h1>
+
+        <p>
+            Share your CARD4ME referral link with friends.
+            When a referred user completes the qualifying wallet
+            funding, your referral reward is credited automatically.
+        </p>
+    </section>
+
+    <div id="referralStatus" class="referral-status">
+        Loading referral information...
+    </div>
+
+    <section class="referral-stats">
+
+        <div class="referral-stat">
+            <div class="referral-stat-label">
+                Successful Referrals
+            </div>
+
+            <div
+                id="successfulReferrals"
+                class="referral-stat-value"
+            >
+                0
+            </div>
+        </div>
+
+        <div class="referral-stat">
+            <div class="referral-stat-label">
+                Rewards Earned
+            </div>
+
+            <div
+                id="rewardsEarned"
+                class="referral-stat-value"
+            >
+                ₦0.00
+            </div>
+        </div>
+
+    </section>
+
+    <section class="referral-card">
+
+        <h2>
+            Your Referral Link
+        </h2>
+
+        <p class="referral-card-description">
+            Copy your personal link and share it with people
+            you want to invite to CARD4ME.
+        </p>
+
+        <div class="referral-link-row">
+
+            <input
+                type="text"
+                id="referralLink"
+                class="referral-link-input"
+                readonly
+                value="Loading..."
+            >
+
+            <button
+                type="button"
+                id="copyReferralButton"
+                class="referral-button"
+            >
+                Copy Link
+            </button>
+
+        </div>
+
+        <div
+            id="referralCode"
+            class="referral-code"
+        >
+            Referral Code: —
+        </div>
+
+    </section>
+
+    <section class="referral-card">
+
+        <h2>
+            How Referral Rewards Work
+        </h2>
+
+        <p class="referral-card-description">
+            Your referral reward is handled automatically by CARD4ME.
+        </p>
+
+        <ul class="referral-rules">
+
+            <li>
+                Share your personal CARD4ME referral link.
+            </li>
+
+            <li>
+                Your invited user creates a CARD4ME account using your link.
+            </li>
+
+            <li>
+                The invited user must successfully fund their wallet
+                with at least ₦500.
+            </li>
+
+            <li>
+                Once the qualifying funding is completed,
+                the referrer receives the applicable referral reward.
+            </li>
+
+            <li>
+                Each referred user can qualify only once.
+            </li>
+
+        </ul>
+
+    </section>
+
+</main>
+
+<script src="app.js"></script>
+<script src="referral.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
