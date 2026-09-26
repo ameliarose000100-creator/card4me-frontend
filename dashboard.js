@@ -253,9 +253,9 @@ window.addEventListener("DOMContentLoaded", function () {
     try {
 
         const user =
-            JSON.parse(
-                localStorage.getItem("card4me_user") || "{}"
-            );
+            typeof getUser === "function"
+                ? (getUser() || {})
+                : {};
 
         if (Number(user.id) === 4) {
             ownerLink.style.display = "inline-block";
