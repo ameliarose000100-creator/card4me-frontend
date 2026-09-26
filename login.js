@@ -163,22 +163,13 @@ document.addEventListener("DOMContentLoaded", function () {
                    SAVE AUTHENTICATION
                 ============================== */
 
-                localStorage.setItem(
-                    "card4me_token",
-                    data.token
+                saveAuth(
+                    data.token,
+                    data.user || {}
                 );
 
-
                 localStorage.setItem(
-                    "card4me_user",
-                    JSON.stringify(
-                        data.user || {}
-                    )
-                );
-
-
-                localStorage.setItem(
-                    "card4meLoggedIn",
+                    "card4me_show_welcome",
                     "true"
                 );
 
@@ -188,9 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 ============================== */
 
                 const savedToken =
-                    localStorage.getItem(
-                        "card4me_token"
-                    );
+                    getToken();
 
 
                 if (!savedToken) {
