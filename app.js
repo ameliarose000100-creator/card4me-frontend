@@ -175,6 +175,9 @@ function getUser() {
     try {
 
         const saved =
+            sessionStorage.getItem(
+                AUTH_USER_KEY
+            ) ||
             localStorage.getItem(
                 AUTH_USER_KEY
             );
@@ -268,6 +271,14 @@ function saveAuth(token, user) {
 function clearAuth() {
 
     try {
+
+        sessionStorage.removeItem(
+            AUTH_TOKEN_KEY
+        );
+
+        sessionStorage.removeItem(
+            AUTH_USER_KEY
+        );
 
         localStorage.removeItem(
             AUTH_TOKEN_KEY
