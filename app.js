@@ -1605,6 +1605,21 @@ async function fundWallet(event) {
             account
         );
 
+        /*
+         * The backend returns the exact CARD4ME
+         * funding reference. We watch this transaction
+         * until Flutterwave confirms the payment and
+         * the webhook credits the wallet.
+         */
+        if (account.reference) {
+
+            startWalletFundingWatcher(
+                account.reference,
+                amount,
+                transferAmount
+            );
+        }
+
         showCard4MeAlert(
             `Transfer exactly ₦${transferAmount.toLocaleString()} to the displayed account. Your CARD4ME wallet will be credited ₦${amount.toLocaleString()} after the payment is confirmed. The CARD4ME 10% funding fee is included.`,
             "success",
@@ -1666,6 +1681,346 @@ async function fundWallet(event) {
 
     }
 
+}
+
+
+
+/* =====================================================
+   TRANSACTION RESULT
+===================================================== */
+
+function showCard4MeTransactionResult({
+    status = "success",
+    title = "",
+    message = "",
+    details = []
+} = {}) {
+
+    const existing =
+        document.getElementById("card4meTransactionResult");
+
+    if (existing) {
+        existing.remove();
+    }
+
+    const config = {
+        success: {
+            icon: "✅",
+            title: title || "Transaction Successful"
+        },
+        failed: {
+            icon: "❌",
+            title: title || "Transaction Failed"
+        },
+        pending: {
+            icon: "⏳",
+            title: title || "Transaction Pending"
+        }
+    };
+
+    const current =
+        config[status] || config.success;
+
+    const escape = (value) =>
+        String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    const detailHtml =
+        details
+            .filter(item => item && item.label)
+            .map(item => `
+                <div class="card4me-transaction-detail">
+                    <span>${escape(item.label)}</span>
+                    <strong>${escape(item.value)}</strong>
+                </div>
+            `)
+            .join("");
+
+    const overlay =
+        document.createElement("div");
+
+    overlay.id =
+        "card4meTransactionResult";
+
+    overlay.className =
+        "card4me-transaction-overlay";
+
+    overlay.innerHTML = `
+        <div class="card4me-transaction-card">
+
+            <div class="card4me-transaction-icon">
+                ${current.icon}
+            </div>
+
+            <h2>${escape(current.title)}</h2>
+
+            <p class="card4me-transaction-message">
+                ${escape(message)}
+            </p>
+
+            ${
+                detailHtml
+                    ? `
+                        <div class="card4me-transaction-details">
+                            ${detailHtml}
+                        </div>
+                    `
+                    : ""
+            }
+
+            <button
+                type="button"
+                class="card4me-transaction-done"
+                onclick="closeCard4MeTransactionResult()"
+            >
+                Done
+            </button>
+
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+}
+
+
+function closeCard4MeTransactionResult() {
+
+    const element =
+        document.getElementById(
+            "card4meTransactionResult"
+        );
+
+    if (element) {
+        element.remove();
+    }
+}
+
+
+function maskCard4MePhone(phone) {
+
+    const value =
+        String(phone || "");
+
+    if (value.length < 7) {
+        return value;
+    }
+
+    return (
+        value.slice(0, 3) +
+        "••••" +
+        value.slice(-4)
+    );
+}
+
+
+
+/* =====================================================
+   WALLET FUNDING STATUS WATCHER
+===================================================== */
+
+let card4meFundingWatcher = null;
+
+function startWalletFundingWatcher(
+    reference,
+    walletAmount,
+    amountPaid
+) {
+
+    if (!reference) {
+        return;
+    }
+
+    if (card4meFundingWatcher) {
+
+        clearInterval(
+            card4meFundingWatcher
+        );
+
+        card4meFundingWatcher = null;
+    }
+
+    let checks = 0;
+
+    const maxChecks = 120;
+
+    const checkFunding = async () => {
+
+        checks++;
+
+        try {
+
+            const result =
+                await apiRequest(
+                    "/api/flutterwave/funding-status/" +
+                    encodeURIComponent(reference)
+                );
+
+            if (
+                !result ||
+                !result.success
+            ) {
+                return;
+            }
+
+            /*
+             * Actual wallet funding confirmed.
+             */
+            if (
+                result.status === "success" &&
+                result.verified === true
+            ) {
+
+                clearInterval(
+                    card4meFundingWatcher
+                );
+
+                card4meFundingWatcher = null;
+
+                try {
+
+                    sessionStorage.removeItem(
+                        "card4me_virtual_account"
+                    );
+
+                } catch (_) {}
+
+                try {
+
+                    await loadWallet();
+
+                } catch (error) {
+
+                    console.warn(
+                        "Wallet refresh after funding failed:",
+                        error.message
+                    );
+                }
+
+                showCard4MeTransactionResult({
+                    status: "success",
+                    title:
+                        "Transaction Successful",
+                    message:
+                        "Your wallet has been funded successfully.",
+                    details: [
+                        {
+                            label:
+                                "Wallet credited",
+                            value:
+                                `₦${Number(
+                                    result.walletAmount ||
+                                    walletAmount ||
+                                    0
+                                ).toLocaleString("en-NG")}`
+                        },
+                        {
+                            label:
+                                "Amount paid",
+                            value:
+                                `₦${Number(
+                                    result.amountPaid ||
+                                    amountPaid ||
+                                    0
+                                ).toLocaleString("en-NG")}`
+                        },
+                        {
+                            label:
+                                "Transaction ID",
+                            value:
+                                result.transactionId ||
+                                reference
+                        }
+                    ]
+                });
+
+                return;
+            }
+
+            /*
+             * Backend-confirmed failure.
+             */
+            if (
+                result.status === "failed"
+            ) {
+
+                clearInterval(
+                    card4meFundingWatcher
+                );
+
+                card4meFundingWatcher = null;
+
+                showCard4MeTransactionResult({
+                    status: "failed",
+                    title:
+                        "Transaction Failed",
+                    message:
+                        "Your wallet funding transaction was not completed.",
+                    details: [
+                        {
+                            label:
+                                "Transaction ID",
+                            value:
+                                result.transactionId ||
+                                reference
+                        }
+                    ]
+                });
+
+                return;
+            }
+
+            /*
+             * Stop after approximately 10 minutes.
+             * The backend remains authoritative.
+             */
+            if (checks >= maxChecks) {
+
+                clearInterval(
+                    card4meFundingWatcher
+                );
+
+                card4meFundingWatcher = null;
+
+                showCard4MeTransactionResult({
+                    status: "pending",
+                    title:
+                        "Transaction Pending",
+                    message:
+                        "We have not received final confirmation yet. Your wallet will only be credited after the payment is confirmed.",
+                    details: [
+                        {
+                            label:
+                                "Transaction ID",
+                            value:
+                                reference
+                        }
+                    ]
+                });
+            }
+
+        } catch (error) {
+
+            console.warn(
+                "Funding status check failed:",
+                error.message
+            );
+        }
+    };
+
+    /*
+     * Check immediately, then every 5 seconds.
+     */
+    checkFunding();
+
+    card4meFundingWatcher =
+        setInterval(
+            checkFunding,
+            5000
+        );
 }
 
 
@@ -2757,10 +3112,143 @@ async function airtimePurchase(
             );
 
 
-        alert(
-            result?.message ||
-            "Airtime purchase completed successfully."
-        );
+        /*
+         * Backend-confirmed pending transaction.
+         */
+        if (result?.pending === true) {
+
+            showCard4MeTransactionResult({
+                status: "pending",
+                title: "Transaction Pending",
+                message:
+                    result.message ||
+                    "Your airtime purchase is still being processed.",
+                details: [
+                    {
+                        label: "Network",
+                        value: network
+                    },
+                    {
+                        label: "Phone",
+                        value:
+                            maskCard4MePhone(phone)
+                    },
+                    {
+                        label: "Amount",
+                        value:
+                            `₦${Number(
+                                result.amount ||
+                                amount
+                            ).toLocaleString("en-NG")}`
+                    },
+                    {
+                        label: "Transaction ID",
+                        value:
+                            result.transactionId ||
+                            result.reference ||
+                            "N/A"
+                    }
+                ]
+            });
+
+            return true;
+        }
+
+
+        /*
+         * Backend-confirmed failure.
+         */
+        if (
+            result?.status === "failed" ||
+            result?.failed === true
+        ) {
+
+            showCard4MeTransactionResult({
+                status: "failed",
+                title: "Transaction Failed",
+                message:
+                    result.message ||
+                    "The airtime purchase failed. Your wallet has been refunded.",
+                details: [
+                    {
+                        label: "Network",
+                        value: network
+                    },
+                    {
+                        label: "Phone",
+                        value:
+                            maskCard4MePhone(phone)
+                    },
+                    {
+                        label: "Amount",
+                        value:
+                            `₦${Number(
+                                result.amount ||
+                                amount
+                            ).toLocaleString("en-NG")}`
+                    },
+                    {
+                        label: "Transaction ID",
+                        value:
+                            result.transactionId ||
+                            result.reference ||
+                            "N/A"
+                    }
+                ]
+            });
+
+            return false;
+        }
+
+
+        /*
+         * Only show SUCCESS after the backend/provider
+         * confirms the airtime purchase.
+         */
+        if (
+            !result ||
+            result.success === false
+        ) {
+
+            throw new Error(
+                result?.message ||
+                "Airtime purchase failed."
+            );
+        }
+
+
+        showCard4MeTransactionResult({
+            status: "success",
+            title: "Transaction Successful",
+            message:
+                "Airtime purchase completed successfully.",
+            details: [
+                {
+                    label: "Amount",
+                    value:
+                        `₦${Number(
+                            result.amount ||
+                            amount
+                        ).toLocaleString("en-NG")}`
+                },
+                {
+                    label: "Network",
+                    value: network
+                },
+                {
+                    label: "Phone",
+                    value:
+                        maskCard4MePhone(phone)
+                },
+                {
+                    label: "Transaction ID",
+                    value:
+                        result.transactionId ||
+                        result.reference ||
+                        "N/A"
+                }
+            ]
+        });
 
 
         return true;
@@ -2795,35 +3283,20 @@ async function dataPurchase(
 ) {
 
     if (event) {
-
         event.preventDefault();
-
     }
 
-
     const phoneInput =
-        document.getElementById(
-            "dataPhone"
-        );
-
+        document.getElementById("dataPhone");
 
     const networkInput =
-        document.getElementById(
-            "dataNetwork"
-        );
-
+        document.getElementById("dataNetwork");
 
     const planInput =
-        document.getElementById(
-            "dataPlan"
-        );
-
+        document.getElementById("dataPlan");
 
     const amountInput =
-        document.getElementById(
-            "dataAmount"
-        );
-
+        document.getElementById("dataAmount");
 
     const phone =
         phoneInput
@@ -2832,18 +3305,15 @@ async function dataPurchase(
                 .trim()
             : "";
 
-
     const network =
         networkInput
             ? networkInput.value.trim()
             : "";
 
-
     const plan =
         planInput
             ? planInput.value.trim()
             : "";
-
 
     const amount =
         Number(
@@ -2852,105 +3322,189 @@ async function dataPurchase(
                 : 0
         );
 
-
     if (!phone) {
 
-        alert(
-            "Please enter the phone number."
-        );
+        alert("Please enter the phone number.");
 
         if (phoneInput) {
-
             phoneInput.focus();
-
         }
 
         return false;
-
     }
-
 
     if (!network) {
 
-        alert(
-            "Please select a network."
-        );
+        alert("Please select a network.");
 
         if (networkInput) {
-
             networkInput.focus();
-
         }
 
         return false;
-
     }
-
 
     if (!plan) {
 
-        alert(
-            "Please select a data plan."
-        );
+        alert("Please select a data plan.");
 
         if (planInput) {
-
             planInput.focus();
-
         }
 
         return false;
-
     }
-
 
     if (
         !Number.isFinite(amount) ||
         amount <= 0
     ) {
 
-        alert(
-            "Please select a valid data plan."
-        );
+        alert("Please select a valid data plan.");
 
         return false;
-
     }
-
 
     try {
 
         const result =
-            await purchaseService(
-                {
-                    endpoint:
-                        "/api/data/purchase",
+            await purchaseService({
+                endpoint:
+                    "/api/data/purchase",
+
+                amount:
+                    amount,
+
+                payload: {
+                    phone:
+                        phone,
+
+                    network:
+                        network,
+
+                    planId:
+                        String(plan),
 
                     amount:
-                        amount,
-
-                    payload: {
-                        phone:
-                            phone,
-
-                        network:
-                            network,
-
-                        planId:
-                            String(plan),
-
-                        amount:
-                            amount
-                    }
+                        amount
                 }
+            });
+
+        /*
+         * Backend-confirmed pending transaction.
+         */
+        if (result?.pending === true) {
+
+            showCard4MeTransactionResult({
+                status: "pending",
+                title: "Transaction Pending",
+                message:
+                    result.message ||
+                    "Your data purchase is still being processed.",
+                details: [
+                    {
+                        label: "Network",
+                        value: network
+                    },
+                    {
+                        label: "Phone",
+                        value: maskCard4MePhone(phone)
+                    },
+                    {
+                        label: "Transaction ID",
+                        value:
+                            result.transactionId ||
+                            result.reference ||
+                            "N/A"
+                    }
+                ]
+            });
+
+            return true;
+        }
+
+        /*
+         * Backend-confirmed failure.
+         */
+        if (
+            result?.status === "failed" ||
+            result?.failed === true
+        ) {
+
+            showCard4MeTransactionResult({
+                status: "failed",
+                title: "Transaction Failed",
+                message:
+                    result.message ||
+                    "The data purchase failed. Your wallet has been refunded.",
+                details: [
+                    {
+                        label: "Network",
+                        value: network
+                    },
+                    {
+                        label: "Phone",
+                        value: maskCard4MePhone(phone)
+                    },
+                    {
+                        label: "Transaction ID",
+                        value:
+                            result.transactionId ||
+                            result.reference ||
+                            "N/A"
+                    }
+                ]
+            });
+
+            return false;
+        }
+
+        /*
+         * Only show SUCCESS when purchaseService()
+         * has received a successful backend response.
+         */
+        if (
+            !result ||
+            result.success === false
+        ) {
+            throw new Error(
+                result?.message ||
+                "Data purchase failed."
             );
+        }
 
-
-        alert(
-            result?.message ||
-            "Data purchase completed successfully."
-        );
-
+        showCard4MeTransactionResult({
+            status: "success",
+            title: "Transaction Successful",
+            message:
+                "Data bundle purchased successfully.",
+            details: [
+                {
+                    label: "Amount",
+                    value:
+                        `₦${Number(
+                            result.amount ||
+                            amount
+                        ).toLocaleString("en-NG")}`
+                },
+                {
+                    label: "Network",
+                    value: network
+                },
+                {
+                    label: "Phone",
+                    value:
+                        maskCard4MePhone(phone)
+                },
+                {
+                    label: "Transaction ID",
+                    value:
+                        result.transactionId ||
+                        result.reference ||
+                        "N/A"
+                }
+            ]
+        });
 
         return true;
 
@@ -2961,17 +3515,16 @@ async function dataPurchase(
             error.message
         );
 
-
-        alert(
-            error.message ||
-            "Unable to purchase data."
-        );
-
+        showCard4MeTransactionResult({
+            status: "failed",
+            title: "Transaction Failed",
+            message:
+                error.message ||
+                "Unable to complete the data purchase."
+        });
 
         return false;
-
     }
-
 }
 
 
