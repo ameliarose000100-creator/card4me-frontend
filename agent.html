@@ -264,7 +264,13 @@
 
     function getAgentToken() {
 
-        return localStorage.getItem(
+        if (typeof getToken === "function") {
+            return getToken();
+        }
+
+        return sessionStorage.getItem(
+            "card4me_token"
+        ) || localStorage.getItem(
             "card4me_token"
         );
 
