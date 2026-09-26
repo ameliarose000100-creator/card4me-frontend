@@ -465,7 +465,7 @@
             <div
                 class="account-actions"
                 id="transactionPinActions"
-                style="margin-top:15px;"
+                style="margin-top:15px; flex-wrap:wrap;"
             >
 
                 <button
@@ -475,6 +475,69 @@
                 >
                     Set Transaction PIN
                 </button>
+
+                <button
+                    type="button"
+                    class="btn btn-outline"
+                    id="forgotTransactionPinButton"
+                    style="display:none;"
+                >
+                    Forgot PIN?
+                </button>
+
+            </div>
+
+            <div
+                id="forgotTransactionPinPanel"
+                style="display:none; margin-top:20px;"
+            >
+
+                <form id="forgotTransactionPinForm">
+
+                    <div class="form-group">
+                        <label for="forgotTransactionPinEmail">
+                            Account Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="forgotTransactionPinEmail"
+                            name="email"
+                            autocomplete="email"
+                            placeholder="Enter your registered email"
+                            required
+                        >
+                    </div>
+
+                    <div
+                        id="forgotTransactionPinMessage"
+                        class="account-alert"
+                        style="display:none;"
+                        role="alert"
+                        aria-live="polite"
+                    ></div>
+
+                    <div class="account-actions">
+
+                        <button
+                            type="submit"
+                            class="btn"
+                            id="sendForgotTransactionPinButton"
+                        >
+                            Send Recovery Link
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-outline"
+                            id="cancelForgotTransactionPinButton"
+                        >
+                            Cancel
+                        </button>
+
+                    </div>
+
+                </form>
 
             </div>
 

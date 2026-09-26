@@ -752,19 +752,43 @@ async function loadTransactionPinStatus() {
             );
         }
 
+        const forgotButton =
+            document.getElementById(
+                "forgotTransactionPinButton"
+            );
+
         if (result.hasTransactionPin) {
             statusElement.textContent =
                 "Configured";
 
             if (actions) {
-                actions.style.display = "none";
+                actions.style.display = "flex";
             }
+
+            const setButton =
+                document.getElementById(
+                    "setTransactionPinButton"
+                );
+
+            if (setButton) {
+                setButton.style.display = "none";
+            }
+
+            if (forgotButton) {
+                forgotButton.style.display =
+                    "inline-flex";
+            }
+
         } else {
             statusElement.textContent =
                 "Not configured";
 
             if (actions) {
                 actions.style.display = "flex";
+            }
+
+            if (forgotButton) {
+                forgotButton.style.display = "none";
             }
         }
 
@@ -830,6 +854,174 @@ function setupTransactionPinVisibility() {
             );
         });
     });
+}
+
+
+function setupForgotTransactionPin() {
+    const forgotButton =
+        document.getElementById(
+            "forgotTransactionPinButton"
+        );
+
+    const panel =
+        document.getElementById(
+            "forgotTransactionPinPanel"
+        );
+
+    const form =
+        document.getElementById(
+            "forgotTransactionPinForm"
+        );
+
+    const cancelButton =
+        document.getElementById(
+            "cancelForgotTransactionPinButton"
+        );
+
+    const message =
+        document.getElementById(
+            "forgotTransactionPinMessage"
+        );
+
+    const sendButton =
+        document.getElementById(
+            "sendForgotTransactionPinButton"
+        );
+
+    const emailInput =
+        document.getElementById(
+            "forgotTransactionPinEmail"
+        );
+
+    if (
+        !forgotButton ||
+        !panel ||
+        !form ||
+        !cancelButton
+    ) {
+        return;
+    }
+
+    forgotButton.addEventListener(
+        "click",
+        () => {
+            panel.style.display = "block";
+
+            if (message) {
+                message.textContent = "";
+                message.style.display = "none";
+            }
+
+            panel.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+            if (emailInput) {
+                emailInput.focus();
+            }
+        }
+    );
+
+    cancelButton.addEventListener(
+        "click",
+        () => {
+            panel.style.display = "none";
+            form.reset();
+
+            if (message) {
+                message.textContent = "";
+                message.style.display = "none";
+            }
+        }
+    );
+
+    form.addEventListener(
+        "submit",
+        async (event) => {
+            event.preventDefault();
+
+            const email =
+                emailInput?.value.trim().toLowerCase() || "";
+
+            if (!email) {
+                showAccountAlert(
+                    message,
+                    "Enter your registered email address.",
+                    "error"
+                );
+                return;
+            }
+
+            if (sendButton) {
+                sendButton.disabled = true;
+                sendButton.textContent =
+                    "Sending...";
+            }
+
+            showAccountAlert(
+                message,
+                "Sending your recovery link...",
+                "success"
+            );
+
+            try {
+                const result =
+                    await apiRequest(
+                        "/api/auth/forgot-transaction-pin",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body: JSON.stringify({
+                                email
+                            })
+                        }
+                    );
+
+                if (
+                    !result ||
+                    !result.success
+                ) {
+                    throw new Error(
+                        result?.message ||
+                        "Unable to send the recovery link."
+                    );
+                }
+
+                showAccountAlert(
+                    message,
+                    result.message ||
+                    "If an account exists for that email, a recovery link has been sent.",
+                    "success"
+                );
+
+                form.reset();
+
+            } catch (error) {
+                console.error(
+                    "Forgot Transaction PIN error:",
+                    error
+                );
+
+                showAccountAlert(
+                    message,
+                    error.message ||
+                    "Unable to process your request.",
+                    "error"
+                );
+
+            } finally {
+                if (sendButton) {
+                    sendButton.disabled = false;
+                    sendButton.textContent =
+                        "Send Recovery Link";
+                }
+            }
+        }
+    );
 }
 
 
@@ -1046,6 +1238,7 @@ document.addEventListener(
         setupChangePassword();
         setupTransactionPinVisibility();
         setupTransactionPin();
+        setupForgotTransactionPin();
         loadTransactionPinStatus();
     }
 );

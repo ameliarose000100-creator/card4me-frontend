@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Reset Transaction PIN | CARD4ME</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .pin-reset-page {
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:24px;
+        }
+
+        .pin-reset-card {
+            width:100%;
+            max-width:460px;
+            padding:32px;
+            border-radius:24px;
+            background:rgba(10,18,24,.92);
+            border:1px solid rgba(0,255,170,.14);
+            box-shadow:0 20px 60px rgba(0,0,0,.35);
+        }
+
+        .pin-reset-logo {
+            text-align:center;
+            margin-bottom:26px;
+        }
+
+        .pin-reset-logo h1 {
+            margin:0;
+            font-size:1.8rem;
+        }
+
+        .pin-reset-logo p {
+            margin:8px 0 0;
+            opacity:.7;
+        }
+
+        .pin-reset-card h2 {
+            margin-top:0;
+        }
+
+        .pin-reset-message {
+            display:none;
+            margin:16px 0;
+            padding:13px 15px;
+            border-radius:12px;
+            line-height:1.5;
+        }
+
+        .pin-reset-message.success {
+            display:block;
+        }
+
+        .pin-reset-message.error {
+            display:block;
+        }
+
+        .pin-reset-field {
+            position:relative;
+        }
+
+        .pin-reset-field input {
+            width:100%;
+            padding-right:54px;
+            box-sizing:border-box;
+        }
+
+        .pin-reset-toggle {
+            position:absolute;
+            right:8px;
+            top:50%;
+            transform:translateY(-50%);
+            background:none;
+            border:0;
+            cursor:pointer;
+            font-size:20px;
+            padding:7px;
+        }
+
+        .pin-reset-actions {
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+            margin-top:20px;
+        }
+
+        .pin-reset-actions .btn {
+            flex:1;
+            min-width:150px;
+        }
+
+        .pin-reset-success {
+            display:none;
+            text-align:center;
+        }
+
+        .pin-reset-success h2 {
+            margin-bottom:10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="pin-reset-page">
+
+        <section class="pin-reset-card">
+
+            <div class="pin-reset-logo">
+                <h1>CARD4ME</h1>
+                <p>Transaction PIN Recovery</p>
+            </div>
+
+            <div id="pinResetFormPanel">
+
+                <h2>Create New Transaction PIN</h2>
+
+                <p>
+                    Enter a new 6-digit Transaction PIN for your
+                    CARD4ME account.
+                </p>
+
+                <div
+                    id="pinResetMessage"
+                    class="pin-reset-message"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+                <form id="transactionPinResetForm">
+
+                    <div class="form-group">
+
+                        <label for="resetTransactionPin">
+                            New Transaction PIN
+                        </label>
+
+                        <div class="pin-reset-field">
+
+                            <input
+                                type="password"
+                                id="resetTransactionPin"
+                                inputmode="numeric"
+                                pattern="[0-9]{6}"
+                                maxlength="6"
+                                autocomplete="new-password"
+                                placeholder="Enter 6 digits"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="pin-reset-toggle"
+                                id="toggleResetTransactionPin"
+                                aria-label="Show Transaction PIN"
+                                aria-pressed="false"
+                            >
+                                👁️
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="resetConfirmTransactionPin">
+                            Confirm Transaction PIN
+                        </label>
+
+                        <div class="pin-reset-field">
+
+                            <input
+                                type="password"
+                                id="resetConfirmTransactionPin"
+                                inputmode="numeric"
+                                pattern="[0-9]{6}"
+                                maxlength="6"
+                                autocomplete="new-password"
+                                placeholder="Re-enter 6 digits"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="pin-reset-toggle"
+                                id="toggleResetConfirmTransactionPin"
+                                aria-label="Show confirmation PIN"
+                                aria-pressed="false"
+                            >
+                                👁️
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="pin-reset-actions">
+
+                        <button
+                            type="submit"
+                            class="btn"
+                            id="resetTransactionPinButton"
+                        >
+                            Reset Transaction PIN
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div
+                id="pinResetSuccess"
+                class="pin-reset-success"
+            >
+                <h2>PIN Reset Successfully</h2>
+
+                <p>
+                    Your Transaction PIN has been changed
+                    successfully.
+                </p>
+
+                <div class="pin-reset-actions">
+
+                    <button
+                        type="button"
+                        class="btn"
+                        id="returnToAccountButton"
+                    >
+                        Return to Account
+                    </button>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="transaction-pin-reset.js"></script>
+
+</body>
+</html>
