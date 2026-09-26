@@ -4935,8 +4935,9 @@ window.showTransaction131Copyable = async function() {
 
     function initialize() {
         const user = getUser();
+        const token = getToken();
 
-        if (!user || !user.id) {
+        if (!user || !user.id || !token) {
             return;
         }
 
