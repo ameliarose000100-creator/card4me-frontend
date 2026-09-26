@@ -1159,64 +1159,104 @@ async function loadHistory() {
             <table class="earnings-table">
 
                 <thead>
-
                     <tr>
                         <th>Date</th>
                         <th>Type</th>
+                        <th>Recipient</th>
+                        <th>Plan</th>
                         <th>Customer Paid</th>
                         <th>Provider Cost</th>
                         <th>Profit</th>
-                        <th>Reference</th>
+                        <th>Provider Reference / Status</th>
+                        <th>CARD4ME Reference</th>
                     </tr>
-
                 </thead>
 
                 <tbody>
 
-                    ${rows.map(row => `
+                    ${rows.map(row => {
+                        let details = {};
 
-                        <tr>
+                        try {
+                            details =
+                                typeof row.transaction_details === "string"
+                                    ? JSON.parse(row.transaction_details)
+                                    : (row.transaction_details || {});
+                        } catch (error) {
+                            details = {};
+                        }
 
-                            <td>
-                                ${escapeHtml(
-                                    row.created_at
-                                    ? new Date(row.created_at)
-                                        .toLocaleString("en-NG")
-                                    : "-"
-                                )}
-                            </td>
+                        const phone =
+                            details.phone ||
+                            details.phone_number ||
+                            "-";
 
-                            <td>
-                                ${escapeHtml(row.type || "-")}
-                            </td>
+                        const network =
+                            details.network ||
+                            "-";
 
-                            <td>
-                                ${formatNaira(
-                                    row.customer_amount
-                                )}
-                            </td>
+                        const planName =
+                            details.plan_name ||
+                            details.plan ||
+                            "-";
 
-                            <td>
-                                ${formatNaira(
-                                    row.provider_cost
-                                )}
-                            </td>
+                        const providerReference =
+                            details.provider_reference ||
+                            "-";
 
-                            <td class="profit-positive">
-                                ${formatNaira(
-                                    row.profit
-                                )}
-                            </td>
+                        const providerStatus =
+                            details.provider_status ||
+                            row.transaction_status ||
+                            "-";
 
-                            <td>
-                                ${escapeHtml(
-                                    row.reference || "-"
-                                )}
-                            </td>
+                        return `
+                            <tr>
+                                <td>
+                                    ${escapeHtml(
+                                        row.created_at
+                                            ? new Date(row.created_at).toLocaleString("en-NG")
+                                            : "-"
+                                    )}
+                                </td>
 
-                        </tr>
+                                <td>
+                                    ${escapeHtml(row.type || "-")}
+                                </td>
 
-                    `).join("")}
+                                <td>
+                                    <strong>${escapeHtml(phone)}</strong>
+                                    <br>
+                                    <small>${escapeHtml(network)}</small>
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(planName)}
+                                </td>
+
+                                <td>
+                                    ${formatNaira(row.customer_amount)}
+                                </td>
+
+                                <td>
+                                    ${formatNaira(row.provider_cost)}
+                                </td>
+
+                                <td class="profit-positive">
+                                    ${formatNaira(row.profit)}
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(providerReference)}
+                                    <br>
+                                    <small>${escapeHtml(providerStatus)}</small>
+                                </td>
+
+                                <td>
+                                    ${escapeHtml(row.reference || "-")}
+                                </td>
+                            </tr>
+                        `;
+                    }).join("")}
 
                 </tbody>
 
