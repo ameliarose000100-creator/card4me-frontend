@@ -400,18 +400,18 @@
                  CALL TO ACTION
             ========================================== -->
 
-            <section class="cta">
+            <section class="cta" id="servicesCta">
 
-                <h2>
+                <h2 id="servicesCtaTitle">
                     Ready to get started?
                 </h2>
 
-                <p>
+                <p id="servicesCtaMessage">
                     Create your CARD4ME account and access
                     the services built for your everyday needs.
                 </p>
 
-                <div class="cta-actions">
+                <div class="cta-actions" id="servicesCtaActions">
 
                     <a
                         href="register.html"
@@ -488,6 +488,43 @@
     ========================================== -->
 
     <script src="app.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const token =
+                typeof getToken === "function"
+                    ? getToken()
+                    : sessionStorage.getItem("card4me_token");
+
+            const loggedIn = Boolean(token);
+
+            const title = document.getElementById("servicesCtaTitle");
+            const message = document.getElementById("servicesCtaMessage");
+            const actions = document.getElementById("servicesCtaActions");
+
+            if (!title || !message || !actions) return;
+
+            if (loggedIn) {
+
+                title.textContent = "Ready to continue?";
+
+                message.textContent =
+                    "Your CARD4ME account is ready. Continue to your dashboard and manage your digital services.";
+
+                actions.innerHTML = `
+                    <a
+                        href="dashboard.html"
+                        class="btn"
+                    >
+                        Open Dashboard
+                    </a>
+                `;
+
+            }
+
+        });
+    </script>
 
     <script src="script.js"></script>
 
