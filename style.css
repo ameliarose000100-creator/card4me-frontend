@@ -20813,3 +20813,80 @@ body:has(.wallet-page) {
         max-height: calc(100vh - 84px);
     }
 }
+
+/* =====================================================
+   CARD4ME NOTIFICATIONS — FINAL MOBILE HEADER FIX
+===================================================== */
+
+@media (max-width: 820px) {
+
+    /* Keep the notification bell beside the menu */
+    .nav #card4meNotificationCenter,
+    .site-header #card4meNotificationCenter {
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        left: auto !important;
+        bottom: auto !important;
+
+        width: 43px;
+        height: 43px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0 8px 0 auto !important;
+
+        flex: 0 0 43px;
+    }
+
+    .nav #card4meNotificationCenter .card4me-notification-bell,
+    .site-header #card4meNotificationCenter .card4me-notification-bell {
+        width: 43px;
+        height: 43px;
+    }
+
+    /* Mobile notification panel must never be clipped */
+    #card4meNotificationCenter .card4me-notification-panel {
+        position: fixed !important;
+
+        top: 68px !important;
+        left: 12px !important;
+        right: 12px !important;
+
+        width: auto !important;
+        max-width: none !important;
+
+        max-height: calc(100vh - 82px) !important;
+
+        margin: 0 !important;
+
+        transform-origin: top center;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .nav #card4meNotificationCenter,
+    .site-header #card4meNotificationCenter {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+        margin-right: 6px !important;
+    }
+
+    .nav #card4meNotificationCenter .card4me-notification-bell,
+    .site-header #card4meNotificationCenter .card4me-notification-bell {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+    }
+
+    #card4meNotificationCenter .card4me-notification-panel {
+        top: 62px !important;
+        left: 10px !important;
+        right: 10px !important;
+        max-height: calc(100vh - 72px) !important;
+    }
+}
