@@ -780,6 +780,59 @@ async function loadTransactionPinStatus() {
 }
 
 
+function setupTransactionPinVisibility() {
+    const fields = [
+        {
+            inputId: "transactionPin",
+            buttonId: "toggleTransactionPin",
+            showLabel: "Show Transaction PIN",
+            hideLabel: "Hide Transaction PIN"
+        },
+        {
+            inputId: "confirmTransactionPin",
+            buttonId: "toggleConfirmTransactionPin",
+            showLabel: "Show confirmation PIN",
+            hideLabel: "Hide confirmation PIN"
+        }
+    ];
+
+    fields.forEach((field) => {
+        const input =
+            document.getElementById(field.inputId);
+
+        const button =
+            document.getElementById(field.buttonId);
+
+        if (!input || !button) {
+            return;
+        }
+
+        button.addEventListener("click", () => {
+            const showing =
+                input.type === "text";
+
+            input.type =
+                showing ? "password" : "text";
+
+            button.textContent =
+                showing ? "👁️" : "🙈";
+
+            button.setAttribute(
+                "aria-label",
+                showing
+                    ? field.showLabel
+                    : field.hideLabel
+            );
+
+            button.setAttribute(
+                "aria-pressed",
+                String(!showing)
+            );
+        });
+    });
+}
+
+
 function setupTransactionPin() {
     const openButton =
         document.getElementById(
@@ -991,6 +1044,7 @@ document.addEventListener(
         setupReferralActions();
         setupEditProfile();
         setupChangePassword();
+        setupTransactionPinVisibility();
         setupTransactionPin();
         loadTransactionPinStatus();
     }

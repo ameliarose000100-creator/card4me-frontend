@@ -371,17 +371,31 @@
                             New Transaction PIN
                         </label>
 
-                        <input
-                            type="password"
-                            id="transactionPin"
-                            name="transactionPin"
-                            inputmode="numeric"
-                            pattern="[0-9]{6}"
-                            maxlength="6"
-                            autocomplete="off"
-                            placeholder="Enter 6 digits"
-                            required
-                        >
+                        <div style="position:relative;">
+                            <input
+                                type="password"
+                                id="transactionPin"
+                                name="transactionPin"
+                                inputmode="numeric"
+                                pattern="[0-9]{6}"
+                                maxlength="6"
+                                autocomplete="off"
+                                placeholder="Enter 6 digits"
+                                style="padding-right:52px;"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="transaction-pin-toggle"
+                                id="toggleTransactionPin"
+                                aria-label="Show Transaction PIN"
+                                aria-pressed="false"
+                                style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:0; cursor:pointer; font-size:20px; padding:6px;"
+                            >
+                                👁️
+                            </button>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -389,17 +403,31 @@
                             Confirm Transaction PIN
                         </label>
 
-                        <input
-                            type="password"
-                            id="confirmTransactionPin"
-                            name="confirmTransactionPin"
-                            inputmode="numeric"
-                            pattern="[0-9]{6}"
-                            maxlength="6"
-                            autocomplete="off"
-                            placeholder="Re-enter 6 digits"
-                            required
-                        >
+                        <div style="position:relative;">
+                            <input
+                                type="password"
+                                id="confirmTransactionPin"
+                                name="confirmTransactionPin"
+                                inputmode="numeric"
+                                pattern="[0-9]{6}"
+                                maxlength="6"
+                                autocomplete="off"
+                                placeholder="Re-enter 6 digits"
+                                style="padding-right:52px;"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="transaction-pin-toggle"
+                                id="toggleConfirmTransactionPin"
+                                aria-label="Show confirmation PIN"
+                                aria-pressed="false"
+                                style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:0; cursor:pointer; font-size:20px; padding:6px;"
+                            >
+                                👁️
+                            </button>
+                        </div>
                     </div>
 
                     <div
