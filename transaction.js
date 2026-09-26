@@ -73,9 +73,9 @@ async function loadTransactions() {
                     headers: {
                         Authorization:
                             "Bearer " +
-                            localStorage.getItem(
-                                "card4me_token"
-                            )
+                            (typeof getToken === "function"
+                                ? getToken()
+                                : sessionStorage.getItem("card4me_token"))
                     }
                 }
             );
