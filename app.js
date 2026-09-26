@@ -4436,3 +4436,523 @@ window.showTransaction131Copyable = async function() {
 
 
 
+
+
+/* =====================================================
+   CARD4ME NOTIFICATION CENTER
+===================================================== */
+
+(function initCard4MeNotifications() {
+
+    function escapeNotificationText(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function notificationIcon(type) {
+        const icons = {
+            wallet: "💰",
+            funding: "💰",
+            airtime: "📱",
+            data: "📶",
+            refund: "↩️",
+            security: "🔐",
+            referral: "🎁",
+            agent: "⭐",
+            community: "🌐",
+            announcement: "📢",
+            promotion: "🎉",
+            maintenance: "🛠️"
+        };
+
+        return icons[String(type || "").toLowerCase()] || "🔔";
+    }
+
+    function formatNotificationTime(dateValue) {
+        if (!dateValue) return "";
+
+        const date = new Date(dateValue);
+
+        if (Number.isNaN(date.getTime())) {
+            return "";
+        }
+
+        const diff =
+            Math.max(0, Date.now() - date.getTime());
+
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        if (seconds < 60) return "Just now";
+        if (minutes < 60) return `${minutes}m ago`;
+        if (hours < 24) return `${hours}h ago`;
+        if (days < 7) return `${days}d ago`;
+
+        return date.toLocaleDateString(
+            "en-NG",
+            {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            }
+        );
+    }
+
+    function ensureNotificationUI() {
+        if (!document.body) return;
+
+        if (document.getElementById("card4meNotificationCenter")) {
+            return;
+        }
+
+        const center = document.createElement("div");
+
+        center.id = "card4meNotificationCenter";
+
+        center.innerHTML = `
+            <button
+                type="button"
+                id="card4meNotificationBell"
+                class="card4me-notification-bell"
+                aria-label="Notifications"
+                aria-expanded="false"
+            >
+                <span class="card4me-notification-bell-icon">🔔</span>
+                <span
+                    id="card4meNotificationBadge"
+                    class="card4me-notification-badge"
+                    hidden
+                >0</span>
+            </button>
+
+            <section
+                id="card4meNotificationPanel"
+                class="card4me-notification-panel"
+                aria-hidden="true"
+            >
+                <div class="card4me-notification-header">
+
+                    <div>
+                        <span class="card4me-notification-label">
+                            CARD4ME
+                        </span>
+
+                        <h2>Notifications</h2>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="card4meMarkAllRead"
+                        class="card4me-notification-mark-all"
+                    >
+                        Mark all read
+                    </button>
+
+                </div>
+
+                <div
+                    id="card4meNotificationList"
+                    class="card4me-notification-list"
+                >
+                    <div class="card4me-notification-loading">
+                        Loading notifications...
+                    </div>
+                </div>
+            </section>
+        `;
+
+        document.body.appendChild(center);
+
+        const bell =
+            document.getElementById(
+                "card4meNotificationBell"
+            );
+
+        const panel =
+            document.getElementById(
+                "card4meNotificationPanel"
+            );
+
+        bell.addEventListener("click", async (event) => {
+            event.stopPropagation();
+
+            const open =
+                panel.classList.toggle("show");
+
+            bell.setAttribute(
+                "aria-expanded",
+                open ? "true" : "false"
+            );
+
+            panel.setAttribute(
+                "aria-hidden",
+                open ? "false" : "true"
+            );
+
+            if (open) {
+                await loadCard4MeNotifications();
+            }
+        });
+
+        panel.addEventListener(
+            "click",
+            event => event.stopPropagation()
+        );
+
+        document.addEventListener("click", () => {
+            panel.classList.remove("show");
+
+            bell.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            panel.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+        });
+
+        document.getElementById(
+            "card4meMarkAllRead"
+        ).addEventListener(
+            "click",
+            markAllCard4MeNotificationsRead
+        );
+    }
+
+    async function loadCard4MeNotifications() {
+        const list =
+            document.getElementById(
+                "card4meNotificationList"
+            );
+
+        if (!list) return;
+
+        list.innerHTML = `
+            <div class="card4me-notification-loading">
+                Loading notifications...
+            </div>
+        `;
+
+        try {
+            const result =
+                await apiRequest(
+                    "/api/community/notifications"
+                );
+
+            if (
+                !result ||
+                !result.success
+            ) {
+                throw new Error(
+                    result?.message ||
+                    "Unable to load notifications."
+                );
+            }
+
+            const notifications =
+                Array.isArray(result.notifications)
+                    ? result.notifications
+                    : [];
+
+            renderCard4MeNotifications(
+                notifications
+            );
+
+            updateCard4MeNotificationBadge(
+                notifications.filter(
+                    notification =>
+                        !notification.is_read
+                ).length
+            );
+
+        } catch (error) {
+            console.error(
+                "Notification loading error:",
+                error
+            );
+
+            list.innerHTML = `
+                <div class="card4me-notification-empty">
+                    <div>⚠️</div>
+                    <strong>Unable to load notifications</strong>
+                    <span>Please try again.</span>
+                </div>
+            `;
+        }
+    }
+
+    function renderCard4MeNotifications(
+        notifications
+    ) {
+        const list =
+            document.getElementById(
+                "card4meNotificationList"
+            );
+
+        if (!list) return;
+
+        if (!notifications.length) {
+            list.innerHTML = `
+                <div class="card4me-notification-empty">
+                    <div>🔔</div>
+                    <strong>No notifications yet</strong>
+                    <span>
+                        Important CARD4ME updates will appear here.
+                    </span>
+                </div>
+            `;
+            return;
+        }
+
+        list.innerHTML =
+            notifications.map(notification => {
+
+                const unread =
+                    !notification.is_read;
+
+                return `
+                    <article
+                        class="card4me-notification-item ${unread ? "unread" : ""}"
+                        data-notification-id="${Number(notification.id)}"
+                    >
+
+                        <button
+                            type="button"
+                            class="card4me-notification-main"
+                            data-read-id="${Number(notification.id)}"
+                        >
+
+                            <span class="card4me-notification-icon">
+                                ${notificationIcon(notification.type)}
+                            </span>
+
+                            <span class="card4me-notification-content">
+
+                                <strong>
+                                    ${escapeNotificationText(notification.title)}
+                                </strong>
+
+                                <span>
+                                    ${escapeNotificationText(notification.message)}
+                                </span>
+
+                                <small>
+                                    ${formatNotificationTime(notification.created_at)}
+                                </small>
+
+                            </span>
+
+                            ${
+                                unread
+                                    ? `<span class="card4me-notification-dot"></span>`
+                                    : ""
+                            }
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="card4me-notification-delete"
+                            data-delete-id="${Number(notification.id)}"
+                            aria-label="Delete notification"
+                        >
+                            ×
+                        </button>
+
+                    </article>
+                `;
+            }).join("");
+
+        list
+            .querySelectorAll("[data-read-id]")
+            .forEach(button => {
+                button.addEventListener(
+                    "click",
+                    () => markCard4MeNotificationRead(
+                        button.dataset.readId
+                    )
+                );
+            });
+
+        list
+            .querySelectorAll("[data-delete-id]")
+            .forEach(button => {
+                button.addEventListener(
+                    "click",
+                    () => deleteCard4MeNotification(
+                        button.dataset.deleteId
+                    )
+                );
+            });
+    }
+
+    async function markCard4MeNotificationRead(
+        notificationId
+    ) {
+        try {
+            const result =
+                await apiRequest(
+                    `/api/community/notifications/${Number(notificationId)}/read`,
+                    {
+                        method: "POST"
+                    }
+                );
+
+            if (!result || !result.success) {
+                throw new Error(
+                    result?.message ||
+                    "Unable to update notification."
+                );
+            }
+
+            await loadCard4MeNotifications();
+
+        } catch (error) {
+            console.error(
+                "Mark notification read error:",
+                error
+            );
+        }
+    }
+
+    async function markAllCard4MeNotificationsRead() {
+        try {
+            const result =
+                await apiRequest(
+                    "/api/notifications/read-all",
+                    {
+                        method: "POST"
+                    }
+                );
+
+            if (!result || !result.success) {
+                throw new Error(
+                    result?.message ||
+                    "Unable to mark notifications as read."
+                );
+            }
+
+            await loadCard4MeNotifications();
+
+        } catch (error) {
+            console.error(
+                "Mark all notifications read error:",
+                error
+            );
+        }
+    }
+
+    async function deleteCard4MeNotification(
+        notificationId
+    ) {
+        try {
+            const result =
+                await apiRequest(
+                    `/api/notifications/${Number(notificationId)}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+            if (!result || !result.success) {
+                throw new Error(
+                    result?.message ||
+                    "Unable to delete notification."
+                );
+            }
+
+            await loadCard4MeNotifications();
+
+        } catch (error) {
+            console.error(
+                "Delete notification error:",
+                error
+            );
+        }
+    }
+
+    async function loadCard4MeNotificationCount() {
+        try {
+            const result =
+                await apiRequest(
+                    "/api/notifications/unread-count"
+                );
+
+            if (
+                result &&
+                result.success
+            ) {
+                updateCard4MeNotificationBadge(
+                    Number(result.unreadCount || 0)
+                );
+            }
+
+        } catch (error) {
+            console.error(
+                "Notification count error:",
+                error
+            );
+        }
+    }
+
+    function updateCard4MeNotificationBadge(
+        count
+    ) {
+        const badge =
+            document.getElementById(
+                "card4meNotificationBadge"
+            );
+
+        if (!badge) return;
+
+        const value =
+            Math.max(0, Number(count) || 0);
+
+        badge.textContent =
+            value > 99 ? "99+" : String(value);
+
+        badge.hidden =
+            value === 0;
+    }
+
+    function initialize() {
+        const user = getUser();
+
+        if (!user || !user.id) {
+            return;
+        }
+
+        ensureNotificationUI();
+
+        loadCard4MeNotificationCount();
+
+        window.card4meNotificationRefresh =
+            loadCard4MeNotificationCount;
+
+        window.card4meNotificationReload =
+            loadCard4MeNotifications;
+
+        window.setInterval(
+            loadCard4MeNotificationCount,
+            30000
+        );
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initialize
+        );
+    } else {
+        initialize();
+    }
+
+})();
