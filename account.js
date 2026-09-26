@@ -722,6 +722,265 @@ function setupChangePassword() {
 
 
 /* =========================================
+   TRANSACTION PIN
+========================================= */
+
+async function loadTransactionPinStatus() {
+    const statusElement =
+        document.getElementById("transactionPinStatus");
+
+    const actions =
+        document.getElementById("transactionPinActions");
+
+    if (!statusElement) {
+        return;
+    }
+
+    try {
+        const result =
+            await apiRequest(
+                "/api/profile/transaction-pin"
+            );
+
+        if (
+            !result ||
+            !result.success
+        ) {
+            throw new Error(
+                result?.message ||
+                "Unable to check Transaction PIN status."
+            );
+        }
+
+        if (result.hasTransactionPin) {
+            statusElement.textContent =
+                "Configured";
+
+            if (actions) {
+                actions.style.display = "none";
+            }
+        } else {
+            statusElement.textContent =
+                "Not configured";
+
+            if (actions) {
+                actions.style.display = "flex";
+            }
+        }
+
+    } catch (error) {
+        console.error(
+            "Transaction PIN status error:",
+            error
+        );
+
+        statusElement.textContent =
+            "Unable to check";
+    }
+}
+
+
+function setupTransactionPin() {
+    const openButton =
+        document.getElementById(
+            "setTransactionPinButton"
+        );
+
+    const panel =
+        document.getElementById(
+            "transactionPinPanel"
+        );
+
+    const form =
+        document.getElementById(
+            "transactionPinForm"
+        );
+
+    const cancelButton =
+        document.getElementById(
+            "cancelTransactionPinButton"
+        );
+
+    const message =
+        document.getElementById(
+            "transactionPinMessage"
+        );
+
+    const saveButton =
+        document.getElementById(
+            "saveTransactionPinButton"
+        );
+
+    if (
+        !openButton ||
+        !panel ||
+        !form ||
+        !cancelButton
+    ) {
+        return;
+    }
+
+    openButton.addEventListener(
+        "click",
+        () => {
+            panel.style.display = "block";
+            form.reset();
+
+            if (message) {
+                message.textContent = "";
+                message.style.display = "none";
+            }
+
+            panel.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    );
+
+    cancelButton.addEventListener(
+        "click",
+        () => {
+            panel.style.display = "none";
+            form.reset();
+
+            if (message) {
+                message.textContent = "";
+                message.style.display = "none";
+            }
+        }
+    );
+
+    form.addEventListener(
+        "submit",
+        async (event) => {
+            event.preventDefault();
+
+            const transactionPin =
+                document.getElementById(
+                    "transactionPin"
+                )?.value.trim() || "";
+
+            const confirmTransactionPin =
+                document.getElementById(
+                    "confirmTransactionPin"
+                )?.value.trim() || "";
+
+            if (!/^\d{6}$/.test(transactionPin)) {
+                showAccountAlert(
+                    message,
+                    "Transaction PIN must be exactly 6 digits.",
+                    "error"
+                );
+                return;
+            }
+
+            if (
+                transactionPin !==
+                confirmTransactionPin
+            ) {
+                showAccountAlert(
+                    message,
+                    "Transaction PINs do not match.",
+                    "error"
+                );
+                return;
+            }
+
+            if (saveButton) {
+                saveButton.disabled = true;
+                saveButton.textContent =
+                    "Saving...";
+            }
+
+            showAccountAlert(
+                message,
+                "Setting your Transaction PIN...",
+                "success"
+            );
+
+            try {
+                const result =
+                    await apiRequest(
+                        "/api/profile/transaction-pin",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body: JSON.stringify({
+                                transactionPin
+                            })
+                        }
+                    );
+
+                if (
+                    !result ||
+                    !result.success
+                ) {
+                    throw new Error(
+                        result?.message ||
+                        "Unable to set Transaction PIN."
+                    );
+                }
+
+                form.reset();
+
+                panel.style.display = "none";
+
+                const statusElement =
+                    document.getElementById(
+                        "transactionPinStatus"
+                    );
+
+                const actions =
+                    document.getElementById(
+                        "transactionPinActions"
+                    );
+
+                if (statusElement) {
+                    statusElement.textContent =
+                        "Configured";
+                }
+
+                if (actions) {
+                    actions.style.display = "none";
+                }
+
+                showAccountAlert(
+                    null,
+                    "Transaction PIN created successfully.",
+                    "success"
+                );
+
+            } catch (error) {
+                console.error(
+                    "Create Transaction PIN error:",
+                    error
+                );
+
+                showAccountAlert(
+                    message,
+                    error.message ||
+                    "Unable to set Transaction PIN.",
+                    "error"
+                );
+
+            } finally {
+                if (saveButton) {
+                    saveButton.disabled = false;
+                    saveButton.textContent =
+                        "Set Transaction PIN";
+                }
+            }
+        }
+    );
+}
+
+
+
+/* =========================================
    PAGE INITIALIZATION
 ========================================= */
 
@@ -732,5 +991,7 @@ document.addEventListener(
         setupReferralActions();
         setupEditProfile();
         setupChangePassword();
+        setupTransactionPin();
+        loadTransactionPinStatus();
     }
 );

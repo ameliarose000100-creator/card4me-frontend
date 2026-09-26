@@ -335,6 +335,127 @@
 
         <section
             class="account-card"
+            id="transactionPinSection"
+        >
+
+            <h2>
+                Security
+            </h2>
+
+            <div class="account-detail">
+                <strong>
+                    Transaction PIN
+                </strong>
+
+                <span id="transactionPinStatus">
+                    Checking...
+                </span>
+            </div>
+
+            <p style="margin-top:15px;">
+                Set a 6-digit Transaction PIN for added security
+                on your CARD4ME account. Transaction PIN verification
+                will be connected to supported financial actions as
+                the security system is completed.
+            </p>
+
+            <div
+                id="transactionPinPanel"
+                style="display:none; margin-top:20px;"
+            >
+
+                <form id="transactionPinForm">
+
+                    <div class="form-group">
+                        <label for="transactionPin">
+                            New Transaction PIN
+                        </label>
+
+                        <input
+                            type="password"
+                            id="transactionPin"
+                            name="transactionPin"
+                            inputmode="numeric"
+                            pattern="[0-9]{6}"
+                            maxlength="6"
+                            autocomplete="off"
+                            placeholder="Enter 6 digits"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmTransactionPin">
+                            Confirm Transaction PIN
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmTransactionPin"
+                            name="confirmTransactionPin"
+                            inputmode="numeric"
+                            pattern="[0-9]{6}"
+                            maxlength="6"
+                            autocomplete="off"
+                            placeholder="Re-enter 6 digits"
+                            required
+                        >
+                    </div>
+
+                    <div
+                        id="transactionPinMessage"
+                        class="account-alert"
+                        style="display:none;"
+                        role="alert"
+                        aria-live="polite"
+                    ></div>
+
+                    <div class="account-actions">
+
+                        <button
+                            type="submit"
+                            class="btn"
+                            id="saveTransactionPinButton"
+                        >
+                            Set Transaction PIN
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-outline"
+                            id="cancelTransactionPinButton"
+                        >
+                            Cancel
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div
+                class="account-actions"
+                id="transactionPinActions"
+                style="margin-top:15px;"
+            >
+
+                <button
+                    type="button"
+                    class="btn btn-outline"
+                    id="setTransactionPinButton"
+                >
+                    Set Transaction PIN
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <section
+            class="account-card"
             id="editProfilePanel"
             style="display:none;"
         >
