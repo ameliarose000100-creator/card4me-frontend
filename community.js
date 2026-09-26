@@ -185,7 +185,7 @@ function renderChannels() {
             "click",
             () => {
                 window.open(
-                    "https://whatsapp.com/channel/0029VbDlqJv30LKX31QtkY1V",
+                    "https://whatsapp.com/channel/0029VbD792Q42DceJnJxFy0M",
                     "_blank",
                     "noopener,noreferrer"
                 );
@@ -203,7 +203,7 @@ function renderChannels() {
             "click",
             () => {
                 window.open(
-                    "https://chat.whatsapp.com/LoM90QeFrswIWMbpM2xoG0?s=cl&p=a&mlu=4&ilr=4",
+                    "https://chat.whatsapp.com/DNICCoaBqMNFDf5Zh4y3Rm",
                     "_blank",
                     "noopener,noreferrer"
                 );
@@ -261,11 +261,307 @@ async function loadChannels() {
 }
 
 
-async function selectChannel(channelId) {
-    activeSpace = "channel";
+function isEventsChannel(channelId) {
+    const channel =
+        communityChannels.find(
+            item =>
+                Number(item.id) === Number(channelId)
+        );
 
+    if (!channel) {
+        return false;
+    }
+
+    return (
+        String(channel.type || "").toLowerCase() === "events" ||
+        String(channel.name || "").toLowerCase().includes("event")
+    );
+}
+
+
+function formatEventDate(value) {
+    if (!value) {
+        return "";
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "";
+    }
+
+    return date.toLocaleString([], {
+        dateStyle: "medium",
+        timeStyle: "short"
+    });
+}
+
+
+function renderEvents(events) {
+    if (!events.length) {
+        messagesElement.innerHTML = `
+            <div class="empty-community">
+                <div>
+                    <strong>🎉 No upcoming events yet.</strong>
+                    <br>
+                    CARD4ME events and community activities will appear here.
+                </div>
+            </div>
+        `;
+
+        return;
+    }
+
+    messagesElement.innerHTML =
+        events.map(event => {
+            const cancelled =
+                String(event.status || "").toLowerCase() === "cancelled";
+
+            const eventDate =
+                formatEventDate(event.event_date);
+
+            const attendeeCount =
+                Number(event.attendee_count || 0);
+
+            return `
+                <article class="community-event-card">
+
+                    ${
+                        event.cover_image
+                            ? `
+                                <img
+                                    src="${escapeHtml(event.cover_image)}"
+                                    alt=""
+                                    class="community-event-image"
+                                    loading="lazy"
+                                >
+                            `
+                            : ""
+                    }
+
+                    <div class="community-event-content">
+
+                        <div class="community-event-badge">
+                            ${cancelled ? "❌ Cancelled" : "🎉 CARD4ME Event"}
+                        </div>
+
+                        <h3>
+                            ${escapeHtml(event.title)}
+                        </h3>
+
+                        ${
+                            event.description
+                                ? `
+                                    <p class="community-event-description">
+                                        ${escapeHtml(event.description)}
+                                    </p>
+                                `
+                                : ""
+                        }
+
+                        <div class="community-event-details">
+
+                            ${
+                                eventDate
+                                    ? `
+                                        <div>
+                                            <span>📅</span>
+                                            <strong>${escapeHtml(eventDate)}</strong>
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                event.location
+                                    ? `
+                                        <div>
+                                            <span>📍</span>
+                                            <strong>${escapeHtml(event.location)}</strong>
+                                        </div>
+                                    `
+                                    : ""
+                            }
+
+                            <div>
+                                <span>👥</span>
+                                <strong>
+                                    ${attendeeCount.toLocaleString("en-NG")}
+                                    ${
+                                        attendeeCount === 1
+                                            ? " attendee"
+                                            : " attendees"
+                                    }
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        <div class="community-event-actions">
+
+                            ${
+                                event.meeting_url && !cancelled
+                                    ? `
+                                        <a
+                                            href="${escapeHtml(event.meeting_url)}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="community-event-link"
+                                        >
+                                            🔗 Open Event Link
+                                        </a>
+                                    `
+                                    : ""
+                            }
+
+                            ${
+                                cancelled
+                                    ? `
+                                        <button
+                                            type="button"
+                                            class="community-event-join"
+                                            disabled
+                                        >
+                                            Event Cancelled
+                                        </button>
+                                    `
+                                    : `
+                                        <button
+                                            type="button"
+                                            class="community-event-join"
+                                            data-event-id="${Number(event.id)}"
+                                        >
+                                            Join Event
+                                        </button>
+                                    `
+                            }
+
+                        </div>
+
+                    </div>
+
+                </article>
+            `;
+        }).join("");
+
+    document
+        .querySelectorAll(".community-event-join[data-event-id]")
+        .forEach(button => {
+            button.addEventListener("click", async () => {
+                const eventId =
+                    Number(button.dataset.eventId);
+
+                if (!eventId) {
+                    return;
+                }
+
+                button.disabled = true;
+                button.textContent = "Joining...";
+
+                try {
+                    const result =
+                        await apiRequest(
+                            `/api/community/events/${eventId}/join`,
+                            {
+                                method: "POST"
+                            }
+                        );
+
+                    if (!result.success) {
+                        throw new Error(
+                            result.message ||
+                            "Could not join event."
+                        );
+                    }
+
+                    communityStatus.textContent =
+                        result.message ||
+                        "You joined the event.";
+
+                    await loadEvents();
+
+                } catch (error) {
+                    console.error(
+                        "Community event join error:",
+                        error
+                    );
+
+                    communityStatus.textContent =
+                        error.message ||
+                        "Could not join event.";
+
+                    button.disabled = false;
+                    button.textContent = "Join Event";
+                }
+            });
+        });
+}
+
+
+async function loadEvents() {
+    activeSpace = "events";
+
+    renderChannels();
+
+    channelTitle.textContent =
+        "🎉 CARD4ME Events";
+
+    channelDescription.textContent =
+        "Official CARD4ME events, activities, launches and community gatherings.";
+
+    messageForm.style.display = "none";
+
+    messagesElement.innerHTML = `
+        <div class="empty-community">
+            Loading events...
+        </div>
+    `;
+
+    try {
+        const result =
+            await apiRequest(
+                "/api/community/events"
+            );
+
+        if (!result.success) {
+            throw new Error(
+                result.message ||
+                "Could not load events."
+            );
+        }
+
+        const events =
+            Array.isArray(result.events)
+                ? result.events
+                : [];
+
+        renderEvents(events);
+
+    } catch (error) {
+        console.error(
+            "Community events error:",
+            error
+        );
+
+        messagesElement.innerHTML = `
+            <div class="empty-community">
+                ${escapeHtml(error.message)}
+            </div>
+        `;
+    }
+}
+
+
+async function selectChannel(channelId) {
     activeChannelId =
         Number(channelId);
+
+    if (isEventsChannel(activeChannelId)) {
+        await loadEvents();
+        return;
+    }
+
+    activeSpace = "channel";
 
     renderChannels();
 
