@@ -4567,7 +4567,17 @@ window.showTransaction131Copyable = async function() {
             </section>
         `;
 
-        document.body.appendChild(center);
+        const menuButton =
+            document.querySelector(".menu, .menu-btn");
+
+        if (menuButton && menuButton.parentElement) {
+            menuButton.parentElement.insertBefore(
+                center,
+                menuButton
+            );
+        } else {
+            document.body.appendChild(center);
+        }
 
         const bell =
             document.getElementById(
