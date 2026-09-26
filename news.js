@@ -42,6 +42,8 @@ function renderNews() {
     empty.style.display = "none";
 
     grid.innerHTML = newsArticles.map(article => {
+        const articleId = Number(article.id);
+
         const cover = article.cover_image
             ? `
                 <img
@@ -58,7 +60,13 @@ function renderNews() {
             `;
 
         return `
-            <article class="news-card">
+            <article
+                class="news-card"
+                role="link"
+                tabindex="0"
+                onclick="openNewsArticle(${articleId})"
+                onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openNewsArticle(${articleId}); }"
+            >
                 ${cover}
 
                 <div class="news-card-body">
@@ -76,10 +84,28 @@ function renderNews() {
                         <span>${escapeHtml(article.author_name || "CARD4ME")}</span>
                         <span>${escapeHtml(formatNewsDate(article.published_at))}</span>
                     </div>
+
+                    <button
+                        type="button"
+                        class="news-read-button"
+                        onclick="event.stopPropagation(); openNewsArticle(${articleId});"
+                    >
+                        Read Full Article
+                    </button>
                 </div>
             </article>
         `;
     }).join("");
+}
+
+function openNewsArticle(newsId) {
+    const id = Number(newsId);
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return;
+    }
+
+    window.location.href = `news-article.html?id=${encodeURIComponent(id)}`;
 }
 
 async function loadNews() {

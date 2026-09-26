@@ -20190,3 +20190,35 @@ body:has(.wallet-page) {
     cursor: default;
     opacity: .62;
 }
+
+.news-card {
+    cursor: pointer;
+}
+
+.news-read-button {
+    width: 100%;
+    min-height: 42px;
+    margin-top: 16px;
+    padding: 10px 14px;
+    border: 1px solid rgba(80, 220, 160, .2);
+    border-radius: 11px;
+    background: rgba(80, 220, 160, .08);
+    color: #5ee6a5;
+    font: inherit;
+    font-size: .78rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+        background 180ms ease,
+        border-color 180ms ease,
+        transform 180ms ease;
+}
+
+.news-read-button:hover {
+    background: rgba(80, 220, 160, .14);
+    border-color: rgba(80, 220, 160, .35);
+}
+
+.news-read-button:active {
+    transform: scale(.98);
+}

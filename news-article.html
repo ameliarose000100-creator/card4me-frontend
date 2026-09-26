@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CARD4ME News Article</title>
+
+    <link rel="stylesheet" href="style.css?v=20260925">
+
+    <style>
+        .news-article-page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 18px 70px;
+        }
+
+        .news-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 18px;
+            color: #5ee6a5;
+            text-decoration: none;
+            font-size: .84rem;
+            font-weight: 750;
+        }
+
+        .news-back:hover {
+            text-decoration: underline;
+        }
+
+        .news-article {
+            overflow: hidden;
+            border-radius: 24px;
+            background: rgba(13, 20, 25, .94);
+            border: 1px solid rgba(255, 255, 255, .07);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .28);
+        }
+
+        .news-article-cover {
+            width: 100%;
+            max-height: 440px;
+            object-fit: cover;
+            display: block;
+            background: #11191d;
+        }
+
+        .news-article-cover-placeholder {
+            min-height: 230px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(
+                    circle at 50% 30%,
+                    rgba(80, 220, 160, .16),
+                    transparent 45%
+                ),
+                linear-gradient(135deg, #10231f, #111a22);
+            color: #5ee6a5;
+            font-size: 2.2rem;
+            font-weight: 850;
+        }
+
+        .news-article-body {
+            padding: 30px;
+        }
+
+        .news-article-category {
+            display: inline-flex;
+            padding: 6px 10px;
+            margin-bottom: 14px;
+            border-radius: 999px;
+            background: rgba(80, 220, 160, .1);
+            color: #5ee6a5;
+            font-size: .7rem;
+            font-weight: 800;
+        }
+
+        .news-article-title {
+            margin: 0 0 14px;
+            font-size: clamp(1.8rem, 4vw, 2.7rem);
+            line-height: 1.2;
+        }
+
+        .news-article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+            margin-bottom: 28px;
+            color: #75838a;
+            font-size: .78rem;
+        }
+
+        .news-article-summary {
+            margin: 0 0 28px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, .07);
+            color: var(--cm-text-muted, #9ba8ad);
+            font-size: 1rem;
+            line-height: 1.75;
+        }
+
+        .news-article-content {
+            color: #d8e0e3;
+            font-size: .98rem;
+            line-height: 1.85;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .news-article-content p {
+            margin: 0 0 18px;
+        }
+
+        .news-article-loading,
+        .news-article-error {
+            padding: 60px 24px;
+            text-align: center;
+            color: var(--cm-text-muted, #9ba8ad);
+        }
+
+        .news-article-error strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .news-article-error a {
+            display: inline-flex;
+            margin-top: 18px;
+            color: #5ee6a5;
+            text-decoration: none;
+            font-weight: 750;
+        }
+
+        @media (max-width: 620px) {
+            .news-article-page {
+                padding: 20px 14px 50px;
+            }
+
+            .news-article {
+                border-radius: 20px;
+            }
+
+            .news-article-body {
+                padding: 22px 18px;
+            }
+
+            .news-article-cover {
+                max-height: 280px;
+            }
+
+            .news-article-cover-placeholder {
+                min-height: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="logo">CARD4ME</div>
+
+    <button
+        type="button"
+        class="menu-btn"
+        onclick="toggleMenu()"
+        aria-label="Open menu"
+        aria-expanded="false"
+    >
+        ☰
+    </button>
+
+    <nav id="mainNav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="wallet.html">Wallet</a>
+        <a href="services.html">Services</a>
+        <a href="transaction.html">Transactions</a>
+        <a href="community.html">Community</a>
+        <a href="news.html" class="active">News</a>
+        <a href="account.html">Account</a>
+        <a href="#" onclick="logoutUser(); return false;">Logout</a>
+    </nav>
+</header>
+
+<main class="news-article-page">
+
+    <a href="news.html" class="news-back">
+        ← Back to News
+    </a>
+
+    <article id="newsArticle" class="news-article">
+        <div class="news-article-loading">
+            Loading article...
+        </div>
+    </article>
+
+</main>
+
+<script src="app.js"></script>
+<script src="news-article.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
