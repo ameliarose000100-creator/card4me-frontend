@@ -20752,3 +20752,25 @@ body:has(.wallet-page) {
         opacity: 1;
     }
 }
+
+/* =====================================================
+   NOTIFICATION BELL — BESIDE MENU BUTTON
+===================================================== */
+
+#card4meNotificationCenter {
+    top: 18px;
+    right: 76px;
+}
+
+@media (max-width: 600px) {
+    #card4meNotificationCenter {
+        top: 12px;
+        right: 68px;
+    }
+
+    #card4meNotificationCenter .card4me-notification-panel {
+        top: 56px;
+        left: auto;
+        right: -54px;
+    }
+}
