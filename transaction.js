@@ -210,38 +210,71 @@ async function loadTransactions() {
                           ).toLocaleString()
                         : "Date unavailable";
 
-                item.innerHTML = `
-                    <div class="transaction-left">
+                const reference =
+                    transaction.reference ||
+                    "Reference unavailable";
 
-                        <div class="transaction-icon">
-                            ${getTransactionIcon(type)}
+                const statusClass =
+                    String(status).toLowerCase() === "success"
+                        ? "transaction-success"
+                        : String(status).toLowerCase() === "pending"
+                            ? "transaction-pending"
+                            : String(status).toLowerCase() === "failed"
+                                ? "transaction-failed"
+                                : "transaction-pending";
+
+                item.innerHTML = `
+                    <div class="transaction-card-top">
+
+                        <div class="transaction-identity">
+
+                            <div class="transaction-icon">
+                                ${getTransactionIcon(type)}
+                            </div>
+
+                            <div class="transaction-main">
+
+                                <strong>
+                                    ${escapeTransactionText(type)}
+                                </strong>
+
+                                <span class="transaction-provider">
+                                    ${escapeTransactionText(details)}
+                                </span>
+
+                            </div>
+
                         </div>
 
-                        <div class="transaction-details">
+                        <strong class="transaction-amount">
+                            ${formattedAmount}
+                        </strong>
+
+                    </div>
+
+                    <div class="transaction-card-middle">
+
+                        <div class="transaction-reference">
+
+                            <span>
+                                Reference
+                            </span>
 
                             <strong>
-                                ${escapeTransactionText(type)}
+                                ${escapeTransactionText(reference)}
                             </strong>
-
-                            <span>
-                                ${escapeTransactionText(details)}
-                            </span>
-
-                            <span>
-                                ${escapeTransactionText(date)}
-                            </span>
 
                         </div>
 
                     </div>
 
-                    <div class="transaction-right">
+                    <div class="transaction-card-bottom">
 
-                        <span class="transaction-amount">
-                            ${formattedAmount}
+                        <span class="transaction-date">
+                            ${escapeTransactionText(date)}
                         </span>
 
-                        <span class="transaction-status">
+                        <span class="${statusClass}">
                             ${escapeTransactionText(status)}
                         </span>
 
