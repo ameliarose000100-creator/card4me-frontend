@@ -13,12 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    menuButton.addEventListener("click", function () {
-        const isOpen = nav.classList.toggle("active");
-        nav.classList.toggle("open", isOpen);
-        menuButton.setAttribute("aria-expanded", String(isOpen));
-    });
-
     nav.querySelectorAll("a").forEach(function (link) {
         link.addEventListener("click", function () {
             nav.classList.remove("active");

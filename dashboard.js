@@ -300,7 +300,7 @@ async function loadAgentDashboardStatus() {
     }
 
     const token =
-        localStorage.getItem("card4me_token");
+        getToken();
 
     if (!token) {
         return;

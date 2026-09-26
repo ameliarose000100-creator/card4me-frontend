@@ -149,7 +149,7 @@ function getToken() {
 
     try {
 
-        return localStorage.getItem(
+        return sessionStorage.getItem(
             AUTH_TOKEN_KEY
         );
 
@@ -231,13 +231,13 @@ function saveAuth(token, user) {
     }
 
 
-    localStorage.setItem(
+    sessionStorage.setItem(
         AUTH_TOKEN_KEY,
         token
     );
 
 
-    localStorage.setItem(
+    sessionStorage.setItem(
         AUTH_USER_KEY,
         JSON.stringify(user)
     );
@@ -1155,7 +1155,10 @@ document.addEventListener(
             document.querySelector(".menu") ||
             document.querySelector(".menu-btn");
 
-        if (menuButton) {
+        if (
+            menuButton &&
+            !menuButton.hasAttribute("onclick")
+        ) {
             menuButton.addEventListener(
                 "click",
                 toggleMenu

@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("CARD4ME: Airtime form submitted.");
 
-        const token = localStorage.getItem("card4me_token");
+        const token = getToken();
 
         if (!token) {
 

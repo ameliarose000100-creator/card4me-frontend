@@ -1278,7 +1278,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     try {
 
         const token =
-            localStorage.getItem("card4me_token");
+            getToken();
 
         const response =
             await fetch(
@@ -1389,7 +1389,7 @@ async function withdrawOwner(){
     try {
 
         const token =
-            localStorage.getItem("card4me_token");
+            getToken();
 
 
         const withdrawalEndpoint =
