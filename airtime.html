@@ -239,7 +239,83 @@
                 </button>  
   
   
-            </form>  
+            
+<script>
+(function () {
+    const phoneInput = document.getElementById("airtimePhone");
+    const networkSelect = document.getElementById("airtimeNetwork");
+
+    if (!phoneInput || !networkSelect) return;
+
+    const prefixes = {
+        MTN: [
+            "0703", "0704", "0706",
+            "0803", "0806",
+            "0810", "0813", "0814", "0816",
+            "0903", "0906",
+            "0913", "0916"
+        ],
+        Airtel: [
+            "0701", "0708",
+            "0802", "0808",
+            "0812",
+            "0901", "0902", "0904", "0907",
+            "0912"
+        ],
+        Glo: [
+            "0705",
+            "0805", "0807",
+            "0811", "0815",
+            "0905", "0915"
+        ],
+        "9mobile": [
+            "0809",
+            "0817", "0818",
+            "0908", "0909"
+        ]
+    };
+
+    function detectNetwork(phone) {
+        const digits = String(phone || "").replace(/\D/g, "");
+        const normalized = digits.startsWith("234")
+            ? "0" + digits.slice(3)
+            : digits;
+
+        if (!/^0\d{0,10}$/.test(normalized)) {
+            return "";
+        }
+
+        if (normalized.length < 4) {
+            return "";
+        }
+
+        const prefix = normalized.slice(0, 4);
+
+        for (const [network, networkPrefixes] of Object.entries(prefixes)) {
+            if (networkPrefixes.includes(prefix)) {
+                return network;
+            }
+        }
+
+        return "";
+    }
+
+    phoneInput.addEventListener("input", function () {
+        const detected = detectNetwork(this.value);
+
+        if (detected) {
+            networkSelect.value = detected;
+            networkSelect.dispatchEvent(new Event("change", {
+                bubbles: true
+            }));
+        } else {
+            networkSelect.value = "";
+        }
+    });
+})();
+</script>
+
+</form>  
   
         </div>  
   
