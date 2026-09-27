@@ -4260,6 +4260,27 @@ async function dataPurchase(event) {
         return;
     }
 
+    /*
+     * Show Processing immediately while the backend
+     * contacts the provider and confirms the purchase.
+     */
+    showCard4MeTransactionResult({
+        status: "pending",
+        title: "Transaction Processing",
+        message:
+            "Your data purchase is being processed. Please wait for confirmation.",
+        details: [
+            {
+                label: "Network",
+                value: network
+            },
+            {
+                label: "Phone",
+                value: maskCard4MePhone(phone)
+            }
+        ]
+    });
+
     try {
 
         const result = await apiRequest(
@@ -4279,27 +4300,67 @@ async function dataPurchase(event) {
         }
 
         if (result.pending) {
-            alert(
-                result.message ||
-                "Your data purchase is being processed. Please wait for confirmation."
-            );
-            window.location.href = "transaction.html";
+
+            showCard4MeTransactionResult({
+                status: "pending",
+                title: "Transaction Pending",
+                message:
+                    result.message ||
+                    "Your data purchase is still being processed.",
+                details: [
+                    {
+                        label: "Network",
+                        value: network
+                    },
+                    {
+                        label: "Phone",
+                        value: maskCard4MePhone(phone)
+                    },
+                    {
+                        label: "Transaction ID",
+                        value:
+                            result.transactionId ||
+                            result.reference ||
+                            "N/A"
+                    }
+                ]
+            });
+
             return;
         }
 
         if (!result.success) {
             throw new Error(
-                result.message || "Data purchase failed."
+                result.message ||
+                "Data purchase failed."
             );
         }
 
-        alert(
-            result.message ||
-            "Data purchase successful."
-        );
-
-        window.location.href =
-            "transaction.html";
+        showCard4MeTransactionResult({
+            status: "success",
+            title: "Transaction Successful",
+            message:
+                result.message ||
+                "Data bundle purchased successfully.",
+            details: [
+                {
+                    label: "Network",
+                    value: network
+                },
+                {
+                    label: "Phone",
+                    value:
+                        maskCard4MePhone(phone)
+                },
+                {
+                    label: "Transaction ID",
+                    value:
+                        result.transactionId ||
+                        result.reference ||
+                        "N/A"
+                }
+            ]
+        });
 
     } catch (error) {
 
@@ -4308,15 +4369,17 @@ async function dataPurchase(event) {
             error
         );
 
-        alert(
-            error.message ||
-            "Unable to purchase data."
-        );
+        showCard4MeTransactionResult({
+            status: "failed",
+            title: "Transaction Failed",
+            message:
+                error.message ||
+                "Unable to purchase data."
+        });
 
     }
 
 }
-
 
 async function requeryPendingData(reference) {
     return await apiRequest("/api/data/requery", {
