@@ -3087,6 +3087,33 @@ async function airtimePurchase(
     }
 
 
+    /*
+     * Show Processing immediately while the backend
+     * contacts the provider and confirms the purchase.
+     */
+    showCard4MeTransactionResult({
+        status: "pending",
+        title: "Transaction Processing",
+        message:
+            "Your airtime purchase is being processed. Please wait for confirmation.",
+        details: [
+            {
+                label: "Network",
+                value: network
+            },
+            {
+                label: "Phone",
+                value: maskCard4MePhone(phone)
+            },
+            {
+                label: "Amount",
+                value:
+                    `₦${amount.toLocaleString("en-NG")}`
+            }
+        ]
+    });
+
+
     try {
 
         const result =
