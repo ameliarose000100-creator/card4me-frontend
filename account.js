@@ -21,6 +21,61 @@ async function loadAccountInformation() {
 
         const profile = result.profile;
 
+
+        /* =========================================
+           AGENT ACCOUNT STATUS
+        ========================================= */
+
+        const agentStatusCard =
+            document.getElementById("accountAgentStatus");
+
+        const agentLabel =
+            document.getElementById("accountAgentLabel");
+
+        const agentPricing =
+            document.getElementById("accountAgentPricing");
+
+        if (
+            agentStatusCard &&
+            agentLabel &&
+            agentPricing
+        ) {
+
+            try {
+
+                const agentResult =
+                    await apiRequest("/api/agent");
+
+                if (
+                    agentResult &&
+                    agentResult.success &&
+                    agentResult.agent &&
+                    agentResult.agent.status === "active"
+                ) {
+
+                    agentStatusCard.style.display =
+                        "block";
+
+                    agentLabel.textContent =
+                        "🟢 CARD4ME AGENT";
+
+                    agentPricing.textContent =
+                        "Agent pricing active";
+
+                }
+
+            } catch (agentError) {
+
+                console.warn(
+                    "Unable to load Agent status.",
+                    agentError
+                );
+
+            }
+
+        }
+
+
         const nameElement =
             document.getElementById("accountName");
 
