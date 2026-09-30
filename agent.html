@@ -914,6 +914,21 @@ async function loadExistingAgentPayment() {
             details.accountNumber
         ) {
 
+            const expiresAt =
+                details.expiresAt || null;
+
+            const accountIsExpired =
+                expiresAt &&
+                new Date(expiresAt).getTime() <= Date.now();
+
+            if (accountIsExpired) {
+                console.log(
+                    "Saved Agent virtual account has expired. A fresh account will be created."
+                );
+
+                return false;
+            }
+
             window.agentPaymentTransactionId =
                 details.card4me_transaction_id ||
                 details.transactionId ||
