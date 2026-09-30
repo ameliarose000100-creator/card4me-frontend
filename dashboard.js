@@ -331,8 +331,8 @@ async function loadAgentDashboardStatus() {
             data.agent.status === "active"
         ) {
 
-            text.textContent =
-                "Open Agent Dashboard";
+            text.innerHTML =
+                "🟢 CARD4ME AGENT<br><small>Agent pricing active</small>";
 
             return;
         }
