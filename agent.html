@@ -215,30 +215,6 @@
         </section>
 
 
-        <section
-            class="account-card"
-            id="agentDashboardPanel"
-            style="display: none;"
-        >
-
-            <h2>
-                Agent Dashboard
-            </h2>
-
-            <p>
-                Your Agent account is active.
-            </p>
-
-            <a
-                href="agent-dashboard.html"
-                class="primary-button"
-                style="display: inline-block; text-decoration: none;"
-            >
-                Open Agent Dashboard
-            </a>
-
-        </section>
-
     </main>
 
 
@@ -257,10 +233,6 @@
 
     const agentApplyButton =
         document.getElementById("agentApplyButton");
-
-    const agentDashboardPanel =
-        document.getElementById("agentDashboardPanel");
-
 
     function getAgentToken() {
 
@@ -344,9 +316,6 @@
 
             agentApplyButton.style.display =
                 "none";
-
-            agentDashboardPanel.style.display =
-                "block";
 
             return;
         }
@@ -834,9 +803,6 @@ async function verifyAgentBankTransfer() {
 
         agentApplyButton.style.display =
             "none";
-
-        agentDashboardPanel.style.display =
-            "block";
 
         window.agentPaymentTransactionId =
             null;
