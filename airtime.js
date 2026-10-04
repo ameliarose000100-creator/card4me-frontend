@@ -288,6 +288,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
             }
 
+            if (data.pending === true) {
+
+                showAirtimeMessage(
+                    data.message ||
+                    "Airtime purchase is processing. Please wait for confirmation.",
+                    "error"
+                );
+
+                form.reset();
+
+                return;
+            }
+
             if (!data.success) {
 
                 throw new Error(
