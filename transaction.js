@@ -279,6 +279,21 @@ async function loadTransactions() {
                         </span>
 
                     </div>
+
+                    ${
+                        String(status).toLowerCase() === "pending" &&
+                        String(type).toLowerCase().includes("data")
+                            ? `
+                                <button
+                                    type="button"
+                                    class="requery-data-button"
+                                    data-reference="${escapeTransactionText(reference)}"
+                                >
+                                    Requery Data
+                                </button>
+                            `
+                            : ""
+                    }
                 `;
 
                 list.appendChild(
@@ -384,3 +399,59 @@ function escapeTransactionText(
         );
 
 }
+document.addEventListener("click", async function (event) {
+
+    const button =
+        event.target.closest(
+            ".requery-data-button"
+        );
+
+    if (!button) {
+        return;
+    }
+
+    const reference =
+        button.dataset.reference;
+
+    if (!reference) {
+        return;
+    }
+
+    const originalText =
+        button.textContent;
+
+    button.disabled = true;
+    button.textContent = "Checking...";
+
+    try {
+
+        const result =
+            await requeryPendingData(
+                reference
+            );
+
+        alert(
+            result?.message ||
+            "Requery completed."
+        );
+
+        await loadTransactions();
+
+    } catch (error) {
+
+        console.error(
+            "DATA REQUERY ERROR:",
+            error
+        );
+
+        alert(
+            error?.message ||
+            "Unable to requery data purchase."
+        );
+
+        button.disabled = false;
+        button.textContent = originalText;
+
+    }
+
+});

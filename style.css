@@ -20890,3 +20890,20 @@ body:has(.wallet-page) {
         max-height: calc(100vh - 72px) !important;
     }
 }
+
+.requery-data-button {
+    width: 100%;
+    margin-top: 12px;
+    padding: 11px 16px;
+    border: 0;
+    border-radius: 12px;
+    background: #16a34a;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.requery-data-button:disabled {
+    opacity: .65;
+    cursor: wait;
+}
