@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector(".form-card-inner");
 
     const phoneInput = document.getElementById("airtimePhone");
-    const networkInput = document.getElementById("network");
+    const networkInput = document.getElementById("airtimeNetwork");
     const amountInput = document.getElementById("airtimeAmount");
 
     if (!form) {
