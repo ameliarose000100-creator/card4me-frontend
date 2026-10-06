@@ -235,11 +235,18 @@ async function loadTransactions() {
                             <div class="transaction-main">
 
                                 <strong>
-                                    ${escapeTransactionText(type)}
+                                    ${escapeTransactionText(
+                                        getTransactionLabel(type)
+                                    )}
                                 </strong>
 
                                 <span class="transaction-provider">
-                                    ${escapeTransactionText(details)}
+                                    ${escapeTransactionText(
+                                        getTransactionSummary(
+                                            type,
+                                            details
+                                        )
+                                    )}
                                 </span>
 
                             </div>
@@ -364,6 +371,114 @@ function getTransactionIcon(
     }
 
     return "💳";
+}
+
+/* =========================================
+   CUSTOMER-FRIENDLY TRANSACTION DETAILS
+========================================= */
+
+function getTransactionSummary(
+    type,
+    rawDetails
+) {
+
+    let details = {};
+
+    try {
+        details =
+            typeof rawDetails === "string"
+                ? JSON.parse(rawDetails)
+                : (rawDetails || {});
+    } catch (error) {
+        details = {};
+    }
+
+    const value =
+        String(type || "").toLowerCase();
+
+    if (value.includes("airtime")) {
+
+        const network =
+            String(
+                details.network || ""
+            ).toUpperCase();
+
+        const phone =
+            String(
+                details.phone || ""
+            );
+
+        const maskedPhone =
+            phone.length >= 7
+                ? `${phone.slice(0, 4)}••••${phone.slice(-3)}`
+                : phone;
+
+        return network && maskedPhone
+            ? `${network} • ${maskedPhone}`
+            : network || "Airtime purchase";
+    }
+
+    if (value.includes("data")) {
+
+        const network =
+            String(
+                details.network || ""
+            ).toUpperCase();
+
+        const plan =
+            details.plan_name ||
+            details.name ||
+            "";
+
+        if (network && plan) {
+            return `${network} • ${plan}`;
+        }
+
+        if (plan) {
+            return String(plan);
+        }
+
+        return network
+            ? `${network} data`
+            : "Data purchase";
+    }
+
+    if (
+        value.includes("deposit") ||
+        value.includes("fund") ||
+        value.includes("wallet")
+    ) {
+
+        return "Flutterwave Virtual Account";
+    }
+
+    return "CARD4ME transaction";
+}
+
+function getTransactionLabel(
+    type
+) {
+
+    const value =
+        String(type || "").toLowerCase();
+
+    if (value.includes("airtime")) {
+        return "Airtime Purchase";
+    }
+
+    if (value.includes("data")) {
+        return "Data Purchase";
+    }
+
+    if (
+        value.includes("deposit") ||
+        value.includes("fund") ||
+        value.includes("wallet")
+    ) {
+        return "Wallet Funding";
+    }
+
+    return "Transaction";
 }
 
 /* =========================================
