@@ -20907,3 +20907,292 @@ body:has(.wallet-page) {
     opacity: .65;
     cursor: wait;
 }
+
+/* =========================================================
+   CARD4ME — PREMIUM TRANSACTION CARDS
+========================================================= */
+
+.transactions-page .transaction-item {
+    display: block;
+    padding: 18px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 31, 33, 0.98),
+            rgba(7, 19, 23, 0.98)
+        );
+    border: 1px solid rgba(0, 230, 160, 0.10);
+    border-radius: 17px;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.transactions-page .transaction-item:hover {
+    transform: translateY(-1px);
+    border-color: rgba(0, 230, 160, 0.24);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17, 38, 40, 0.98),
+            rgba(8, 22, 26, 0.98)
+        );
+}
+
+
+/* TOP */
+
+.transaction-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.transaction-identity {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.transaction-icon {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0, 230, 160, 0.13),
+            rgba(0, 230, 160, 0.035)
+        );
+
+    border: 1px solid rgba(0, 230, 160, 0.16);
+
+    font-size: 20px;
+}
+
+.transaction-main {
+    min-width: 0;
+}
+
+.transaction-main strong {
+    display: block;
+
+    overflow: hidden;
+
+    margin-bottom: 4px;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 750;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.transaction-provider {
+    display: block;
+
+    overflow: hidden;
+
+    color: #718888;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* AMOUNT */
+
+.transactions-page .transaction-amount {
+    flex-shrink: 0;
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+/* MIDDLE */
+
+.transaction-card-middle {
+    margin-top: 16px;
+    padding-top: 13px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.055);
+}
+
+.transaction-reference span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #52696d;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.transaction-reference strong {
+    display: block;
+
+    overflow: hidden;
+
+    color: #9aadaf;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* BOTTOM */
+
+.transaction-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 13px;
+}
+
+.transaction-date {
+    color: #607477;
+
+    font-size: 10px;
+}
+
+
+/* STATUS */
+
+.transaction-success,
+.transaction-pending,
+.transaction-failed {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 22px;
+
+    padding: 3px 9px;
+
+    border-radius: 999px;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.transaction-success {
+    color: #45d7a8;
+    background: rgba(0, 230, 160, 0.09);
+    border: 1px solid rgba(0, 230, 160, 0.16);
+}
+
+.transaction-pending {
+    color: #d7bd63;
+    background: rgba(215, 189, 99, 0.08);
+    border: 1px solid rgba(215, 189, 99, 0.15);
+}
+
+.transaction-failed {
+    color: #dc8e94;
+    background: rgba(220, 100, 110, 0.08);
+    border: 1px solid rgba(220, 100, 110, 0.15);
+}
+
+
+/* REQUERY */
+
+.requery-data-button {
+    width: 100%;
+
+    margin-top: 14px;
+    padding: 10px 14px;
+
+    border: 1px solid rgba(0, 230, 160, 0.18);
+    border-radius: 10px;
+
+    background: rgba(0, 230, 160, 0.06);
+
+    color: #45d7a8;
+
+    font-size: 11px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.requery-data-button:hover {
+    background: rgba(0, 230, 160, 0.11);
+    border-color: rgba(0, 230, 160, 0.30);
+}
+
+.requery-data-button:disabled {
+    opacity: 0.55;
+    cursor: wait;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 480px) {
+
+    .transactions-page .recent-transactions {
+        padding: 16px;
+        border-radius: 18px;
+    }
+
+    .transactions-page .transaction-item {
+        padding: 15px;
+        border-radius: 15px;
+    }
+
+    .transaction-icon {
+        flex-basis: 40px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .transaction-main strong {
+        font-size: 13px;
+    }
+
+    .transactions-page .transaction-amount {
+        font-size: 13px;
+    }
+
+    .transaction-reference strong {
+        font-size: 9px;
+    }
+}
+
